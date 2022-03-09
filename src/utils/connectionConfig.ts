@@ -10,6 +10,7 @@ const connectionConfig:ConnectionOptions = {
     url: process.env.DATABASE_URL,
     logging: false,
     synchronize: true,
+    ssl: process.env.NODE_ENV !== 'development',
     entities:[
         Example,
     ],
