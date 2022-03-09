@@ -1,12 +1,15 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 class Example extends BaseEntity{
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
-    exampleField: string;
+    @CreateDateColumn({nullable:false})
+    createdAt: Date;
+
+    @Column({nullable:false})
+    testString:string;
 }
 
 export { Example };
