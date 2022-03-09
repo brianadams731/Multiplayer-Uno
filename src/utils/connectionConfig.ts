@@ -13,7 +13,7 @@ const connectionConfig:ConnectionOptions = {
     ssl: process.env.NODE_ENV !== 'development',
     extra:process.env.NODE_ENV !== 'development'?{
         ssl:{
-            rejectUnauthorized: true
+            rejectUnauthorized: false
         }
     }:undefined,
     entities:[
