@@ -11,6 +11,11 @@ const connectionConfig:ConnectionOptions = {
     logging: false,
     synchronize: true,
     ssl: process.env.NODE_ENV !== 'development',
+    extra:process.env.NODE_ENV !== 'development'?{
+        ssl:{
+            rejectUnauthorized: true
+        }
+    }:undefined,
     entities:[
         Example,
     ],
