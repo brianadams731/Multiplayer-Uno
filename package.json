@@ -8,7 +8,12 @@
     "dev": "cross-env NODE_ENV=development ts-node-dev ./src/app.ts",
     "start:prod": "node ./out/app.js",
     "postinstall": "tsc",
-    "buildNoEmit": "tsc --noEmit"
+    "buildNoEmit": "tsc --noEmit",
+    
+    "db:create:migration": "ts-node-dev ./node_modules/typeorm/cli.js migration:create --config src/utils/migrationconfig.js -n",
+    "db:generate":"ts-node-dev ./node_modules/typeorm/cli.js migration:generate --config src/utils/migrationconfig.js -n",
+    "db:migrate":"ts-node-dev ./node_modules/typeorm/cli.js migration:run --config src/utils/migrationconfig.js",
+    "db:rollback":"ts-node-dev ./node_modules/typeorm/cli.js migration:revert --config src/utils/migrationconfig.js"
   },
   "repository": {
     "type": "git",
