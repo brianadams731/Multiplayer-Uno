@@ -11,11 +11,11 @@ if(process.env.NODE_ENV === 'development') {
 createConnection(connectionConfig);
 const app = express();
 app.use(express.json());
-app.use(exampleRoute);
+app.use("/test",exampleRoute);
 
-/*app.get("/",(req,res)=>{
-    return res.send("Test Endpoint");
-})*/
+app.get("/",(req,res)=>{
+    return res.send("Landing Page");
+})
 
 app.listen(process.env.PORT||"8080",()=>{
     console.log(`Server running at http://localhost:${process.env.PORT||"8080"}/`);
