@@ -5,11 +5,6 @@ if(process.env.NODE_ENV === 'development') {
 import express from "express";
 
 import { exampleRoute } from "./routes/exampleRoute";
-import { connection } from "./utils/connection";
-
-
-
-
 
 const app = express();
 app.use(express.json());

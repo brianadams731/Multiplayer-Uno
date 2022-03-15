@@ -9,9 +9,10 @@
     "start:prod": "node ./out/app.js",
     "postinstall": "tsc",
     "buildNoEmit": "tsc --noEmit",
-    "db:create:migration": "",
-    "db:migrate": "",
-    "db:rollback": ""
+    
+    "db:create:migration": "npx sequelize migration:generate --name",
+    "db:migrate": "npx sequelize db:migrate",
+    "db:rollback": "npx sequelize db:migrate:undo"
   },
   "repository": {
     "type": "git",
@@ -40,6 +41,8 @@
     "express-session": "^1.17.2",
     "pg": "^8.7.3",
     "pg-promise": "^10.11.1",
+    "sequelize": "^6.17.0",
+    "sequelize-cli": "^6.4.1",
     "typescript": "^4.6.2"
   },
   "engines": {
