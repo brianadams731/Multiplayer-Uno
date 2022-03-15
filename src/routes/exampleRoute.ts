@@ -1,22 +1,22 @@
 import express from "express";
-import { getRepository } from "typeorm";
-import { Example } from "../models/Example";
+import { connection } from "../utils/connection";
 
 const exampleRoute = express.Router();
 
 exampleRoute.get("/", async (req,res)=>{
-    const example = new Example();
-    example.testString = `Hello at ${Date.now()}`
     try{
-        await example.save();
-        const retVal = await getRepository(Example).createQueryBuilder("example")
-        .getMany();
-        return res.status(201).json(retVal);
-    }catch(error){
-        console.log(error);
-        return res.status(500).json({error});
+        connection.any(`INSERT INTO example ("testString") VALUES ('Hello at $1')`,[Date.now()]);
+        
+        const value = await connection.any(`
+            SELECT "testString" 
+            FROM example
+        `);
+        
+        return res.status(200).json(value);
+    }catch(e){
+        console.log(e);
+        return res.status(500).send("Error")
     }
-
 })
 
 export { exampleRoute };

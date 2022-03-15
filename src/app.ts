@@ -1,14 +1,16 @@
-import express from "express";
 import dotenv from "dotenv";
-import { createConnection } from "typeorm";
-
-import {connectionConfig} from "./utils/connectionConfig";
-import { exampleRoute } from "./routes/exampleRoute";
-
 if(process.env.NODE_ENV === 'development') {
     dotenv.config();
 }
-createConnection(connectionConfig);
+import express from "express";
+
+import { exampleRoute } from "./routes/exampleRoute";
+import { connection } from "./utils/connection";
+
+
+
+
+
 const app = express();
 app.use(express.json());
 app.use("/tests",exampleRoute);

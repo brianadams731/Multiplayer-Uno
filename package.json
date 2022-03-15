@@ -9,11 +9,9 @@
     "start:prod": "node ./out/app.js",
     "postinstall": "tsc",
     "buildNoEmit": "tsc --noEmit",
-    
-    "db:create:migration": "ts-node-dev ./node_modules/typeorm/cli.js migration:create --config src/utils/migrationconfig.js -n",
-    "db:generate":"ts-node-dev ./node_modules/typeorm/cli.js migration:generate --config src/utils/migrationconfig.js -n",
-    "db:migrate":"ts-node-dev ./node_modules/typeorm/cli.js migration:run --config src/utils/migrationconfig.js",
-    "db:rollback":"ts-node-dev ./node_modules/typeorm/cli.js migration:revert --config src/utils/migrationconfig.js"
+    "db:create:migration": "",
+    "db:migrate": "",
+    "db:rollback": ""
   },
   "repository": {
     "type": "git",
@@ -41,7 +39,7 @@
     "express": "^4.17.3",
     "express-session": "^1.17.2",
     "pg": "^8.7.3",
-    "typeorm": "^0.2.45",
+    "pg-promise": "^10.11.1",
     "typescript": "^4.6.2"
   },
   "engines": {
