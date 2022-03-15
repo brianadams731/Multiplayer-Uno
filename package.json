@@ -7,7 +7,7 @@
     "test": "cross-env NODE_ENV=test jest --verbose",
     "dev": "cross-env NODE_ENV=development ts-node-dev ./src/app.ts",
     "start:prod": "node ./out/app.js",
-    "postinstall": "tsc",
+    "postinstall": "tsc && npx sequelize db:migrate",
     "buildNoEmit": "tsc --noEmit",
     
     "db:create:migration": "npx sequelize migration:generate --name",
