@@ -11,7 +11,7 @@ if(process.env.NODE_ENV === 'development') {
 createConnection(connectionConfig);
 const app = express();
 app.use(express.json());
-app.use("/test",exampleRoute);
+app.use("/tests",exampleRoute);
 
 app.get("/",(req,res)=>{
     return res.send("Landing Page");
