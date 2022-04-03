@@ -6,45 +6,50 @@
     box-sizing: border-box;
 }
 
-:root{
-    --fs-standard-small: .8rem;
+:root {
+    --fs-standard-small: 0.8rem;
     --fs-standard: 1rem;
     --fs-standard-large: 1.25rem;
-  
+
     --fs-heading-small: 1.536rem;
     --fs-heading: 1.935rem;
     --fs-heading-large: 2.441rem;
-  
+
     --fs-hero-small: 3.052rem;
     --fs-hero: 3.815rem;
     --fs-hero-large: 4.768rem;
-  
+
     --font-header: 'Inter', sans-serif;
     --font-body: 'Open Sans', sans-serif;
-  }
-  
-  body {
+}
+
+body {
     font-size: 18px;
     font-family: 'Open Sans', sans-serif;
-  }
-  
-  h1,h2,h3,h4,h5,h6{
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: var(--font-header);
-  }
-  
-  p {
+}
+
+p {
     font-family: var(--font-body);
-  }
-  
-  a{
+}
+
+a {
     color: initial;
     text-decoration: none;
-  }
-  
-  a:visited{
+}
+
+a:visited {
     color: initial;
-  }
-  
-  ul{
+}
+
+ul {
     list-style-type: none;
-  }
+}
