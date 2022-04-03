@@ -7,6 +7,8 @@ import express from 'express';
 import { exampleRoute } from './routes/exampleRoute';
 
 const app = express();
+app.use("/public",express.static('public',{extensions:['html']}));
+
 app.use(express.json());
 app.use('/tests', exampleRoute);
 
