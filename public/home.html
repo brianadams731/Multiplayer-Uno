@@ -1,30 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/home.css" />
-    <title>Uno</title>
-</head>
-<body>
-    <div class="landing-wrapper">
-        <div class="blue-circle"></div>
-        <div class="yellow-circle"></div>
-        <div class="green-circle"></div>
-
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="styles/home.css" />
+        <title>Home</title>
+    </head>
+    <body>
         <header class="header-wrapper">
-            <ul class="nav">
-                <li><a class="about">About</a></li>
-                <li><a class="log">Log In</a></li>
-                <li><a class="register">Register</a></li>
+            <ul class="nav-wrapper">
+                <li><a href="/play">Play Now!</a></li>
+                <li><a href="/register">Sign Up</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/about">About</a></li>
+                <li>
+                    <a href="/profile"
+                        ><img
+                            class="user-avatar"
+                            src="assets/user-avatar.svg"
+                            alt="avatar"
+                    /></a>
+                </li>
             </ul>
         </header>
 
-        <section class="hero-box">
-            <img class="hero-logo" src="assets/uno-logo.svg" alt="uno logo"/>
-            <a>Play Now!</a>
-        </section>
-    </div>
-</body>
+        <article>
+            <section class="hero-description-wrapper">
+                <div class="description-body">
+                    <h1>UNO</h1>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                    </p>
+                    <p>
+                        Elementum integer enim neque volutpat. Velit sed
+                        ullamcorper morbi tincidunt ornare massa. Tellus rutrum
+                        tellus pellentesque eu tincidunt tortor. Volutpat
+                        blandit aliquam etiam erat velit scelerisque. Vitae
+                        tempus quam pellentesque nec nam aliquam. Pretium
+                        vulputate sapien nec sagittis aliquam malesuada
+                        bibendum. Ullamcorper malesuada proin libero nunc
+                        consequat interdum. Sit amet nulla facilisi morbi
+                        tempus. Elementum tempus egestas sed sed risus pretium
+                        quam. Egestas erat imperdiet sed euismod nisi porta
+                        lorem. Vitae tempus quam pellentesque nec nam aliquam
+                        sem. Non arcu risus quis varius quam quisque. Nisi porta
+                        lorem mollis aliquam ut porttitor leo. Et malesuada
+                        fames ac turpis egestas. Facilisi cras fermentum odio
+                        eu. Turpis massa sed elementum tempus egestas sed sed
+                        risus pretium. Quis varius quam quisque id diam vel quam
+                        elementum pulvinar.
+                    </p>
+                </div>
+                <img class="hero-img" src="assets/hero-home.jpg" />
+            </section>
+
+            <section class="hero-cta-wrapper">
+                <h3>Brought To You By:</h3>
+
+                <h3>The Spaghetti Factory</h3>
+                <a class="cta-btn btn" href="/play">Play Now</a>
+            </section>
+        </article>
+
+        <footer class="footer-wrapper">
+            <section class="footer-box-wrapper">
+                <div class="footer-box"></div>
+                <div class="footer-box"></div>
+                <div class="footer-box"></div>
+                <div class="footer-box"></div>
+            </section>
+
+            <section class="footer-links">
+                <ul>
+                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/tnc">Terms and Conditions</a></li>
+                </ul>
+            </section>
+        </footer>
+    </body>
 </html>

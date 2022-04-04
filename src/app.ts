@@ -3,6 +3,7 @@ if (process.env.NODE_ENV === 'development') {
     dotenv.config();
 }
 import express from 'express';
+import path from 'path';
 
 import { exampleRoute } from './routes/exampleRoute';
 
@@ -13,7 +14,7 @@ app.use(express.json());
 app.use('/tests', exampleRoute);
 
 app.get('/', (req, res) => {
-    return res.send('Landing Page');
+    return res.sendFile("index.html", { root : path.join(__dirname, '../public/')});
 });
 
 app.listen(process.env.PORT || '8080', () => {
