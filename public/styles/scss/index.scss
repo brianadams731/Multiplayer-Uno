@@ -32,7 +32,7 @@
             position: absolute;
             height: 2px;
             width: 100%;
-            background-color: #006cb9;
+            background-color: var(--c-uno-blue);
             bottom: 0;
             left: 0;
             content: "";
@@ -59,7 +59,7 @@
             top: 0;
             height: 100%;
             width: 100%;
-            background-color: #ed1c23;
+            background-color: var(--c-uno-red);
 
             content: '';
             z-index: -1;
@@ -70,7 +70,7 @@
         }
 
         padding: 10px 25px;
-        border: 2px solid #ed1c23;
+        border: 2px solid var(--c-uno-red);
         border-radius: 5px;
 
         transition: all 0.2s ease-in-out;
@@ -83,9 +83,9 @@
             }
         }
         &:active{
-            border-color: #006cb9;
+            border-color: var(--c-uno-blue);
             &::before{
-                background-color: #006cb9;
+                background-color: var(--c-uno-blue);
             }
         }
     }
@@ -106,8 +106,8 @@
     a {
         display: block;
         width: fit-content;
-        background-color: #ed1c24;
-        box-shadow: 0 6px #ab3c3c;
+        background-color: var(--c-uno-red);
+        box-shadow: 0 6px var(--c-uno-red-shadow);
 
         color: white;
         padding: 10px 25px;
@@ -121,7 +121,7 @@
         &:hover {
             cursor: pointer;
             transform: translateY(3px);
-            box-shadow: 0 3px #ab3c3c;
+            box-shadow: 0 3px var(--c-uno-red-shadow);
         }
         &:active {
             transform: translateY(6px);
@@ -139,26 +139,25 @@
     max-height: 550px;
     max-width: 550px;
     border-radius: 50%;
-    background-color: red;
 }
 
 .blue-circle {
     bottom: 0;
     left: 0;
     transform: translate(-50%, 50%);
-    background-color: #006cb9;
+    background-color: var(--c-uno-blue);
 }
 
 .green-circle {
     bottom: 0;
     right: 0;
     transform: translate(50%, 50%);
-    background-color: #00a539;
+    background-color: var(--c-uno-green);
 }
 
 .yellow-circle {
     top: 0;
     left: 0;
     transform: translate(-50%, -50%);
-    background-color: #f8da27;
+    background-color: var(--c-uno-red);
 }

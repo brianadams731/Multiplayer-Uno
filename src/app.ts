@@ -6,16 +6,14 @@ import express from 'express';
 import path from 'path';
 
 import { exampleRoute } from './routes/exampleRoute';
+import { staticRoutes } from './routes/staticRoutes';
 
 const app = express();
-app.use("/public",express.static('public',{extensions:['html']}));
-
 app.use(express.json());
-app.use('/tests', exampleRoute);
 
-app.get('/', (req, res) => {
-    return res.sendFile("index.html", { root : path.join(__dirname, '../public/')});
-});
+app.use(staticRoutes);
+app.use('/tests', exampleRoute);
+app.use('/public', express.static('public', { extensions: ['html'] }));
 
 app.listen(process.env.PORT || '8080', () => {
     console.log(
