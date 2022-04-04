@@ -21,6 +21,12 @@
 
     --font-header: 'Inter', sans-serif;
     --font-body: 'Open Sans', sans-serif;
+
+    --c-uno-red:#ed1c23;
+    --c-uno-red-shadow: #ab3c3c;
+    --c-uno-blue: #006cb9;
+    --c-uno-yellow: #f8da27;
+    --c-uno-green: #00a539;
 }
 
 body {
