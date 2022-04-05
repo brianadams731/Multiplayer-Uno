@@ -60,3 +60,32 @@ a:visited {
 ul {
     list-style-type: none;
 }
+
+.arcade-btn{
+    border: none;
+
+    display: block;
+    width: fit-content;
+    background-color: var(--c-uno-red);
+    box-shadow: 0 6px var(--c-uno-red-shadow);
+
+    color: white;
+    padding: 10px 25px;
+    border-radius: 10px;
+
+    font-family: var(--font-header);
+    font-size: var(--fs-heading);
+
+    transition: all 0.15s ease-in-out;
+}
+
+.arcade-btn:hover{
+    cursor: pointer;
+    transform: translateY(3px);
+    box-shadow: 0 3px var(--c-uno-red-shadow);
+}
+
+.arcade-btn:active{
+    transform: translateY(6px);
+    box-shadow: none;
+}
