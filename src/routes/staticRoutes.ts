@@ -7,7 +7,7 @@ staticRoutes.get('/', (req, res) => {
     return res.sendFile("index.html", { root : path.join(__dirname, '../../public/')});
 });
 staticRoutes.get('/login', (req, res) => {
-    return res.sendFile("index.html", { root : path.join(__dirname, '../../public/')});
+    return res.sendFile("login.html", { root : path.join(__dirname, '../../public/')});
 });
 staticRoutes.get('/register', (req, res) => {
     return res.sendFile("register.html", { root : path.join(__dirname, '../../public/')});
