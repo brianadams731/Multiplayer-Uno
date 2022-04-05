@@ -14,9 +14,16 @@
             <input type="text" id="username" name="username" placeholder="Username" value="">
             <input type="password" id="pwd" name="pwd" placeholder="Password" value="">
             <input type="password" id="repwd" name="repwd" placeholder="Re-enter Password" value="">
-            <a href="">Already have an account. Login Here.</a>
-            <input type="submit" value="Register">
+            <span class="login-span">Already have an account?<a class="login-link" href="/login">Login Here</a></span>
+            <button class="arcade-btn" type="submit">Register</button>
         </form> 
     </div>
+
+    <script>
+        const formElement = document.querySelector("#registerForm");
+        formElement.addEventListener("submit",(e)=>{
+            e.preventDefault();
+        })
+    </script>
 </body>
 </html>
