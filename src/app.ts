@@ -4,22 +4,31 @@ if (process.env.NODE_ENV === 'development') {
 }
 import express from 'express';
 import { engine } from 'express-handlebars';
+import session from 'express-session';
 
-import { exampleRoute } from './routes/exampleRoute';
+import { loginRouter } from './routes/loginRoutes';
+import { logoutRouter } from './routes/logoutRoutes';
+import { registerRouter } from './routes/registerRoutes';
 import { staticRoutes } from './routes/staticRoutes';
 import { viewRoutes } from './routes/viewRoutes';
+import { sessionConfig } from './utils/sessionConfig';
 
 const app = express();
+
+app.use(session(sessionConfig));
+app.use(express.json());
 
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', './src/views');
 
-app.use(express.json());
-
 app.use(staticRoutes);
 app.use(viewRoutes);
-app.use('/tests', exampleRoute);
+
+app.use('/api', loginRouter);
+app.use('/api', logoutRouter);
+app.use('/api', registerRouter);
+
 app.use('/public', express.static('public', { extensions: ['html'] }));
 
 app.listen(process.env.PORT || '8080', () => {
