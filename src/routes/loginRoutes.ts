@@ -2,6 +2,7 @@ import express from 'express';
 import { connect } from 'http2';
 import { requireWithUserAsync } from '../middleware/requiresWithUserAsync';
 import { connection } from '../utils/connection';
+import { checkHashedPasswordAsync } from '../utils/passwordHash';
 
 const loginRouter = express.Router();
 
@@ -15,7 +16,7 @@ loginRouter.post('/login', async (req, res) => {
     try {
         user = await connection.any(
             `
-            SELECT uid
+            SELECT uid, password
             FROM "User"
             WHERE username = $1
         `,
@@ -27,8 +28,12 @@ loginRouter.post('/login', async (req, res) => {
     if (user.length === 0) {
         return res.status(404).send('Error: User not found');
     }
-    req.session.userId = user[0].uid;
-    return res.status(200).send('Success: Logged in');
+    const passMatch = await checkHashedPasswordAsync(password, user[0].password);
+    if(passMatch){
+        req.session.userId = user[0].uid;
+        return res.status(200).send('Success: Logged in');
+    }
+    return res.status(401).send("Error: Invalid Credentials");
 });
 
 loginRouter.get('/loginTest', requireWithUserAsync, async (req, res) => {
