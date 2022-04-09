@@ -13,4 +13,4 @@ const connectionConfig = {
 const pgp = pgPromise();
 const connection = pgp(connectionConfig);
 
-export { connection };
+export { connection, connectionConfig };

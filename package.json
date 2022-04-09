@@ -37,6 +37,7 @@
     "ts-node-dev": "^1.1.8"
   },
   "dependencies": {
+    "connect-pg-simple": "^7.0.0",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "express-handlebars": "^6.0.4",
