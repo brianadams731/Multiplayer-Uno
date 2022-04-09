@@ -7,12 +7,14 @@
     "test": "cross-env NODE_ENV=test jest --verbose",
     "dev": "cross-env NODE_ENV=development ts-node-dev ./src/app.ts",
     "start:prod": "node ./out/app.js",
-    "postinstall": "tsc && npx sequelize db:migrate",
+    "postinstall": "tsc && tsc -p ./src/game/tsconfig.json && npx sequelize db:migrate",
     "buildNoEmit": "tsc --noEmit",
     "db:create:migration": "npx sequelize migration:generate --name",
     "db:migrate": "npx sequelize db:migrate",
     "db:rollback": "npx sequelize db:migrate:undo",
-    "scss": "sass public/styles/scss:public/styles --watch --no-source-map"
+    "scss": "sass public/styles/scss:public/styles --watch --no-source-map",
+    "watch": "tsc -p ./src/game/tsconfig.json --watch",
+    "dev:all": "concurrently \"npm:dev\" \"npm:scss\" \"npm:watch\" --kill-others"
   },
   "repository": {
     "type": "git",
@@ -32,6 +34,7 @@
     "@types/jest": "^27.4.1",
     "@types/node": "^17.0.21",
     "@types/uuid": "^8.3.4",
+    "concurrently": "^7.1.0",
     "cross-env": "^7.0.3",
     "jest": "^27.5.1",
     "ts-jest": "^27.1.3",

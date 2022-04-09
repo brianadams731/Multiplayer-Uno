@@ -17,6 +17,11 @@
   --fs-hero-large: 4.768rem;
   --font-header: "Inter", sans-serif;
   --font-body: "Open Sans", sans-serif;
+  --c-uno-red:#ed1c23;
+  --c-uno-red-shadow: #ab3c3c;
+  --c-uno-blue: #006cb9;
+  --c-uno-yellow: #f8da27;
+  --c-uno-green: #00a539;
 }
 
 body {
@@ -50,6 +55,31 @@ ul {
   list-style-type: none;
 }
 
+.arcade-btn {
+  border: none;
+  display: block;
+  width: fit-content;
+  background-color: var(--c-uno-red);
+  box-shadow: 0 6px var(--c-uno-red-shadow);
+  color: white;
+  padding: 10px 25px;
+  border-radius: 10px;
+  font-family: var(--font-header);
+  font-size: var(--fs-heading);
+  transition: all 0.15s ease-in-out;
+}
+
+.arcade-btn:hover {
+  cursor: pointer;
+  transform: translateY(3px);
+  box-shadow: 0 3px var(--c-uno-red-shadow);
+}
+
+.arcade-btn:active {
+  transform: translateY(6px);
+  box-shadow: none;
+}
+
 .landing-wrapper {
   position: relative;
   overflow-x: hidden;
@@ -81,7 +111,7 @@ ul {
   position: absolute;
   height: 2px;
   width: 100%;
-  background-color: #006cb9;
+  background-color: var(--c-uno-blue);
   bottom: 0;
   left: 0;
   content: "";
@@ -100,7 +130,7 @@ ul {
 .nav .register {
   position: relative;
   padding: 10px 25px;
-  border: 2px solid #ed1c23;
+  border: 2px solid var(--c-uno-red);
   border-radius: 5px;
   transition: all 0.2s ease-in-out;
 }
@@ -110,7 +140,7 @@ ul {
   top: 0;
   height: 100%;
   width: 100%;
-  background-color: #ed1c23;
+  background-color: var(--c-uno-red);
   content: "";
   z-index: -1;
   transform: scaleX(0);
@@ -125,10 +155,10 @@ ul {
   transform: scaleX(1);
 }
 .nav .register:active {
-  border-color: #006cb9;
+  border-color: var(--c-uno-blue);
 }
 .nav .register:active::before {
-  background-color: #006cb9;
+  background-color: var(--c-uno-blue);
 }
 
 .hero-box {
@@ -144,8 +174,8 @@ ul {
 .hero-box a {
   display: block;
   width: fit-content;
-  background-color: #ed1c24;
-  box-shadow: 0 6px #ab3c3c;
+  background-color: var(--c-uno-red);
+  box-shadow: 0 6px var(--c-uno-red-shadow);
   color: white;
   padding: 10px 25px;
   border-radius: 10px;
@@ -156,7 +186,7 @@ ul {
 .hero-box a:hover {
   cursor: pointer;
   transform: translateY(3px);
-  box-shadow: 0 3px #ab3c3c;
+  box-shadow: 0 3px var(--c-uno-red-shadow);
 }
 .hero-box a:active {
   transform: translateY(6px);
@@ -172,26 +202,25 @@ ul {
   max-height: 550px;
   max-width: 550px;
   border-radius: 50%;
-  background-color: red;
 }
 
 .blue-circle {
   bottom: 0;
   left: 0;
   transform: translate(-50%, 50%);
-  background-color: #006cb9;
+  background-color: var(--c-uno-blue);
 }
 
 .green-circle {
   bottom: 0;
   right: 0;
   transform: translate(50%, 50%);
-  background-color: #00a539;
+  background-color: var(--c-uno-green);
 }
 
 .yellow-circle {
   top: 0;
   left: 0;
   transform: translate(-50%, -50%);
-  background-color: #f8da27;
+  background-color: var(--c-uno-red);
 }
