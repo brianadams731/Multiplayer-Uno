@@ -5,6 +5,7 @@ import { generateHashedPasswordAsync } from '../utils/passwordHash';
 const registerRouter = express.Router();
 
 registerRouter.post('/register', async (req, res) => {
+
     const username = req.body.username;
     const password = req.body.password;
     const email = req.body.email;

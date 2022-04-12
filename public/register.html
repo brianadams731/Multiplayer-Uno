@@ -20,7 +20,7 @@
         </svg>
 
         <div class="grid">
-            <form method="POST" class="form login">
+            <form class="form login" id="formId">
             <h1>Registration Page</h1>
             <div class="register-field">
                 <label for="register-username">
@@ -97,9 +97,26 @@
     </body>
 
     <script>
-        const formElement = document.querySelector("#registerForm");
-        formElement.addEventListener("submit",(e)=>{
+        const form = document.querySelector("#formId");
+        
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
+
+            const username = document.querySelector("#register-username").value;
+            const password = document.querySelector("#register-password").value;
+            const rePassword = document.querySelector("#register-confirm-password").value;
+            const email = username;
+            const formData = {username: username, password: password, email: email};
+
+            console.log(formData)
+
+            await fetch('/api/register', {
+                method: "post",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
         })
     </script>
 
