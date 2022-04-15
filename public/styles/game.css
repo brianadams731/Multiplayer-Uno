@@ -79,3 +79,64 @@ ul {
   transform: translateY(6px);
   box-shadow: none;
 }
+
+.board-wrapper {
+  min-width: 925px;
+  min-height: 675px;
+  overflow: hidden;
+  background-color: green;
+  height: 100vh;
+  width: 100%;
+  padding: 25px;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-areas: "a b b c" "a e e c" "a e e c" "a d d c";
+}
+
+.hand-1,
+.hand-2,
+.hand-3,
+.hand-player {
+  outline: solid 1px red;
+  height: 150px;
+  width: 250px;
+}
+
+.hand-1 {
+  grid-area: a;
+  transform: rotate(90deg);
+}
+
+.hand-2 {
+  grid-area: b;
+}
+
+.hand-3 {
+  grid-area: c;
+  transform: rotate(-90deg);
+}
+
+.hand-player {
+  grid-area: d;
+}
+
+.deck-wrapper {
+  grid-area: e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+.deck-wrapper .draw-deck,
+.deck-wrapper .discard-deck {
+  width: 150px;
+  height: 250px;
+  border: 1px solid purple;
+}
+
+.card {
+  outline: solid 1px blue;
+}

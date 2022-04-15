@@ -1,7 +1,11 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "target": "es6",
+    "module": "es6",
     "rootDir": ".",
-    "outDir": "../../public/scripts"
+    "outDir": "../../public/scripts",
+    "moduleResolution": "node",
+    "resolveJsonModule": true
   }
 }
