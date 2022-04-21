@@ -31,10 +31,13 @@ class GameCards {
                 const id = (e.target as HTMLDivElement).getAttribute(
                     'data-cardId'
                 )!;
-                if (this.getCardState(id) === CardState.playerHand) {
+                if(this.getCardState(id) === CardState.drawCardPile){
+                    this.addCardToPlayersHand(id);
+                    this.setCardState(id, CardState.playerHand);
+                }else if (this.getCardState(id) === CardState.playerHand) {
                     this.removeCardFromPlayersHand(id);
+                    this.setCardState(id, CardState.discardPile);
                 }
-                this.setCardState(id, CardState.discardPile);
             });
         }
 

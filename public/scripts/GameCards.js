@@ -19,10 +19,14 @@ class GameCards {
             // debug
             element.addEventListener('click', (e) => {
                 const id = e.target.getAttribute('data-cardId');
-                if (this.getCardState(id) === CardState.playerHand) {
-                    this.removeCardFromPlayersHand(id);
+                if (this.getCardState(id) === CardState.drawCardPile) {
+                    this.addCardToPlayersHand(id);
+                    this.setCardState(id, CardState.playerHand);
                 }
-                this.setCardState(id, CardState.discardPile);
+                else if (this.getCardState(id) === CardState.playerHand) {
+                    this.removeCardFromPlayersHand(id);
+                    this.setCardState(id, CardState.discardPile);
+                }
             });
         }
         this.appendAllCardsToDOM();
