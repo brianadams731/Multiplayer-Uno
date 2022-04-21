@@ -13,7 +13,7 @@
     "db:migrate": "npx sequelize db:migrate",
     "db:rollback": "npx sequelize db:migrate:undo",
     "scss": "sass src/styles:public/styles --watch --no-source-map",
-    "watch": "tsc -p ./src/game/tsconfig.json --watch",
+    "watch": "tsc -p ./src/frontend-game/tsconfig.json --watch",
     "dev:all": "concurrently \"npm:dev\" \"npm:scss\" \"npm:watch\" --kill-others"
   },
   "repository": {

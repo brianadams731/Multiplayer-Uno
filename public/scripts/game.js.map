@@ -1,1 +1,1 @@
-{"version":3,"file":"game.js","sourceRoot":"","sources":["../../src/game/game.ts"],"names":[],"mappings":"AAAA,OAAO,EAA0C,QAAQ,EAAC,MAAM,eAAe,CAAC;AAEhF,QAAQ,EAAE,CAAC"}
+{"version":3,"file":"game.js","sourceRoot":"","sources":["../../src/frontend-game/game.ts"],"names":[],"mappings":"AAAA,OAAO,EAA0C,QAAQ,EAAC,MAAM,eAAe,CAAC;AAEhF,QAAQ,EAAE,CAAC"}
