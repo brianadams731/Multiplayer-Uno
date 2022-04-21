@@ -116,9 +116,15 @@ ul {
   transition-property: transform, left, bottom;
 }
 
-[data-card-state=discardPile] {
+[data-card-state=discardPile], [data-card-state=topOfDiscardPile] {
   bottom: 50%;
   left: calc(50% - 150px);
+}
+
+[data-card-state=topOfDiscardPile] {
+  bottom: 50%;
+  left: calc(50% - 150px);
+  z-index: 999;
 }
 
 [data-card-state=drawCardPile] {

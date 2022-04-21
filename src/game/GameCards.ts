@@ -31,12 +31,10 @@ class GameCards {
                 const id = (e.target as HTMLDivElement).getAttribute(
                     'data-cardId'
                 )!;
-                if(this.getCardState(id) === CardState.drawCardPile){
-                    this.addCardToPlayersHand(id);
-                    this.setCardState(id, CardState.playerHand);
-                }else if (this.getCardState(id) === CardState.playerHand) {
-                    this.removeCardFromPlayersHand(id);
-                    this.setCardState(id, CardState.discardPile);
+                if (this.getCardState(id) === CardState.drawCardPile) {
+                    this.moveCard(id, CardState.playerHand);
+                } else if (this.getCardState(id) === CardState.playerHand) {
+                    this.moveCard(id, CardState.discardPile);
                 }
             });
         }
@@ -45,8 +43,7 @@ class GameCards {
 
         this.forEachCard((_, id) => {
             if (id === '1' || id === '2' || id === '3') {
-                this.addCardToPlayersHand(id);
-                this.setCardState(id, CardState.playerHand);
+                this.moveCard(id, CardState.playerHand);
             }
         });
     }
@@ -90,7 +87,6 @@ class GameCards {
             this.shiftTopOfDiscardPile(cardId);
             internalDestination = CardState.topOfDiscardPile;
         }
-
         this.setCardState(cardId, internalDestination);
     }
 
@@ -119,7 +115,10 @@ class GameCards {
     }
 
     private shiftTopOfDiscardPile(cardId: string) {
-        this.setCardState(this.topOfDiscard, CardState.discardPile);
+        this.setCardState(
+            this.topOfDiscard ? this.topOfDiscard : cardId,
+            CardState.discardPile
+        );
         this.topOfDiscard = cardId;
     }
 
