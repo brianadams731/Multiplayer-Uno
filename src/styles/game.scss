@@ -3,67 +3,75 @@
 $card-height: 250px;
 $card-width: 150px;
 
-.board-wrapper {
-    min-width: 925px;
-    min-height: 675px;
-    overflow: hidden;
-    background-color: green;
-    height: 100vh;
-    width: 100%;
-    padding: 25px;
-    display: grid;
-    justify-items: center;
-    align-items: center;
-
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
-
-    grid-template-areas:
-        'a b b c'
-        'a e e c'
-        'a e e c'
-        'a d d c';
+@function atCardCenter($pos){
+    @return calc($pos - ($card-width/2));
+}
+@function minusCardWidth($pos){
+    @return calc($pos - $card-width);
+}
+@function plusCardWidth($pos){
+    @return calc($pos + $card-width);
+}
+@function plusHalfCardWidth($pos){
+    @return calc($pos + ($card-width/2));
+}
+@function minusHalfCardWidth($pos){
+    @return calc($pos - ($card-width/2));
 }
 
-.hand-1,
-.hand-2,
-.hand-3,
-.hand-player {
-    outline: solid 1px red;
-    height: 150px;
-    width: 250px;
-}
 
-.hand-1 {
-    grid-area: a;
-    transform: rotate(90deg);
-}
-.hand-2 {
-    grid-area: b;
-}
-.hand-3 {
-    grid-area: c;
-    transform: rotate(-90deg);
-}
-.hand-player {
-    grid-area: d;
-}
-
-.deck-wrapper {
-    grid-area: e;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-
-    .draw-deck,
-    .discard-deck {
-        width: $card-width;
-        height: $card-height;
-        border: 1px solid purple;
+%debugCenterLines{
+    &::after{
+        position: absolute;
+        left: 50%;
+        height: 100%;
+        width: 1px;
+        background-color: rgba(128, 0, 128, 0.3);
+        transform: translateX(-50%);
+        content: "";
+    }
+    &::before{
+        position: absolute;
+        top: 50%;
+        height: 1px;
+        width: 100%;
+        background-color: rgba(128, 0, 128, 0.3);
+        transform: translateY(-50%);
+        content: "";
     }
 }
 
-.card {
-    outline: solid 1px blue;
+.board-wrapper{
+    position: relative;
+    background-color: green;
+    height: 100vh;
+    width: 100%;
+
+    @extend %debugCenterLines;    
+}
+
+
+.card{
+    position: absolute;
+    height: $card-height;
+    width: $card-width;
+    background-color: gray;
+    border-radius: 10px;
+    transition: all ease-in-out .5s;
+    transition-property: transform, left, bottom;
+}
+
+[data-card-state="discardPile"]{
+    bottom: 50%;
+    left: minusCardWidth(50%);
+}
+
+[data-card-state="drawCardPile"]{
+    bottom: 50%;
+    left: 50%;
+}
+
+[data-card-state="playerHand"]{
+    bottom: 10vh;
+    left: calc(50% - ($card-width/2));
 }

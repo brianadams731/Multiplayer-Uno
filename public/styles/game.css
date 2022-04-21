@@ -80,63 +80,53 @@ ul {
   box-shadow: none;
 }
 
+.board-wrapper::after {
+  position: absolute;
+  left: 50%;
+  height: 100%;
+  width: 1px;
+  background-color: rgba(128, 0, 128, 0.3);
+  transform: translateX(-50%);
+  content: "";
+}
+.board-wrapper::before {
+  position: absolute;
+  top: 50%;
+  height: 1px;
+  width: 100%;
+  background-color: rgba(128, 0, 128, 0.3);
+  transform: translateY(-50%);
+  content: "";
+}
+
 .board-wrapper {
-  min-width: 925px;
-  min-height: 675px;
-  overflow: hidden;
+  position: relative;
   background-color: green;
   height: 100vh;
   width: 100%;
-  padding: 25px;
-  display: grid;
-  justify-items: center;
-  align-items: center;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
-  grid-template-areas: "a b b c" "a e e c" "a e e c" "a d d c";
-}
-
-.hand-1,
-.hand-2,
-.hand-3,
-.hand-player {
-  outline: solid 1px red;
-  height: 150px;
-  width: 250px;
-}
-
-.hand-1 {
-  grid-area: a;
-  transform: rotate(90deg);
-}
-
-.hand-2 {
-  grid-area: b;
-}
-
-.hand-3 {
-  grid-area: c;
-  transform: rotate(-90deg);
-}
-
-.hand-player {
-  grid-area: d;
-}
-
-.deck-wrapper {
-  grid-area: e;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-}
-.deck-wrapper .draw-deck,
-.deck-wrapper .discard-deck {
-  width: 150px;
-  height: 250px;
-  border: 1px solid purple;
 }
 
 .card {
-  outline: solid 1px blue;
+  position: absolute;
+  height: 250px;
+  width: 150px;
+  background-color: gray;
+  border-radius: 10px;
+  transition: all ease-in-out 0.5s;
+  transition-property: transform, left, bottom;
+}
+
+[data-card-state=discardPile] {
+  bottom: 50%;
+  left: calc(50% - 150px);
+}
+
+[data-card-state=drawCardPile] {
+  bottom: 50%;
+  left: 50%;
+}
+
+[data-card-state=playerHand] {
+  bottom: 10vh;
+  left: calc(50% - 75px);
 }
