@@ -10,15 +10,13 @@ class GameCards {
         this.cards = {};
         this.playersHand = [];
         for (let i = 0; i < 52; i++) {
-            const element = document.createElement('div');
             const cardId = `${i}`;
-            this.cards[cardId] = element;
-            element.classList.add('card');
-            element.setAttribute('data-cardId', cardId);
+            this.cards[cardId] = this.makeCard(cardId);
             this.setCardState(cardId, CardState.drawCardPile);
             // debug
-            element.addEventListener('click', (e) => {
-                const id = e.target.getAttribute('data-cardId');
+            this.cards[cardId].addEventListener('click', (e) => {
+                console.log(e);
+                const id = e.currentTarget.getAttribute('data-cardId');
                 if (this.getCardState(id) === CardState.drawCardPile) {
                     this.moveCard(id, CardState.playerHand);
                 }
@@ -101,6 +99,18 @@ class GameCards {
             domFragment.appendChild(card);
         });
         (_a = document.querySelector('#game-board')) === null || _a === void 0 ? void 0 : _a.appendChild(domFragment);
+    }
+    makeCard(id) {
+        const element = document.createElement('div');
+        element.classList.add('card');
+        element.setAttribute('data-cardId', id);
+        const cardFront = document.createElement('div');
+        const cardBack = document.createElement('div');
+        cardFront.classList.add('front');
+        cardBack.classList.add('back');
+        element.appendChild(cardFront);
+        element.appendChild(cardBack);
+        return element;
     }
 }
 export { GameCards };

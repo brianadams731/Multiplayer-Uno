@@ -41,6 +41,10 @@ $card-width: 150px;
     }
 }
 
+%faceDown{
+    transform: rotateY(180deg);
+}
+
 .board-wrapper{
     position: relative;
     background-color: green;
@@ -55,10 +59,28 @@ $card-width: 150px;
     position: absolute;
     height: $card-height;
     width: $card-width;
-    background-color: gray;
     border-radius: 10px;
     transition: all ease-in-out .5s;
     transition-property: transform, left, bottom;
+    
+
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    .front, .back{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+    .front{
+        background-color: rgb(175, 175, 175);
+    }
+    .back{
+        background-color: rgb(39, 39, 39);
+        transform: rotateY(180deg);
+    }
 }
 
 [data-card-state="discardPile"]{
@@ -67,8 +89,6 @@ $card-width: 150px;
 }
 
 [data-card-state="topOfDiscardPile"]{
-    bottom: 50%;
-    left: minusCardWidth(50%);
     @extend [data-card-state="discardPile"];
     z-index: 999;
 }
@@ -76,6 +96,8 @@ $card-width: 150px;
 [data-card-state="drawCardPile"]{
     bottom: 50%;
     left: 50%;
+
+    @extend %faceDown;
 }
 
 [data-card-state="playerHand"]{
