@@ -6,6 +6,7 @@ interface ICards {
 
 enum CardState {
     playerHand = 'playerHand',
+    opponentHand = 'opponentHand',
     discardPile = 'discardPile',
     topOfDiscardPile = 'topOfDiscardPile',
     drawCardPile = 'drawCardPile',
@@ -28,7 +29,7 @@ class GameCards {
             // debug
             this.cards[cardId].addEventListener('click', (e) => {
                 console.log(e);
-                
+
                 const id = (e.currentTarget as HTMLDivElement).getAttribute(
                     'data-cardId'
                 )!;
@@ -36,6 +37,10 @@ class GameCards {
                     this.moveCard(id, CardState.playerHand);
                 } else if (this.getCardState(id) === CardState.playerHand) {
                     this.moveCard(id, CardState.discardPile);
+                }else if(this.getCardState(id) === CardState.topOfDiscardPile){
+                    this.forFistOfStateFound(CardState.opponentHand,(_, id)=>{
+                        this.moveCard(id, CardState.discardPile);
+                    })
                 }
             });
         }
@@ -45,6 +50,9 @@ class GameCards {
         this.forEachCard((_, id) => {
             if (id === '1' || id === '2' || id === '3') {
                 this.moveCard(id, CardState.playerHand);
+            }
+            if (id === '4' || id === '5' || id === '6') {
+                this.moveCard(id, CardState.opponentHand);
             }
         });
     }
@@ -58,6 +66,15 @@ class GameCards {
     ): void {
         for (const [key, value] of Object.entries(this.cards)) {
             callback(value, key);
+        }
+    }
+
+    public forFistOfStateFound(stateToFind: CardState, callback: (card: HTMLDivElement, index: string)=>void):void{
+        for (const [key, value] of Object.entries(this.cards)) {
+            if(this.getCardState(key) === stateToFind){
+                callback(value, key);
+                break;
+            }
         }
     }
 
@@ -135,7 +152,7 @@ class GameCards {
     private appendAllCardsToDOM() {
         const domFragment = document.createDocumentFragment();
         this.forEachCard((card) => {
-            domFragment.appendChild(card);
+            domFragment.prepend(card);
         });
         document.querySelector('#game-board')?.appendChild(domFragment);
     }
@@ -145,7 +162,6 @@ class GameCards {
         element.classList.add('card');
         element.setAttribute('data-cardId', id);
 
-        
         const cardFront = document.createElement('div');
         const cardBack = document.createElement('div');
 
@@ -154,7 +170,6 @@ class GameCards {
 
         element.appendChild(cardFront);
         element.appendChild(cardBack);
-        
 
         return element;
     }

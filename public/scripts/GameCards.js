@@ -1,6 +1,7 @@
 var CardState;
 (function (CardState) {
     CardState["playerHand"] = "playerHand";
+    CardState["opponentHand"] = "opponentHand";
     CardState["discardPile"] = "discardPile";
     CardState["topOfDiscardPile"] = "topOfDiscardPile";
     CardState["drawCardPile"] = "drawCardPile";
@@ -23,12 +24,20 @@ class GameCards {
                 else if (this.getCardState(id) === CardState.playerHand) {
                     this.moveCard(id, CardState.discardPile);
                 }
+                else if (this.getCardState(id) === CardState.topOfDiscardPile) {
+                    this.forFistOfStateFound(CardState.opponentHand, (_, id) => {
+                        this.moveCard(id, CardState.discardPile);
+                    });
+                }
             });
         }
         this.appendAllCardsToDOM();
         this.forEachCard((_, id) => {
             if (id === '1' || id === '2' || id === '3') {
                 this.moveCard(id, CardState.playerHand);
+            }
+            if (id === '4' || id === '5' || id === '6') {
+                this.moveCard(id, CardState.opponentHand);
             }
         });
     }
@@ -38,6 +47,14 @@ class GameCards {
     forEachCard(callback) {
         for (const [key, value] of Object.entries(this.cards)) {
             callback(value, key);
+        }
+    }
+    forFistOfStateFound(stateToFind, callback) {
+        for (const [key, value] of Object.entries(this.cards)) {
+            if (this.getCardState(key) === stateToFind) {
+                callback(value, key);
+                break;
+            }
         }
     }
     forEachCardInPlayersHand(callback) {
@@ -96,7 +113,7 @@ class GameCards {
         var _a;
         const domFragment = document.createDocumentFragment();
         this.forEachCard((card) => {
-            domFragment.appendChild(card);
+            domFragment.prepend(card);
         });
         (_a = document.querySelector('#game-board')) === null || _a === void 0 ? void 0 : _a.appendChild(domFragment);
     }

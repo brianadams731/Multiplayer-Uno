@@ -21,6 +21,9 @@ $card-width: 150px;
 
 
 %debugCenterLines{
+    &::before, &::after{
+        pointer-events: none;
+    }
     &::after{
         position: absolute;
         left: 50%;
@@ -47,6 +50,7 @@ $card-width: 150px;
 
 .board-wrapper{
     position: relative;
+    overflow: hidden;
     background-color: green;
     height: 100vh;
     width: 100%;
@@ -66,6 +70,11 @@ $card-width: 150px;
 
     perspective: 1000px;
     transform-style: preserve-3d;
+
+    &:focus{
+        z-index: 9999;
+    }
+
     .front, .back{
         position: absolute;
         width: 100%;
@@ -88,6 +97,7 @@ $card-width: 150px;
     left: minusCardWidth(50%);
 }
 
+
 [data-card-state="topOfDiscardPile"]{
     @extend [data-card-state="discardPile"];
     z-index: 999;
@@ -102,5 +112,12 @@ $card-width: 150px;
 
 [data-card-state="playerHand"]{
     bottom: 10vh;
-    left: calc(50% - ($card-width/2));
+    left: minusHalfCardWidth(50%);
+}
+
+[data-card-state="opponentHand"]{
+    bottom: 110vh;
+    left: minusHalfCardWidth(50%);
+
+    transform: rotate(-180deg);
 }

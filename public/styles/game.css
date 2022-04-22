@@ -80,6 +80,9 @@ ul {
   box-shadow: none;
 }
 
+.board-wrapper::before, .board-wrapper::after {
+  pointer-events: none;
+}
 .board-wrapper::after {
   position: absolute;
   left: 50%;
@@ -105,6 +108,7 @@ ul {
 
 .board-wrapper {
   position: relative;
+  overflow: hidden;
   background-color: green;
   height: 100vh;
   width: 100%;
@@ -119,6 +123,9 @@ ul {
   transition-property: transform, left, bottom;
   perspective: 1000px;
   transform-style: preserve-3d;
+}
+.card:focus {
+  z-index: 9999;
 }
 .card .front, .card .back {
   position: absolute;
@@ -153,4 +160,10 @@ ul {
 [data-card-state=playerHand] {
   bottom: 10vh;
   left: calc(50% - 75px);
+}
+
+[data-card-state=opponentHand] {
+  bottom: 110vh;
+  left: calc(50% - 75px);
+  transform: rotate(-180deg);
 }
