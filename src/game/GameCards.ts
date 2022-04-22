@@ -1,5 +1,3 @@
-import e from 'express';
-
 interface ICards {
     [id: string]: HTMLDivElement;
 }
