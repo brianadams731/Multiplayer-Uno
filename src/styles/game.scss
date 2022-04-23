@@ -1,4 +1,6 @@
-@import '_global';
+@use '_global';
+@use '_sprite';
+
 
 /*
     total width: 3362
@@ -63,7 +65,7 @@ $card-border-radius: 28px;
     height: 100vh;
     width: 100%;
 
-    @extend %debugCenterLines;    
+    /*@extend %debugCenterLines;*/    
 }
 
 
@@ -85,23 +87,25 @@ $card-border-radius: 28px;
     }
 
     .front, .back{
-        background-image: url("/public/assets/uno-cards.svg");
-        /*total width * scale down factor*/
-        background-size: calc(3362px * (2/3));
         position: absolute;
         width: 100%;
         height: 100%;
         border-radius: $card-border-radius;
         -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
+
+        @extend %withSpriteSheet;
     }
+
     .front{
         background-color: rgb(175, 175, 175);
+        @extend .red-1
     }
     .back{
-        background-position: 100% 100%;
         background-color: rgb(39, 39, 39);
         transform: rotateY(180deg);
+
+        @extend %spriteBack;
     }
 }
 

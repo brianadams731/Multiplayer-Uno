@@ -1,0 +1,72 @@
+/*
+    total width: 3362
+    total height: 2882
+    original card height: 360px
+    original card width: 240px
+
+    14 columns
+    8 rows ( 4 unique rows)
+*/
+
+%withSpriteSheet{
+    background-image: url("/public/assets/uno-cards.svg");
+    /*width * scale factor*/
+    background-size: calc(3362px * (2/3));
+}
+
+%spriteBack{
+    background-position: 100% 100%;
+}
+
+.all-wild{
+    background-position: 100% 0%;
+}
+.all-draw-four{
+    background-position: 100% 100%;
+}
+
+@for $x from 0 to 13{
+    @for $y from 0 to 4{
+        $color: "none";
+        @if $y == 0{
+            $color: "red";
+        }@else if $y == 1{
+            $color: "yellow"
+        }@else if $y == 2{
+            $color: "green"
+        }@else if $y == 3{
+            $color: "blue"
+        }
+
+        // game width
+        $xPos: $x * 160 * -1px; 
+        $yPos: $y * 240 * -1px;
+
+        @if $x < 10{
+            .#{$color}-#{$x} {
+                background-position: $xPos $yPos;
+            }   
+        }@else if $x == 10{
+            .#{$color}-block {
+                background-position: $xPos $yPos;
+            }  
+        }@else if $x == 11{
+            .#{$color}-reverse {
+                background-position: $xPos $yPos;
+            }  
+        }@else if $x == 12{
+            .#{$color}-draw-two {
+                background-position: $xPos $yPos;
+            }  
+        }
+    }
+}
+
+/*
+*   .(red/yellow/green/blue)-(1/2/3/4/5/6/7/8/9)
+*   .(red/yellow/green/blue)-block
+*   .(red/yellow/green/blue)-reverse
+*   .(red/yellow/green/blue)-draw-two
+*/
+
+
