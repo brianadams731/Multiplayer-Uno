@@ -23,7 +23,6 @@ class GameCards {
             const cardId = `${i}`;
             this.cards[cardId] = this.makeCard(cardId);
             this.setCardState(cardId, CardState.drawCardPile);
-
             // debug
             this.cards[cardId].addEventListener('click', (e) => {
                 console.log(e);
@@ -33,12 +32,18 @@ class GameCards {
                 )!;
                 if (this.getCardState(id) === CardState.drawCardPile) {
                     this.moveCard(id, CardState.playerHand);
+                    this.setCardFace(id, "blue-1");
                 } else if (this.getCardState(id) === CardState.playerHand) {
                     this.moveCard(id, CardState.discardPile);
-                }else if(this.getCardState(id) === CardState.topOfDiscardPile){
-                    this.forFistOfStateFound(CardState.opponentHand,(_, id)=>{
-                        this.moveCard(id, CardState.discardPile);
-                    })
+                } else if (
+                    this.getCardState(id) === CardState.topOfDiscardPile
+                ) {
+                    this.forFistOfStateFound(
+                        CardState.opponentHand,
+                        (_, id) => {
+                            this.moveCard(id, CardState.discardPile);
+                        }
+                    );
                 }
             });
         }
@@ -67,9 +72,12 @@ class GameCards {
         }
     }
 
-    public forFistOfStateFound(stateToFind: CardState, callback: (card: HTMLDivElement, index: string)=>void):void{
+    public forFistOfStateFound(
+        stateToFind: CardState,
+        callback: (card: HTMLDivElement, index: string) => void
+    ): void {
         for (const [key, value] of Object.entries(this.cards)) {
-            if(this.getCardState(key) === stateToFind){
+            if (this.getCardState(key) === stateToFind) {
                 callback(value, key);
                 break;
             }
@@ -104,6 +112,14 @@ class GameCards {
             internalDestination = CardState.topOfDiscardPile;
         }
         this.setCardState(cardId, internalDestination);
+    }
+
+    public setCardFace(cardId: string, cardFaceClass: string):void {
+        const card = this.getCard(cardId);
+        const cardFace = card.querySelector<HTMLDivElement>(".front")!;
+        console.log(cardFace);
+        
+        cardFace.classList.add(cardFaceClass);
     }
 
     private addCardToPlayersHand(cardId: string): void {

@@ -20,6 +20,7 @@ class GameCards {
                 const id = e.currentTarget.getAttribute('data-cardId');
                 if (this.getCardState(id) === CardState.drawCardPile) {
                     this.moveCard(id, CardState.playerHand);
+                    this.setCardFace(id, "blue-1");
                 }
                 else if (this.getCardState(id) === CardState.playerHand) {
                     this.moveCard(id, CardState.discardPile);
@@ -79,6 +80,12 @@ class GameCards {
             internalDestination = CardState.topOfDiscardPile;
         }
         this.setCardState(cardId, internalDestination);
+    }
+    setCardFace(cardId, cardFaceClass) {
+        const card = this.getCard(cardId);
+        const cardFace = card.querySelector(".front");
+        console.log(cardFace);
+        cardFace.classList.add(cardFaceClass);
     }
     addCardToPlayersHand(cardId) {
         this.playersHand.push(cardId);
