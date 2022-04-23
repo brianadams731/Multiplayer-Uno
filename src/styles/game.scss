@@ -1,7 +1,15 @@
 @import '_global';
 
-$card-height: 250px;
-$card-width: 150px;
+/*
+    total width: 3362
+    total height: 2882
+    original card height: 360px
+    original card width: 240px
+*/
+
+$card-height: 240px;
+$card-width: 160px;
+$card-border-radius: 28px;
 
 @function atCardCenter($pos){
     @return calc($pos - ($card-width/2));
@@ -59,11 +67,12 @@ $card-width: 150px;
 }
 
 
+
 .card{
     position: absolute;
     height: $card-height;
     width: $card-width;
-    border-radius: 10px;
+    border-radius: $card-border-radius;
     transition: all ease-in-out .5s;
     transition-property: transform, left, bottom;
     
@@ -76,10 +85,13 @@ $card-width: 150px;
     }
 
     .front, .back{
+        background-image: url("/public/assets/uno-cards.svg");
+        /*total width * scale down factor*/
+        background-size: calc(3362px * (2/3));
         position: absolute;
         width: 100%;
         height: 100%;
-        border-radius: 10px;
+        border-radius: $card-border-radius;
         -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
     }
@@ -87,6 +99,7 @@ $card-width: 150px;
         background-color: rgb(175, 175, 175);
     }
     .back{
+        background-position: 100% 100%;
         background-color: rgb(39, 39, 39);
         transform: rotateY(180deg);
     }
