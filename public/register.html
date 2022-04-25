@@ -110,13 +110,17 @@
 
             console.log(formData)
 
-            await fetch('/api/register', {
+            const res = await fetch('/api/register', {
                 method: "post",
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(formData)
             })
+
+            if(res.ok){
+                window.location = "/play";
+            }
         })
     </script>
 

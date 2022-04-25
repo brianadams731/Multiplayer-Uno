@@ -1,3 +1,4 @@
+import { log } from 'console';
 import express from 'express';
 import { connection } from '../utils/connection';
 import { generateHashedPasswordAsync } from '../utils/passwordHash';
@@ -14,15 +15,16 @@ registerRouter.post('/register', async (req, res) => {
     }
     const hashedPass = await generateHashedPasswordAsync(password);
     try {
-        await connection.any(`
-        INSERT INTO "User"(username, password, email) values(
-            $1, $2, $3
-        );
-    `,[username, hashedPass, email]);
+        const user = await connection.any(`
+            INSERT INTO "User"(username, password, email)
+            values($1, $2, $3)
+            RETURNING uid;
+        `,[username, hashedPass, email]);
+        req.session.userId = user[0].uid;
+        return res.status(200).send();
     } catch (error) {
-        return res.send("Already Exists")
+        return res.status(409).send("Already Exists")
     }
-    return res.send("Created");
 });
 
 export { registerRouter };

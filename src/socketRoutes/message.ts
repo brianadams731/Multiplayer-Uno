@@ -28,7 +28,7 @@ module.exports = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMa
         if(!user){
             return;
         }
-        // ADD GAME ID COLUMN AND VALUE HERE, WILL HAVE GAME ID IF CHANNELS.GAME === TRUE
+        // TODO: ADD GAME ID COLUMN AND VALUE HERE, WILL HAVE GAME ID IF CHANNELS.GAME === TRUE
         await connection.any(`
             INSERT INTO "Message" (uid, content)
             VALUES ($1, $2);
@@ -40,6 +40,7 @@ module.exports = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMa
                 author: user.username
             })
         }else{
+            // TODO: ADD ROUTING TO ENSURE GAME MESSAGE GETS ROUTED TO THE CORRECT ROOM
             io.emit("message", {
                 channel: Channels.GAME,
                 author: user.username,

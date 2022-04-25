@@ -99,11 +99,11 @@
             const form = document.querySelector("#formWrap");
             const username = document.querySelector("#login-username");
             const password = document.querySelector("#login-password");
-            form.addEventListener("submit",(e)=>{
+            form.addEventListener("submit",async (e)=>{
                 console.log(username.value);
                 console.log(password.value);
                 e.preventDefault();
-                fetch("http://localhost:8080/api/login",{
+                const res = await fetch("/api/login",{
                     method:"POST",
                     headers:{
                         'Content-Type': 'application/json'
@@ -113,6 +113,12 @@
                         password: password.value
                     })
                 })
+                if(res.ok){
+                    window.location = "/play";
+                }else{
+                    alert("Error: Invalid Credentials");
+                    password.value = "";
+                }
             })
 
         </script>
