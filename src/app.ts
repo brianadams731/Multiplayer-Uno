@@ -13,7 +13,12 @@ import { staticRoutes } from './routes/staticRoutes';
 import { viewRoutes } from './routes/viewRoutes';
 import { sessionConfig } from './utils/sessionConfig';
 
+import { createServer } from "http";
+import { Server } from 'socket.io';
+
 const app = express();
+const server = createServer(app);
+const io = new Server(server);
 
 app.use(session(sessionConfig));
 app.use(express.json());
@@ -31,7 +36,11 @@ app.use('/api', registerRouter);
 
 app.use('/public', express.static('public', { extensions: ['html'] }));
 
-app.listen(process.env.PORT || '8080', () => {
+io.on("connection",(socket) => {
+    
+})
+
+server.listen(process.env.PORT || '8080', () => {
     console.log(
         `Server running at http://localhost:${process.env.PORT || '8080'}/`
     );
