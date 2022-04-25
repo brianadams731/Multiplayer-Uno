@@ -76,16 +76,12 @@ $card-border-radius: 28px;
     height: $card-height;
     width: $card-width;
     border-radius: $card-border-radius;
-    transition: all ease-in-out .5s;
+    transition: all ease-out .5s;
     transition-property: transform, left, bottom;
     
 
     perspective: 1000px;
     transform-style: preserve-3d;
-
-    &:focus{
-        z-index: 9999;
-    }
 
     .front, .back{
         position: absolute;
@@ -117,7 +113,7 @@ $card-border-radius: 28px;
 
 [data-card-state="topOfDiscardPile"]{
     @extend [data-card-state="discardPile"];
-    z-index: 999;
+    z-index: 10;
 }
 
 [data-card-state="drawCardPile"]{

@@ -14,13 +14,13 @@ class GameCards {
             const cardId = `${i}`;
             this.cards[cardId] = this.makeCard(cardId);
             this.setCardState(cardId, CardState.drawCardPile);
+            this.addCardEvents();
             // debug
             this.cards[cardId].addEventListener('click', (e) => {
-                console.log(e);
                 const id = e.currentTarget.getAttribute('data-cardId');
                 if (this.getCardState(id) === CardState.drawCardPile) {
                     this.moveCard(id, CardState.playerHand);
-                    this.setCardFace(id, "blue-1");
+                    this.setCardFace(id, 'blue-1');
                 }
                 else if (this.getCardState(id) === CardState.playerHand) {
                     this.moveCard(id, CardState.discardPile);
@@ -35,10 +35,10 @@ class GameCards {
         this.appendAllCardsToDOM();
         this.forEachCard((_, id) => {
             if (id === '1' || id === '2' || id === '3') {
-                this.moveCard(id, CardState.playerHand);
+                this.moveCard(id, CardState.playerHand, true);
             }
             if (id === '4' || id === '5' || id === '6') {
-                this.moveCard(id, CardState.opponentHand);
+                this.moveCard(id, CardState.opponentHand, true);
             }
         });
     }
@@ -63,7 +63,7 @@ class GameCards {
             callback(this.getCard(currentCardId), currentIndex);
         });
     }
-    moveCard(cardId, destination) {
+    moveCard(cardId, destination, suppressMoveFlag) {
         let internalDestination = destination;
         const currentState = this.getCardState(cardId);
         // If any state needs updating depending on the target, do this here
@@ -74,17 +74,18 @@ class GameCards {
         // ADDING
         if (destination === CardState.playerHand) {
             this.addCardToPlayersHand(cardId);
-        }
-        else if (destination === CardState.discardPile) {
+        } /*else if (destination === CardState.discardPile) { // this got moved to transition
             this.shiftTopOfDiscardPile(cardId);
             internalDestination = CardState.topOfDiscardPile;
+        }*/
+        if (!suppressMoveFlag) {
+            this.setCardMovingState(cardId, true);
         }
         this.setCardState(cardId, internalDestination);
     }
     setCardFace(cardId, cardFaceClass) {
         const card = this.getCard(cardId);
-        const cardFace = card.querySelector(".front");
-        console.log(cardFace);
+        const cardFace = card.querySelector('.front');
         cardFace.classList.add(cardFaceClass);
     }
     addCardToPlayersHand(cardId) {
@@ -113,6 +114,14 @@ class GameCards {
         const card = this.getCard(cardId);
         card.setAttribute('data-card-state', state);
     }
+    setCardMovingState(cardId, isMoving) {
+        const card = this.getCard(cardId);
+        card.setAttribute('data-moving', isMoving ? '1' : '0');
+    }
+    getCardMovingState(cardId) {
+        const card = this.getCard(cardId);
+        return card.getAttribute('data-moving') === '1';
+    }
     getCardState(cardId) {
         return this.getCard(cardId).getAttribute('data-card-state');
     }
@@ -128,6 +137,7 @@ class GameCards {
         const element = document.createElement('div');
         element.classList.add('card');
         element.setAttribute('data-cardId', id);
+        element.setAttribute('data-moving', '0');
         const cardFront = document.createElement('div');
         const cardBack = document.createElement('div');
         cardFront.classList.add('front');
@@ -135,6 +145,36 @@ class GameCards {
         element.appendChild(cardFront);
         element.appendChild(cardBack);
         return element;
+    }
+    addCardEvents() {
+        const gameBoard = document.querySelector('#game-board');
+        gameBoard === null || gameBoard === void 0 ? void 0 : gameBoard.addEventListener('transitionstart', (e) => {
+            const id = e.target.getAttribute("data-cardId");
+            const isMoving = id ? this.getCardMovingState(id) : false;
+            if (isMoving) {
+                if (!id) {
+                    return;
+                }
+                const card = this.getCard(id);
+                card.style.zIndex = "100";
+            }
+        });
+        gameBoard === null || gameBoard === void 0 ? void 0 : gameBoard.addEventListener('transitionend', (e) => {
+            const id = e.target.getAttribute("data-cardId");
+            const isMoving = id ? this.getCardMovingState(id) : false;
+            if (isMoving) {
+                if (!id) {
+                    return;
+                }
+                const card = this.getCard(id);
+                card.style.zIndex = "";
+                this.setCardMovingState(id, false);
+                if (this.getCardState(id) === CardState.discardPile) {
+                    this.shiftTopOfDiscardPile(id);
+                    this.setCardState(id, CardState.topOfDiscardPile);
+                }
+            }
+        });
     }
 }
 export { GameCards };

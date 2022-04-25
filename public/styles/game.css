@@ -398,13 +398,10 @@ ul {
   height: 240px;
   width: 160px;
   border-radius: 28px;
-  transition: all ease-in-out 0.5s;
+  transition: all ease-out 0.5s;
   transition-property: transform, left, bottom;
   perspective: 1000px;
   transform-style: preserve-3d;
-}
-.card:focus {
-  z-index: 9999;
 }
 .card .front, .card .back {
   position: absolute;
@@ -428,7 +425,7 @@ ul {
 }
 
 [data-card-state=topOfDiscardPile] {
-  z-index: 999;
+  z-index: 10;
 }
 
 [data-card-state=drawCardPile] {
