@@ -12,7 +12,7 @@
     "db:create:migration": "npx sequelize migration:generate --name",
     "db:migrate": "npx sequelize db:migrate",
     "db:rollback": "npx sequelize db:migrate:undo",
-    "scss": "sass src/styles:public/styles --watch --no-source-map",
+    "scss": "sass src/frontend/styles:public/styles --watch --no-source-map",
     "watch": "tsc -p ./src/frontend/tsconfig.json --watch",
     "dev:all": "concurrently \"npm:dev\" \"npm:scss\" \"npm:watch\" --kill-others",
     "dev:front": "concurrently \"npm:scss\" \"npm:watch\" --kill-others",
