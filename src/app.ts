@@ -13,12 +13,15 @@ import { staticRoutes } from './routes/staticRoutes';
 import { viewRoutes } from './routes/viewRoutes';
 import { sessionConfig } from './utils/sessionConfig';
 
-import { createServer } from "http";
+import { createServer } from 'http';
 import { Server } from 'socket.io';
+import { socketSession } from './middleware/socketMiddleWare';
 
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
+
+const { message } = require('./socketRoutes/message')(io);
 
 app.use(session(sessionConfig));
 app.use(express.json());
@@ -36,9 +39,11 @@ app.use('/api', registerRouter);
 
 app.use('/public', express.static('public', { extensions: ['html'] }));
 
-io.on("connection",(socket) => {
-    
-})
+io.use(socketSession);
+
+io.on('connection', (socket) => {
+    socket.on('message', message);
+});
 
 server.listen(process.env.PORT || '8080', () => {
     console.log(

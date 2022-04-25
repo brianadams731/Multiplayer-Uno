@@ -1,6 +1,8 @@
+import { socket } from './socket.js';
+
 enum Channels {
-    PUBLIC = "public",
-    GAME = "game"
+    PUBLIC = 'public',
+    GAME = 'game',
 }
 
 interface IMessage {
@@ -20,9 +22,10 @@ class Messages {
     private msgInput: HTMLInputElement;
 
     public constructor() {
-        [this.msgBox, this.form, this.msgInput, this.msgFeed] = this.createMessageBox();
+        [this.msgBox, this.form, this.msgInput, this.msgFeed] =
+            this.createMessageBox();
         this.outChannel = Channels.PUBLIC;
-        
+
         this.addFormEvents();
         this.addInputEvents();
         this.addDragEvent();
@@ -49,98 +52,122 @@ class Messages {
         ` as any;
 
         const form = messageWrapper.querySelector('#msg') as HTMLFormElement;
-        const output = messageWrapper.querySelector("#messageFeed") as HTMLDivElement;
-        const input = messageWrapper.querySelector('#msgInput') as HTMLInputElement;
+        const output = messageWrapper.querySelector(
+            '#messageFeed'
+        ) as HTMLDivElement;
+        const input = messageWrapper.querySelector(
+            '#msgInput'
+        ) as HTMLInputElement;
 
         return [messageWrapper, form, input, output];
     }
 
-    private setOutChannel(channel: Channels){
+    private setOutChannel(channel: Channels) {
         this.outChannel = channel;
         this.setInputChannel();
     }
 
-    private setInputChannel(){
-        this.msgInput.setAttribute("data-channel", this.outChannel);
+    private setInputChannel() {
+        this.msgInput.setAttribute('data-channel', this.outChannel);
     }
 
-    private addFormEvents(){
-        this.form.addEventListener("submit",(e)=>{
+    private addFormEvents() {
+        this.form.addEventListener('submit', (e) => {
             e.preventDefault();
             console.log(this.msgInput.value);
 
-            this.appendMessage({
+            /*this.appendMessage({
                 channel: this.outChannel,
                 content: this.msgInput.value,
                 author: "self"
+            });*/
+
+            socket.emit('message', {
+                channel: this.outChannel,
+                content: this.msgInput.value,
+                author: 'self',
             });
-            this.msgInput.value = "";
-        })
+
+            this.msgInput.value = '';
+        });
     }
-    private addInputEvents(){
-        this.msgInput.addEventListener("input",(e)=>{
+    private addInputEvents() {
+        this.msgInput.addEventListener('input', (e) => {
             const inputVal = (e.target as HTMLInputElement).value;
-            const channelPrefix = inputVal.substring(0,3).toLowerCase();
-           
-            if(channelPrefix == "/g "){
+            const channelPrefix = inputVal.substring(0, 3).toLowerCase();
+
+            if (channelPrefix == '/g ') {
                 this.setOutChannel(Channels.GAME);
                 this.msgInput.value = inputVal.substring(3);
-            }else if(channelPrefix == "/p "){
+            } else if (channelPrefix == '/p ') {
                 this.setOutChannel(Channels.PUBLIC);
                 this.msgInput.value = inputVal.substring(3);
             }
-        })
+        });
 
-        this.msgInput.addEventListener("keydown",(e)=>{
-            if(e.key === "Enter"){
+        this.msgInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
                 e.preventDefault();
                 this.form.requestSubmit();
             }
             return;
-        })
+        });
     }
 
-    private addDragEvent(){
-        document.addEventListener("dragover",(e)=>{
+    private addDragEvent() {
+        document.addEventListener('dragover', (e) => {
             e.preventDefault();
             return false;
-        })
-        this.msgBox.addEventListener("dragstart",(e)=>{
+        });
+        this.msgBox.addEventListener('dragstart', (e) => {
             const style = window.getComputedStyle(this.msgBox, null);
-            e.dataTransfer!.setData("text/plain", (parseInt(style.getPropertyValue("left"),10) - e.clientX) + ',' + (parseInt(style.getPropertyValue("top"),10) - e.clientY));            
-        })
-        document.addEventListener("drop",(e)=>{
-            const offset = e.dataTransfer!.getData("text/plain").split(',');            
-            this.msgBox.style.left = (e.clientX + parseInt(offset[0],10)) + 'px';
-            this.msgBox.style.top = (e.clientY + parseInt(offset[1],10)) + 'px';
+            e.dataTransfer!.setData(
+                'text/plain',
+                parseInt(style.getPropertyValue('left'), 10) -
+                    e.clientX +
+                    ',' +
+                    (parseInt(style.getPropertyValue('top'), 10) - e.clientY)
+            );
+        });
+        document.addEventListener('drop', (e) => {
+            const offset = e.dataTransfer!.getData('text/plain').split(',');
+            this.msgBox.style.left = e.clientX + parseInt(offset[0], 10) + 'px';
+            this.msgBox.style.top = e.clientY + parseInt(offset[1], 10) + 'px';
             e.preventDefault();
-            return false;          
-        })
+            return false;
+        });
     }
 
-    private appendToDom(){
-        document.querySelector("#game-board")!.appendChild(this.msgBox);
+    private appendToDom() {
+        document.querySelector('#game-board')!.appendChild(this.msgBox);
     }
 
-    private appendMessage(message: IMessage){
-        const msg = document.createElement("p");
-        msg.setAttribute("data-channel",message.channel);
+    public appendMessage(message: IMessage) {
+        const msg = document.createElement('p');
+        msg.setAttribute('data-channel', message.channel);
         msg.innerText = `[${message.author}]: ${message.content}`;
         this.msgFeed.appendChild(msg);
-        this.msgFeed.scroll({ top: this.msgFeed.scrollHeight, behavior: 'smooth' });
+        this.msgFeed.scroll({
+            top: this.msgFeed.scrollHeight,
+            behavior: 'smooth',
+        });
     }
 
-    private appendManyMessages(messages: IMessage[]){
+    private appendManyMessages(messages: IMessage[]) {
         const docFrag = document.createDocumentFragment();
-        messages.forEach(message =>{
-            const msg = document.createElement("p");
-            msg.setAttribute("data-channel",message.channel);
+        messages.forEach((message) => {
+            const msg = document.createElement('p');
+            msg.setAttribute('data-channel', message.channel);
             msg.innerText = `[${message.author}]: ${message.content}`;
             docFrag.appendChild(msg);
-        })
+        });
         this.msgFeed.appendChild(docFrag);
-        this.msgFeed.scroll({ top: this.msgFeed.scrollHeight, behavior: 'smooth' });
+        this.msgFeed.scroll({
+            top: this.msgFeed.scrollHeight,
+            behavior: 'smooth',
+        });
     }
 }
 
 export { Messages };
+export type { IMessage };

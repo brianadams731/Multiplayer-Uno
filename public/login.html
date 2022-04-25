@@ -40,7 +40,7 @@
         </svg>
 
         <div class="grid">
-            <form method="POST" class="form login">
+            <form class="form login" id="formWrap">
             <h1>Login Here</h1>    
             <div class="login-field">
                 <label for="login-username">
@@ -95,6 +95,27 @@
             </section>
         </footer>
         -->
+        <script>
+            const form = document.querySelector("#formWrap");
+            const username = document.querySelector("#login-username");
+            const password = document.querySelector("#login-password");
+            form.addEventListener("submit",(e)=>{
+                console.log(username.value);
+                console.log(password.value);
+                e.preventDefault();
+                fetch("http://localhost:8080/api/login",{
+                    method:"POST",
+                    headers:{
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: username.value ,
+                        password: password.value
+                    })
+                })
+            })
+
+        </script>
     </body>
 
 </html>
