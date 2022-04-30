@@ -1,0 +1,58 @@
+.messageBoxWrapper{
+    position: absolute;
+    left: 100%;
+    transform: translateX(-100%);
+    width: 350px;
+    background-color: rgba(0, 0, 0, 0.301);
+}
+
+.messageFeed{
+    padding: 10px;
+    height: 200px;
+    overflow: auto;
+
+    p{
+        display: block;
+        font-size: var(--fs-standard-large);
+        font-family: var(--font-header);
+    }
+}
+
+
+
+.messageForm{
+    display: flex;
+
+    textarea{
+        flex-grow: 1;
+        height: 60px;
+        resize: none;
+        background: none;
+        border: none;
+        border-top: 1px solid rgba(243, 243, 243, 0.301);
+
+        font-size: var(--fs-standard-large);
+        font-family: var(--font-header);
+        padding: 5px 10px;
+        &:focus{
+            outline: none;
+        }
+    }
+
+    button{
+        padding: 0px 15px;
+        display: block;
+        background: none;
+        border: none;
+        border-top: 1px solid rgba(243, 243, 243, 0.301);
+        border-left: 1px solid rgba(243, 243, 243, 0.301);
+    }
+}
+
+[data-channel="public"]{
+    color: rgb(236, 255, 184);
+}
+
+[data-channel="game"]{
+    color: rgb(122, 206, 255);
+}

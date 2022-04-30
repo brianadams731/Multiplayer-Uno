@@ -80,63 +80,366 @@ ul {
   box-shadow: none;
 }
 
+/*
+    total width: 3362
+    total height: 2882
+    original card height: 360px
+    original card width: 240px
+
+    14 columns
+    8 rows ( 4 unique rows)
+*/
+.card .front, .card .back {
+  background-image: url("/public/assets/uno-cards.svg");
+  /*width * scale factor*/
+  background-size: 2241.3333333333px;
+}
+
+.card .back {
+  background-position: 100% 100%;
+}
+
+.all-wild {
+  background-position: 100% 0%;
+}
+
+.all-draw-four {
+  background-position: 100% 100%;
+}
+
+.red-0 {
+  background-position: 0px 0px;
+}
+
+.yellow-0 {
+  background-position: 0px -240px;
+}
+
+.green-0 {
+  background-position: 0px -480px;
+}
+
+.blue-0 {
+  background-position: 0px -720px;
+}
+
+.red-1 {
+  background-position: -160px 0px;
+}
+
+.yellow-1 {
+  background-position: -160px -240px;
+}
+
+.green-1 {
+  background-position: -160px -480px;
+}
+
+.blue-1 {
+  background-position: -160px -720px;
+}
+
+.red-2 {
+  background-position: -320px 0px;
+}
+
+.yellow-2 {
+  background-position: -320px -240px;
+}
+
+.green-2 {
+  background-position: -320px -480px;
+}
+
+.blue-2 {
+  background-position: -320px -720px;
+}
+
+.red-3 {
+  background-position: -480px 0px;
+}
+
+.yellow-3 {
+  background-position: -480px -240px;
+}
+
+.green-3 {
+  background-position: -480px -480px;
+}
+
+.blue-3 {
+  background-position: -480px -720px;
+}
+
+.red-4 {
+  background-position: -640px 0px;
+}
+
+.yellow-4 {
+  background-position: -640px -240px;
+}
+
+.green-4 {
+  background-position: -640px -480px;
+}
+
+.blue-4 {
+  background-position: -640px -720px;
+}
+
+.red-5 {
+  background-position: -800px 0px;
+}
+
+.yellow-5 {
+  background-position: -800px -240px;
+}
+
+.green-5 {
+  background-position: -800px -480px;
+}
+
+.blue-5 {
+  background-position: -800px -720px;
+}
+
+.red-6 {
+  background-position: -960px 0px;
+}
+
+.yellow-6 {
+  background-position: -960px -240px;
+}
+
+.green-6 {
+  background-position: -960px -480px;
+}
+
+.blue-6 {
+  background-position: -960px -720px;
+}
+
+.red-7 {
+  background-position: -1120px 0px;
+}
+
+.yellow-7 {
+  background-position: -1120px -240px;
+}
+
+.green-7 {
+  background-position: -1120px -480px;
+}
+
+.blue-7 {
+  background-position: -1120px -720px;
+}
+
+.red-8 {
+  background-position: -1280px 0px;
+}
+
+.yellow-8 {
+  background-position: -1280px -240px;
+}
+
+.green-8 {
+  background-position: -1280px -480px;
+}
+
+.blue-8 {
+  background-position: -1280px -720px;
+}
+
+.red-9 {
+  background-position: -1440px 0px;
+}
+
+.yellow-9 {
+  background-position: -1440px -240px;
+}
+
+.green-9 {
+  background-position: -1440px -480px;
+}
+
+.blue-9 {
+  background-position: -1440px -720px;
+}
+
+.red-block {
+  background-position: -1600px 0px;
+}
+
+.yellow-block {
+  background-position: -1600px -240px;
+}
+
+.green-block {
+  background-position: -1600px -480px;
+}
+
+.blue-block {
+  background-position: -1600px -720px;
+}
+
+.red-reverse {
+  background-position: -1760px 0px;
+}
+
+.yellow-reverse {
+  background-position: -1760px -240px;
+}
+
+.green-reverse {
+  background-position: -1760px -480px;
+}
+
+.blue-reverse {
+  background-position: -1760px -720px;
+}
+
+.red-draw-two {
+  background-position: -1920px 0px;
+}
+
+.yellow-draw-two {
+  background-position: -1920px -240px;
+}
+
+.green-draw-two {
+  background-position: -1920px -480px;
+}
+
+.blue-draw-two {
+  background-position: -1920px -720px;
+}
+
+/*
+*   .(red/yellow/green/blue)-(1/2/3/4/5/6/7/8/9)
+*   .(red/yellow/green/blue)-block
+*   .(red/yellow/green/blue)-reverse
+*   .(red/yellow/green/blue)-draw-two
+*/
+.messageBoxWrapper {
+  position: absolute;
+  left: 100%;
+  transform: translateX(-100%);
+  width: 350px;
+  background-color: rgba(0, 0, 0, 0.301);
+}
+
+.messageFeed {
+  padding: 10px;
+  height: 200px;
+  overflow: auto;
+}
+.messageFeed p {
+  display: block;
+  font-size: var(--fs-standard-large);
+  font-family: var(--font-header);
+}
+
+.messageForm {
+  display: flex;
+}
+.messageForm textarea {
+  flex-grow: 1;
+  height: 60px;
+  resize: none;
+  background: none;
+  border: none;
+  border-top: 1px solid rgba(243, 243, 243, 0.301);
+  font-size: var(--fs-standard-large);
+  font-family: var(--font-header);
+  padding: 5px 10px;
+}
+.messageForm textarea:focus {
+  outline: none;
+}
+.messageForm button {
+  padding: 0px 15px;
+  display: block;
+  background: none;
+  border: none;
+  border-top: 1px solid rgba(243, 243, 243, 0.301);
+  border-left: 1px solid rgba(243, 243, 243, 0.301);
+}
+
+[data-channel=public] {
+  color: rgb(236, 255, 184);
+}
+
+[data-channel=game] {
+  color: rgb(122, 206, 255);
+}
+
+/*
+    total width: 3362
+    total height: 2882
+    original card height: 360px
+    original card width: 240px
+*/
+[data-card-state=drawCardPile] {
+  transform: rotateY(180deg);
+}
+
 .board-wrapper {
-  min-width: 925px;
-  min-height: 675px;
+  position: relative;
   overflow: hidden;
   background-color: green;
   height: 100vh;
   width: 100%;
-  padding: 25px;
-  display: grid;
-  justify-items: center;
-  align-items: center;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
-  grid-template-areas: "a b b c" "a e e c" "a e e c" "a d d c";
-}
-
-.hand-1,
-.hand-2,
-.hand-3,
-.hand-player {
-  outline: solid 1px red;
-  height: 150px;
-  width: 250px;
-}
-
-.hand-1 {
-  grid-area: a;
-  transform: rotate(90deg);
-}
-
-.hand-2 {
-  grid-area: b;
-}
-
-.hand-3 {
-  grid-area: c;
-  transform: rotate(-90deg);
-}
-
-.hand-player {
-  grid-area: d;
-}
-
-.deck-wrapper {
-  grid-area: e;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-}
-.deck-wrapper .draw-deck,
-.deck-wrapper .discard-deck {
-  width: 150px;
-  height: 250px;
-  border: 1px solid purple;
+  /*@extend %debugCenterLines;*/
 }
 
 .card {
-  outline: solid 1px blue;
+  position: absolute;
+  height: 240px;
+  width: 160px;
+  border-radius: 28px;
+  transition: all ease-out 0.5s;
+  transition-property: transform, left, bottom;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+.card .front, .card .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 28px;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.card .front {
+  background-color: rgb(175, 175, 175);
+}
+.card .back {
+  background-color: rgb(39, 39, 39);
+  transform: rotateY(180deg);
+}
+
+[data-card-state=discardPile], [data-card-state=topOfDiscardPile] {
+  bottom: 50%;
+  left: calc(50% - 160px);
+}
+
+[data-card-state=topOfDiscardPile] {
+  z-index: 10;
+}
+
+[data-card-state=drawCardPile] {
+  bottom: 50%;
+  left: 50%;
+}
+
+[data-card-state=playerHand] {
+  bottom: 10vh;
+  left: calc(50% - 80px);
+}
+
+[data-card-state=opponentHand] {
+  bottom: 110vh;
+  left: calc(50% - 80px);
+  transform: rotate(-180deg);
 }

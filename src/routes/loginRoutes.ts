@@ -31,7 +31,7 @@ loginRouter.post('/login', async (req, res) => {
     const passMatch = await checkHashedPasswordAsync(password, user[0].password);
     if(passMatch){
         req.session.userId = user[0].uid;
-        return res.status(200).send('Success: Logged in');
+        return res.status(200).send();
     }
     return res.status(401).send("Error: Invalid Credentials");
 });

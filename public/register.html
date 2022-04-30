@@ -29,9 +29,8 @@
         </svg>
 
         <div class="grid">
-            <form method="POST" class="form login">
-            <h1>REGISTER</h1>
-
+            <form class="form login" id="formId">
+            <h1>REGISTRATION</h1>
             <div class="register-field">
                 <label for="register-username">
                     <svg class="icon"><use xlink:href="#icon-user"></use></svg>
@@ -99,16 +98,37 @@
                 <input type="submit" value="register">
             </div>
 
-            <p class="text--center">Already have an account? <a class=link-2 href="/login">Sign in here!</a></p>   
+            <p class="text--center">Already have an account? <a class=link-2 href="login.html">Sign in here!</a></p>   
 
             </form>            
         </div>
     </body>
 
     <script>
-        const formElement = document.querySelector("#registerForm");
-        formElement.addEventListener("submit",(e)=>{
+        const form = document.querySelector("#formId");
+        
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
+
+            const username = document.querySelector("#register-username").value;
+            const password = document.querySelector("#register-password").value;
+            const rePassword = document.querySelector("#register-confirm-password").value;
+            const email = username;
+            const formData = {username: username, password: password, email: email};
+
+            console.log(formData)
+
+            const res = await fetch('/api/register', {
+                method: "post",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+
+            if(res.ok){
+                window.location = "/play";
+            }
         })
     </script>
 

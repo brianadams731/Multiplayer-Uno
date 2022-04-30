@@ -1,0 +1,136 @@
+@use '_global';
+@use '_sprite';
+@use '_message';
+
+
+/*
+    total width: 3362
+    total height: 2882
+    original card height: 360px
+    original card width: 240px
+*/
+
+$card-height: 240px;
+$card-width: 160px;
+$card-border-radius: 28px;
+
+@function atCardCenter($pos){
+    @return calc($pos - ($card-width/2));
+}
+@function minusCardWidth($pos){
+    @return calc($pos - $card-width);
+}
+@function plusCardWidth($pos){
+    @return calc($pos + $card-width);
+}
+@function plusHalfCardWidth($pos){
+    @return calc($pos + ($card-width/2));
+}
+@function minusHalfCardWidth($pos){
+    @return calc($pos - ($card-width/2));
+}
+
+
+%debugCenterLines{
+    &::before, &::after{
+        pointer-events: none;
+    }
+    &::after{
+        position: absolute;
+        left: 50%;
+        height: 100%;
+        width: 1px;
+        background-color: rgba(128, 0, 128, 0.3);
+        transform: translateX(-50%);
+        content: "";
+    }
+    &::before{
+        position: absolute;
+        top: 50%;
+        height: 1px;
+        width: 100%;
+        background-color: rgba(128, 0, 128, 0.3);
+        transform: translateY(-50%);
+        content: "";
+    }
+}
+
+%faceDown{
+    transform: rotateY(180deg);
+}
+
+.board-wrapper{
+    position: relative;
+    overflow: hidden;
+    background-color: green;
+    height: 100vh;
+    width: 100%;
+
+    /*@extend %debugCenterLines;*/    
+}
+
+
+
+.card{
+    position: absolute;
+    height: $card-height;
+    width: $card-width;
+    border-radius: $card-border-radius;
+    transition: all ease-out .5s;
+    transition-property: transform, left, bottom;
+    
+
+    perspective: 1000px;
+    transform-style: preserve-3d;
+
+    .front, .back{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: $card-border-radius;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+
+        @extend %withSpriteSheet;
+    }
+
+    .front{
+        background-color: rgb(175, 175, 175);
+    }
+    .back{
+        background-color: rgb(39, 39, 39);
+        transform: rotateY(180deg);
+
+        @extend %spriteBack;
+    }
+}
+
+[data-card-state="discardPile"]{
+    bottom: 50%;
+    left: minusCardWidth(50%);
+}
+
+
+[data-card-state="topOfDiscardPile"]{
+    @extend [data-card-state="discardPile"];
+    z-index: 10;
+}
+
+[data-card-state="drawCardPile"]{
+    bottom: 50%;
+    left: 50%;
+
+    @extend %faceDown;
+}
+
+[data-card-state="playerHand"]{
+    bottom: 10vh;
+    left: minusHalfCardWidth(50%);
+}
+
+[data-card-state="opponentHand"]{
+    bottom: 110vh;
+    left: minusHalfCardWidth(50%);
+
+    transform: rotate(-180deg);
+}

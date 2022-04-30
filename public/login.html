@@ -32,9 +32,9 @@
     </svg>
 
     <div class="grid">
-        <form method="POST" class="form login">
+        <form class="form login" id="formWrap">
             <h1>SIGN IN</h1>
-
+   
             <div class="login-field">
                 <label for="login-username">
                     <svg class="icon">
@@ -60,7 +60,34 @@
                 <input type="submit" value="Login">
             </div>
 
-            <p class="text--center">Not a member? <a class="link" href="/register">Sign up here!</a></p>
+            <p class="text--center">Not a member? <a class="link" href="register.html">Sign up here!</a></p>
+
+        <script>
+            const form = document.querySelector("#formWrap");
+            const username = document.querySelector("#login-username");
+            const password = document.querySelector("#login-password");
+            form.addEventListener("submit",async (e)=>{
+                console.log(username.value);
+                console.log(password.value);
+                e.preventDefault();
+                const res = await fetch("/api/login",{
+                    method:"POST",
+                    headers:{
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: username.value ,
+                        password: password.value
+                    })
+                })
+                if(res.ok){
+                    window.location = "/play";
+                }else{
+                    alert("Error: Invalid Credentials");
+                    password.value = "";
+                }
+            })
+        </script>
             
         </form>
     </div>

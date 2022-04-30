@@ -1,15 +1,24 @@
-var CardState;
-(function (CardState) {
-    CardState["playerHand"] = "playerHand";
-    CardState["opponentHand"] = "opponentHand";
-    CardState["discardPile"] = "discardPile";
-    CardState["topOfDiscardPile"] = "topOfDiscardPile";
-    CardState["drawCardPile"] = "drawCardPile";
-})(CardState || (CardState = {}));
+interface ICards {
+    [id: string]: HTMLDivElement;
+}
+
+enum CardState {
+    playerHand = 'playerHand',
+    opponentHand = 'opponentHand',
+    discardPile = 'discardPile',
+    topOfDiscardPile = 'topOfDiscardPile',
+    drawCardPile = 'drawCardPile',
+}
+
 class GameCards {
+    private cards: ICards;
+    private playersHand: string[];
+    private topOfDiscard: string;
+
     constructor() {
         this.cards = {};
         this.playersHand = [];
+
         for (let i = 0; i < 52; i++) {
             const cardId = `${i}`;
             this.cards[cardId] = this.makeCard(cardId);
@@ -17,22 +26,29 @@ class GameCards {
             this.addCardEvents();
             // debug
             this.cards[cardId].addEventListener('click', (e) => {
-                const id = e.currentTarget.getAttribute('data-cardId');
+                const id = (e.currentTarget as HTMLDivElement).getAttribute(
+                    'data-cardId'
+                )!;
                 if (this.getCardState(id) === CardState.drawCardPile) {
                     this.moveCard(id, CardState.playerHand);
                     this.setCardFace(id, 'blue-1');
-                }
-                else if (this.getCardState(id) === CardState.playerHand) {
+                } else if (this.getCardState(id) === CardState.playerHand) {
                     this.moveCard(id, CardState.discardPile);
-                }
-                else if (this.getCardState(id) === CardState.topOfDiscardPile) {
-                    this.forFistOfStateFound(CardState.opponentHand, (_, id) => {
-                        this.moveCard(id, CardState.discardPile);
-                    });
+                } else if (
+                    this.getCardState(id) === CardState.topOfDiscardPile
+                ) {
+                    this.forFistOfStateFound(
+                        CardState.opponentHand,
+                        (_, id) => {
+                            this.moveCard(id, CardState.discardPile);
+                        }
+                    );
                 }
             });
         }
+
         this.appendAllCardsToDOM();
+
         this.forEachCard((_, id) => {
             if (id === '1' || id === '2' || id === '3') {
                 this.moveCard(id, CardState.playerHand, true);
@@ -42,15 +58,23 @@ class GameCards {
             }
         });
     }
-    getCard(id) {
+
+    public getCard(id: string): HTMLDivElement {
         return this.cards[id];
     }
-    forEachCard(callback) {
+
+    public forEachCard(
+        callback: (card: HTMLDivElement, cardId: string) => void
+    ): void {
         for (const [key, value] of Object.entries(this.cards)) {
             callback(value, key);
         }
     }
-    forFistOfStateFound(stateToFind, callback) {
+
+    public forFistOfStateFound(
+        stateToFind: CardState,
+        callback: (card: HTMLDivElement, index: string) => void
+    ): void {
         for (const [key, value] of Object.entries(this.cards)) {
             if (this.getCardState(key) === stateToFind) {
                 callback(value, key);
@@ -58,19 +82,28 @@ class GameCards {
             }
         }
     }
-    forEachCardInPlayersHand(callback) {
+
+    public forEachCardInPlayersHand(
+        callback: (card: HTMLDivElement, index: number) => void
+    ): void {
         this.playersHand.forEach((currentCardId, currentIndex) => {
             callback(this.getCard(currentCardId), currentIndex);
         });
     }
-    moveCard(cardId, destination, suppressMoveFlag) {
-        let internalDestination = destination;
+
+    public moveCard(
+        cardId: string,
+        destination: Exclude<CardState, CardState.topOfDiscardPile>,
+        suppressMoveFlag?: boolean
+    ): void {
+        let internalDestination: CardState = destination;
         const currentState = this.getCardState(cardId);
         // If any state needs updating depending on the target, do this here
         // REMOVING
         if (currentState === CardState.playerHand) {
             this.removeCardFromPlayersHand(cardId);
         }
+
         // ADDING
         if (destination === CardState.playerHand) {
             this.addCardToPlayersHand(cardId);
@@ -78,98 +111,122 @@ class GameCards {
             this.shiftTopOfDiscardPile(cardId);
             internalDestination = CardState.topOfDiscardPile;
         }*/
-        if (!suppressMoveFlag) {
+
+        if(!suppressMoveFlag){
             this.setCardMovingState(cardId, true);
         }
         this.setCardState(cardId, internalDestination);
     }
-    setCardFace(cardId, cardFaceClass) {
+
+    public setCardFace(cardId: string, cardFaceClass: string): void {
         const card = this.getCard(cardId);
-        const cardFace = card.querySelector('.front');
+        const cardFace = card.querySelector<HTMLDivElement>('.front')!;
         cardFace.classList.add(cardFaceClass);
     }
-    addCardToPlayersHand(cardId) {
+
+    private addCardToPlayersHand(cardId: string): void {
         this.playersHand.push(cardId);
         this.cards.playersHand;
         this.recalculatePlayersHandTransform();
     }
-    removeCardFromPlayersHand(cardId) {
+
+    private removeCardFromPlayersHand(cardId: string): void {
         this.getCard(cardId).style.transform = 'translateX(0)';
-        const indexToRemove = this.playersHand.findIndex((card) => card === cardId);
+        const indexToRemove = this.playersHand.findIndex(
+            (card) => card === cardId
+        );
+
         this.playersHand.splice(indexToRemove, 1);
         this.recalculatePlayersHandTransform();
     }
-    recalculatePlayersHandTransform() {
+
+    private recalculatePlayersHandTransform(): void {
         const midIndex = this.playersHand.length / 2;
         this.forEachCardInPlayersHand((card, index) => {
             const distFromMid = index - midIndex;
             card.style.transform = `translateX(${distFromMid * 100 + 50}%)`;
         });
     }
-    shiftTopOfDiscardPile(cardId) {
-        this.setCardState(this.topOfDiscard ? this.topOfDiscard : cardId, CardState.discardPile);
+
+    private shiftTopOfDiscardPile(cardId: string): void {
+        this.setCardState(
+            this.topOfDiscard ? this.topOfDiscard : cardId,
+            CardState.discardPile
+        );
         this.topOfDiscard = cardId;
     }
-    setCardState(cardId, state) {
+
+    private setCardState(cardId: string, state: CardState): void {
         const card = this.getCard(cardId);
         card.setAttribute('data-card-state', state);
     }
-    setCardMovingState(cardId, isMoving) {
+    private setCardMovingState(cardId: string, isMoving: boolean) {
         const card = this.getCard(cardId);
         card.setAttribute('data-moving', isMoving ? '1' : '0');
     }
-    getCardMovingState(cardId) {
+    private getCardMovingState(cardId: string) {
         const card = this.getCard(cardId);
         return card.getAttribute('data-moving') === '1';
     }
-    getCardState(cardId) {
+
+    private getCardState(cardId: string): string | null {
         return this.getCard(cardId).getAttribute('data-card-state');
     }
-    appendAllCardsToDOM() {
-        var _a;
+
+    private appendAllCardsToDOM() {
         const domFragment = document.createDocumentFragment();
         this.forEachCard((card) => {
             domFragment.prepend(card);
         });
-        (_a = document.querySelector('#game-board')) === null || _a === void 0 ? void 0 : _a.appendChild(domFragment);
+        document.querySelector('#game-board')?.appendChild(domFragment);
     }
-    makeCard(id) {
+
+    private makeCard(id: string): HTMLDivElement {
         const element = document.createElement('div');
         element.classList.add('card');
         element.setAttribute('data-cardId', id);
         element.setAttribute('data-moving', '0');
+
         const cardFront = document.createElement('div');
         const cardBack = document.createElement('div');
+
         cardFront.classList.add('front');
         cardBack.classList.add('back');
+
         element.appendChild(cardFront);
         element.appendChild(cardBack);
+
         return element;
     }
-    addCardEvents() {
-        const gameBoard = document.querySelector('#game-board');
-        gameBoard === null || gameBoard === void 0 ? void 0 : gameBoard.addEventListener('transitionstart', (e) => {
-            const id = e.target.getAttribute("data-cardId");
-            const isMoving = id ? this.getCardMovingState(id) : false;
-            if (isMoving) {
-                if (!id) {
+
+    private addCardEvents() {
+        const gameBoard = document.querySelector<HTMLDivElement>('#game-board');
+
+        gameBoard?.addEventListener('transitionstart', (e) => {
+            const id = (e.target as HTMLElement).getAttribute("data-cardId");
+            const isMoving = id? this.getCardMovingState(id):false;
+            if(isMoving){
+                if(!id){
                     return;
                 }
                 const card = this.getCard(id);
                 card.style.zIndex = "100";
             }
         });
-        gameBoard === null || gameBoard === void 0 ? void 0 : gameBoard.addEventListener('transitionend', (e) => {
-            const id = e.target.getAttribute("data-cardId");
-            const isMoving = id ? this.getCardMovingState(id) : false;
-            if (isMoving) {
-                if (!id) {
+
+        gameBoard?.addEventListener('transitionend', (e) => {
+            const id = (e.target as HTMLElement).getAttribute("data-cardId");
+            const isMoving = id?this.getCardMovingState(id):false;
+            if(isMoving){
+                if(!id){
                     return;
                 }
                 const card = this.getCard(id);
                 card.style.zIndex = "";
+
                 this.setCardMovingState(id, false);
-                if (this.getCardState(id) === CardState.discardPile) {
+               
+                if(this.getCardState(id) === CardState.discardPile){
                     this.shiftTopOfDiscardPile(id);
                     this.setCardState(id, CardState.topOfDiscardPile);
                 }
@@ -177,5 +234,5 @@ class GameCards {
         });
     }
 }
+
 export { GameCards };
-//# sourceMappingURL=GameCards.js.map
