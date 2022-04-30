@@ -1,22 +1,31 @@
 :root {
---baseColor: #606468;
+    --baseColor: white;
 }
-
+    
 /* helpers/align.css */
-
+    
 .align {
     display: grid;
     place-items: center;
 }
-
-.grid{
-    inline-size: 90%;
+    
+.grid {
+    position: absolute;
+    inline-size: 110%;
     margin-inline: auto;
-    max-inline-size: 20rem;
+    max-inline-size: 22rem;
+    position: inherit;
+    padding-right: 33px;
+    background-color: #4c5259;
+    opacity: 0.99;
+    border-radius: 15px 15px 15px 15px;
+    -webkit-box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
+    -moz-box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
 }
-
+    
 /* helpers/hidden.css */
-
+    
 .hidden {
     border: 0;
     clip: rect(0 0 0 0);
@@ -27,17 +36,17 @@
     position: absolute;
     width: 1px;
 }
-
+    
 /* helpers/icon.css */
-
+    
 :root {
     --iconFill: var(--baseColor);
 }
-
+    
 .icons {
     display: none;
 }
-
+    
 .icon {
     block-size: 1em;
     display: inline-block;
@@ -45,21 +54,21 @@
     inline-size: 1em;
     vertical-align: middle;
 }
- 
+     
 /* layout/base.css */
 
 :root {
-    --htmlFontSize: 100%;
+    --htmlFontSize: 18px;
 
-    --bodyBackgroundColor: #2c3338;
+    --bodyBackgroundColor: hsl(200, 5%, 89%);
     --bodyColor: var(--baseColor);
     --bodyFontFamily: "Open Sans";
     --bodyFontFamilyFallback: sans-serif;
-    --bodyFontSize: 0.875rem;
+    --bodyFontSize: 1.0rem;
     --bodyFontWeight: 400;
     --bodyLineHeight: 1.5;
 }
-
+    
 * {
     box-sizing: inherit;
 }
@@ -78,6 +87,8 @@ body {
     line-height: var(--bodyLineHeight);
     margin: 0;
     min-block-size: 100vh;
+    padding-top: 10%;
+    padding-bottom: 5%;
 }
 
 /* modules/anchor.css */
@@ -86,15 +97,26 @@ body {
     --anchorColor: #eee;
 }
 
-a {
-    color: var(--anchorColor);
-    outline: 0;
-    text-decoration: none;
+.link {
+    display: inline;
+    font-weight: bolder;
+    color: rgb(201, 207, 224);
+    overflow: hidden;
+    background: linear-gradient(to right, rgb(146, 146, 227), rgb(146, 146, 227) 50%, rgb(201, 207, 224) 50%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 100%;
+    background-position: 100%;
+    transition: background-position 275ms ease;
+    text-decoration: underline;
 }
 
-a:focus,
-a:hover {
+.link:focus,
+.link:hover {
     text-decoration: underline;
+    font-weight: bolder;
+    background-position: 0 100%;
 }
 
 /* modules/form.css */
@@ -107,6 +129,7 @@ h1 {
     text-align: center;
     color: inherit;
     font-family: inherit;
+    font-size: 260%;
 } 
 
 input {
@@ -126,6 +149,10 @@ input[type="submit"] {
 
 .form {
     display: grid;
+    justify-content: center;
+    border-radius: 10px 10px 10px 10px;
+    padding: 50px;
+    width: 110%;
     gap: var(--formGap);
 }
 
@@ -154,7 +181,7 @@ input[type="submit"] {
 
     --loginLabelBackgroundColor: #363b41;
 
-    --loginSubmitBackgroundColor: #ab3c3c;
+    --loginSubmitBackgroundColor: #d14c4c;
     --loginSubmitColor: #eee;
     --loginSubmitHoverBackgroundColor: #ef383e;
 }
@@ -173,6 +200,7 @@ input[type="submit"] {
 
 .login label {
     background-color: var(--loginLabelBackgroundColor);
+    color: white;
     border-bottom-right-radius: 0;
     border-top-right-radius: 0;
     padding-inline: 1.25rem;
