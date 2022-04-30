@@ -25,6 +25,7 @@
 }
 
 body {
+  background-color: hsl(200, 5%, 89%);
   font-size: 18px;
   font-family: "Open Sans", sans-serif;
 }
@@ -100,6 +101,7 @@ ul {
 
 .nav {
   display: flex;
+  font-size: 18px;
   gap: 25px;
 }
 .nav .about,
