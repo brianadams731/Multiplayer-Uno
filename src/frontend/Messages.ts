@@ -1,4 +1,5 @@
-import { socket } from './socket.js';
+import { Endpoints } from './utils/endpoints.js';
+import { postDataAsync } from './utils/postDataAsync.js';
 
 enum Channels {
     PUBLIC = 'public',
@@ -72,23 +73,20 @@ class Messages {
     }
 
     private addFormEvents() {
-        this.form.addEventListener('submit', (e) => {
+        this.form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            console.log(this.msgInput.value);
 
-            /*this.appendMessage({
-                channel: this.outChannel,
-                content: this.msgInput.value,
-                author: "self"
-            });*/
-
-            socket.emit('message', {
+            const res = await postDataAsync(Endpoints.Message, {
                 channel: this.outChannel,
                 content: this.msgInput.value,
                 author: 'self',
             });
 
-            this.msgInput.value = '';
+            if (res.ok) {
+                this.msgInput.value = '';
+                return;
+            }
+            alert('Error: Cannot send message');
         });
     }
     private addInputEvents() {

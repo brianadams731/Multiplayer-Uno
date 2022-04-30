@@ -1,4 +1,14 @@
-import { socket } from './socket.js';
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+import { Endpoints } from './utils/endpoints.js';
+import { postDataAsync } from './utils/postDataAsync.js';
 var Channels;
 (function (Channels) {
     Channels["PUBLIC"] = "public";
@@ -40,21 +50,19 @@ class Messages {
         this.msgInput.setAttribute('data-channel', this.outChannel);
     }
     addFormEvents() {
-        this.form.addEventListener('submit', (e) => {
+        this.form.addEventListener('submit', (e) => __awaiter(this, void 0, void 0, function* () {
             e.preventDefault();
-            console.log(this.msgInput.value);
-            /*this.appendMessage({
-                channel: this.outChannel,
-                content: this.msgInput.value,
-                author: "self"
-            });*/
-            socket.emit('message', {
+            const res = yield postDataAsync(Endpoints.Message, {
                 channel: this.outChannel,
                 content: this.msgInput.value,
                 author: 'self',
             });
-            this.msgInput.value = '';
-        });
+            if (res.ok) {
+                this.msgInput.value = '';
+                return;
+            }
+            alert('Error: Cannot send message');
+        }));
     }
     addInputEvents() {
         this.msgInput.addEventListener('input', (e) => {

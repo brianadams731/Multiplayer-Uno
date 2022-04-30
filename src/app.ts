@@ -3,6 +3,7 @@ if (process.env.NODE_ENV === 'development') {
     dotenv.config();
 }
 import express from 'express';
+import {app, server, io} from "./utils/server";
 import { engine } from 'express-handlebars';
 import session from 'express-session';
 
@@ -13,18 +14,14 @@ import { staticRoutes } from './routes/staticRoutes';
 import { viewRoutes } from './routes/viewRoutes';
 import { sessionConfig } from './utils/sessionConfig';
 
-import { createServer } from 'http';
-import { Server } from 'socket.io';
 import { socketSession } from './middleware/socketMiddleWare';
+import { messageRouter } from './routes/messageRouter';
 
-const app = express();
-const server = createServer(app);
-const io = new Server(server);
 
-const { message } = require('./socketRoutes/message')(io);
 
 app.use(session(sessionConfig));
 app.use(express.json());
+io.use(socketSession);
 
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
@@ -36,13 +33,12 @@ app.use(viewRoutes);
 app.use('/api', loginRouter);
 app.use('/api', logoutRouter);
 app.use('/api', registerRouter);
+app.use('/api', messageRouter);
 
 app.use('/public', express.static('public', { extensions: ['html'] }));
 
-io.use(socketSession);
-
 io.on('connection', (socket) => {
-    socket.on('message', message);
+    //socket.on('message', message);
 });
 
 server.listen(process.env.PORT || '8080', () => {

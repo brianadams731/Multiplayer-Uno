@@ -1,1 +1,1 @@
-{"version":3,"file":"endpoints.js","sourceRoot":"","sources":["../../../src/frontend/utils/endpoints.ts"],"names":[],"mappings":";AAAA,IAAK,SAIJ;AAJD,WAAK,SAAS;IACV,6BAAgB,CAAA;IAChB,mCAAsB,CAAA;IACtB,qCAAwB,CAAA;AAC5B,CAAC,EAJI,SAAS,KAAT,SAAS,QAIb"}
+{"version":3,"file":"endpoints.js","sourceRoot":"","sources":["../../../src/frontend/utils/endpoints.ts"],"names":[],"mappings":"AAAA,IAAK,SAKJ;AALD,WAAK,SAAS;IACV,gCAAmB,CAAA;IACnB,sCAAyB,CAAA;IACzB,wCAA2B,CAAA;IAC3B,oCAAuB,CAAA;AAC3B,CAAC,EALI,SAAS,KAAT,SAAS,QAKb;AAGD,OAAO,EAAE,SAAS,EAAE,CAAC"}

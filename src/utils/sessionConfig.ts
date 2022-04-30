@@ -1,18 +1,18 @@
-import session, { MemoryStore, SessionOptions } from 'express-session';
-import{ v4 as uuidv4} from "uuid";
+import session, { SessionOptions } from 'express-session';
+import { v4 as uuidv4 } from 'uuid';
 import { connection } from './connection';
 
 const sessionConfig: SessionOptions = {
-    secret: "test-secret", // TODO: Move to .env file
+    secret: 'test-secret', // TODO: Move to .env file
     resave: false,
     saveUninitialized: false,
     store: new (require('connect-pg-simple')(session))({
         pgPromise: connection,
-        createTableIfMissing: true
+        createTableIfMissing: true,
     }),
-    genid: function(req){
+    genid: function (req) {
         return uuidv4();
-    }
+    },
 };
 
 export { sessionConfig };

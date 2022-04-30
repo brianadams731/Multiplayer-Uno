@@ -1,4 +1,3 @@
-import pgPromise from "pg-promise";
 import { Server } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { connection } from "../utils/connection";
