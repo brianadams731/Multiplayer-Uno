@@ -36,7 +36,7 @@ module.exports = {
       array.push([num++, 'any', 'wild']);
       array.push([num++, 'any', 'wildfour']);
 
-      queryInterface.sequelize.query(
+      await queryInterface.sequelize.query(
         `INSERT INTO "Lookup" (lid, color, val) VALUES ${array.map(() => '(?)').join(',')};`,
         {
           replacements: array,

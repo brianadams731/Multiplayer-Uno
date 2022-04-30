@@ -3,23 +3,23 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.sequelize.query(`
-      DROP TABLE IF EXISTS "Messages";
+      DROP TABLE IF EXISTS "Card";
     `)
-
+    
     await queryInterface.sequelize.query(`
-      CREATE TABLE "Message"(
-        mid SERIAL PRIMARY KEY,
-        uid INTEGER,
-        content TEXT,
-        FOREIGN KEY(uid) REFERENCES "User"(uid)
+      CREATE TABLE "Card"(
+        uid INTEGER REFERENCES "User" (uid),
+        gid INTEGER NOT NULL REFERENCES "Game" (id),
+        ref INTEGER NOT NULL REFERENCES "Lookup" (lid),
+        PRIMARY KEY (gid, ref)
       );
     `)
-  
+
   },
 
   async down (queryInterface, Sequelize) {
     await queryInterface.sequelize.query(`
-      DROP TABLE "Message"
+      DROP TABLE "Card";
     `)
   }
 };
