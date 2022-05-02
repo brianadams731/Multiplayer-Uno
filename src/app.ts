@@ -16,6 +16,8 @@ import { sessionConfig } from './utils/sessionConfig';
 
 import { socketSession } from './middleware/socketMiddleWare';
 import { messageRouter } from './routes/messageRouter';
+import { createGameRouter } from './routes/createGameRouter';
+import { joinGameRouter } from './routes/joinGameRouter';
 
 
 
@@ -34,6 +36,8 @@ app.use('/api', loginRouter);
 app.use('/api', logoutRouter);
 app.use('/api', registerRouter);
 app.use('/api', messageRouter);
+app.use('/api', createGameRouter);
+app.use('/api', joinGameRouter);
 
 app.use('/public', express.static('public', { extensions: ['html'] }));
 
