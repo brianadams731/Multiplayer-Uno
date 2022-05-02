@@ -3,7 +3,7 @@ if (process.env.NODE_ENV === 'development') {
     dotenv.config();
 }
 import express from 'express';
-import {app, server, io} from "./utils/server";
+import { app, server, io } from './utils/server';
 import { engine } from 'express-handlebars';
 import session from 'express-session';
 
@@ -19,8 +19,7 @@ import { messageRouter } from './routes/messageRouter';
 import { createGameRouter } from './routes/createGameRouter';
 import { joinGameRouter } from './routes/joinGameRouter';
 import { gameFinderRouter } from './routes/gameFinderRouter';
-
-
+import { gameRouter } from './routes/gameRouter';
 
 app.use(session(sessionConfig));
 app.use(express.json());
@@ -40,6 +39,7 @@ app.use('/api', messageRouter);
 app.use('/api', createGameRouter);
 app.use('/api', joinGameRouter);
 app.use('/api', gameFinderRouter);
+app.use('/api', gameRouter);
 
 app.use('/public', express.static('public', { extensions: ['html'] }));
 

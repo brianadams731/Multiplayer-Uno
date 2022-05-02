@@ -21,11 +21,11 @@ module.exports = {
   
     color.forEach(()=>{
       tempArray.push({
-        color: null,
+        color: "any",
         val: "wildcard"
       });
       tempArray.push({
-        color: null,
+        color: "any",
         val: "drawfour"
       })
     })

@@ -1,9 +1,19 @@
 import express from 'express';
+import { requireWithUserAsync } from '../middleware/requiresWithUserAsync';
+import { GameCards } from '../models/GameCards';
 
 const gameRouter = express.Router();
 
-gameRouter.get("/game/init",(req, res)=>{
+gameRouter.get("/game/init/:gameId", requireWithUserAsync, async(req, res)=>{
+    if(!req.params.gameId || !req.userId || !Number.isInteger(Number(req.params.gameId))){
+        return res.status(400).send();
+    }
+    const gameId = parseInt(req.params.gameId);
+    await GameCards.initGameCards(gameId);
+
     
+    return res.status(200).send();
 })
+
 
 export { gameRouter };
