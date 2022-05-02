@@ -18,6 +18,7 @@ import { socketSession } from './middleware/socketMiddleWare';
 import { messageRouter } from './routes/messageRouter';
 import { createGameRouter } from './routes/createGameRouter';
 import { joinGameRouter } from './routes/joinGameRouter';
+import { gameFinderRouter } from './routes/gameFinderRouter';
 
 
 
@@ -38,6 +39,7 @@ app.use('/api', registerRouter);
 app.use('/api', messageRouter);
 app.use('/api', createGameRouter);
 app.use('/api', joinGameRouter);
+app.use('/api', gameFinderRouter);
 
 app.use('/public', express.static('public', { extensions: ['html'] }));
 
