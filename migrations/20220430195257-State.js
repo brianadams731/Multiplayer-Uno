@@ -4,7 +4,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.sequelize.query(`
       CREATE TABLE "State"(
-        gid INTEGER NOT NULL REFERENCES "Game" (id),
+        gid INTEGER NOT NULL REFERENCES "Game" (id) ON DELETE CASCADE,
         started BOOLEAN NOT NULL DEFAULT FALSE,
         last_card_played INTEGER REFERENCES "Lookup" (lid),
         current_turn INTEGER REFERENCES "User" (uid),
