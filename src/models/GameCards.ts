@@ -9,7 +9,7 @@ interface Cards{
 class GameCards{
     private constructor(){};
 
-    public static async initGameCards(gid: number){
+    public static async init(gid: number){
         const allRefCards = await connection.any(`
             SELECT lid
             FROM "Lookup";
