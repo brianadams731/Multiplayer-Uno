@@ -13,24 +13,25 @@ interface IMessage {
 }
 
 class Messages {
-    private messages: IMessage[];
-    private input: string;
+    private gameId:string;
     private outChannel: Channels;
-
+    
     private msgBox: HTMLDivElement;
     private form: HTMLFormElement;
     private msgFeed: HTMLDivElement;
     private msgInput: HTMLInputElement;
 
-    public constructor() {
-        [this.msgBox, this.form, this.msgInput, this.msgFeed] =
-            this.createMessageBox();
+    public constructor(gameId:string) {
+        this.gameId = gameId;
+
+        [this.msgBox, this.form, this.msgInput, this.msgFeed] = this.createMessageBox();
         this.outChannel = Channels.PUBLIC;
 
         this.addFormEvents();
         this.addInputEvents();
         this.addDragEvent();
         this.setInputChannel();
+
         this.appendToDom();
     }
 
@@ -79,6 +80,7 @@ class Messages {
             const res = await postDataAsync(Endpoints.Message, {
                 channel: this.outChannel,
                 content: this.msgInput.value,
+                gameId: this.gameId,
                 author: 'self',
             });
 

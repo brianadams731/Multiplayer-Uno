@@ -15,5 +15,8 @@ staticRoutes.get('/register', (req, res) => {
 staticRoutes.get('/about', (req, res) => {
     return res.sendFile("index.html", { root : path.join(__dirname, '../../public/')});
 });
+staticRoutes.get('/templobby', (req, res) => {
+    return res.sendFile("templobby.html", { root : path.join(__dirname, '../../public/')});
+});
 
 export { staticRoutes };

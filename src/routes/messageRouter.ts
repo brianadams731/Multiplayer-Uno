@@ -9,6 +9,7 @@ interface IMessage {
     channel: string;
     author: string;
     content: string;
+    gameId: string;
 }
 enum Channels {
     PUBLIC = 'public',
@@ -28,28 +29,39 @@ messageRouter.post('/message', requireWithUserAsync, async (req, res) => {
     if (!user || !msg.content || !msg.channel) {
         return res.status(400).send();
     }
-    // TODO: ADD GAME ID COLUMN AND VALUE HERE, WILL HAVE GAME ID IF CHANNELS.GAME === TRUE
-    await connection.any(
-        `
-            INSERT INTO "Message" (uid, content)
-            VALUES ($1, $2);
-        `,
-        [req.userId, req.body.content]
-    );
 
     if (msg.channel === Channels.PUBLIC) {
+        await connection.any(
+            `
+                INSERT INTO "Message" (uid, content)
+                VALUES ($1, $2);
+            `,
+            [req.userId, req.body.content]
+        );
         io.emit('message', {
             ...msg,
             author: user.username,
         });
-    } else {
-        // TODO: ADD ROUTING TO ENSURE GAME MESSAGE GETS ROUTED TO THE CORRECT ROOM
-        io.emit('message', {
-            channel: Channels.GAME,
-            author: user.username,
-            content: msg.content,
-        });
+        return res.status(200).send();
     }
+
+    if (!req.body.gameId) {
+        console.log('Error: Game message send while user not in room');
+        return res.status(500).send();
+    }
+
+    await connection.any(
+        `
+                INSERT INTO "Message" (uid, content, gid)
+                VALUES ($1, $2, $3);
+            `,
+        [req.userId, req.body.content, req.body.gameId]
+    );
+
+    io.to(req.body.gameId).emit('message', {
+        ...msg,
+        author: user.username,
+    });
 
     return res.status(200).send();
 });

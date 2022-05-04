@@ -14,8 +14,10 @@ module.exports = {
       CREATE TABLE "Message"(
         mid SERIAL PRIMARY KEY,
         uid INTEGER,
+        gid INTEGER,
         content TEXT,
-        FOREIGN KEY(uid) REFERENCES "User"(uid)
+        FOREIGN KEY(uid) REFERENCES "User"(uid),
+        FOREIGN KEY(gid) REFERENCES "Game"(id)
       );
     `)
   

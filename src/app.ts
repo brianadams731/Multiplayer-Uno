@@ -44,7 +44,21 @@ app.use('/api', gameRouter);
 app.use('/public', express.static('public', { extensions: ['html'] }));
 
 io.on('connection', (socket) => {
-    //socket.on('message', message);
+    socket.on("game-load",(req)=>{
+        const userId = (socket.request as any).session.userId
+        const gameId = req.gameId;
+        
+        socket.join(gameId);
+        
+        socket.emit("init-game",{
+
+        });
+        
+        io.to(gameId).emit("player-joined", {
+            username: "test",
+            id: 1
+        })
+    })
 });
 
 server.listen(process.env.PORT || '8080', () => {

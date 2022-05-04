@@ -5,8 +5,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./styles/index.css">
-    <link rel="stylesheet" href="./styles/login.css" />
+    <link rel="stylesheet" href="/public/styles/index.css">
+    <link rel="stylesheet" href="/public/styles/login.css" />
     <title>Login</title>
 </head>
 
@@ -16,9 +16,9 @@
 
     <header class="header-wrapper">
         <ul class="nav">
-            <li><a href="index.html" class="about">Home</a></li>
-            <li><a href="login.html" class="log">Log In</a></li>
-            <li><a href="register.html" class="register">Register</a></li>
+            <li><a href="/" class="about">Home</a></li>
+            <li><a href="/login" class="log">Log In</a></li>
+            <li><a href="/register" class="register">Register</a></li>
         </ul>
     </header>
 
@@ -81,7 +81,7 @@
                     })
                 })
                 if(res.ok){
-                    window.location = "/play";
+                    window.location = "/templobby";
                 }else{
                     alert("Error: Invalid Credentials");
                     password.value = "";

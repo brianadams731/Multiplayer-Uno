@@ -15,9 +15,9 @@ var Channels;
     Channels["GAME"] = "game";
 })(Channels || (Channels = {}));
 class Messages {
-    constructor() {
-        [this.msgBox, this.form, this.msgInput, this.msgFeed] =
-            this.createMessageBox();
+    constructor(gameId) {
+        this.gameId = gameId;
+        [this.msgBox, this.form, this.msgInput, this.msgFeed] = this.createMessageBox();
         this.outChannel = Channels.PUBLIC;
         this.addFormEvents();
         this.addInputEvents();
@@ -55,6 +55,7 @@ class Messages {
             const res = yield postDataAsync(Endpoints.Message, {
                 channel: this.outChannel,
                 content: this.msgInput.value,
+                gameId: this.gameId,
                 author: 'self',
             });
             if (res.ok) {
