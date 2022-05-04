@@ -26,7 +26,7 @@ class GameState {
 
         await connection.none(`
             UPDATE "State"
-            SET current_turn = $1
+            SET current_turn = $1, started = TRUE
             WHERE gid = $2
         `,[gid, firstPlayer.uid]);
     }
