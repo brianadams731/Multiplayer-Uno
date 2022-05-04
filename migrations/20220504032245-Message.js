@@ -16,8 +16,8 @@ module.exports = {
         uid INTEGER,
         gid INTEGER,
         content TEXT,
-        FOREIGN KEY(uid) REFERENCES "User"(uid),
-        FOREIGN KEY(gid) REFERENCES "Game"(id)
+        FOREIGN KEY(uid) REFERENCES "User"(uid) ON DELETE CASCADE,
+        FOREIGN KEY(gid) REFERENCES "Game"(id) ON DELETE CASCADE 
       );
     `)
   

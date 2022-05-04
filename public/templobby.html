@@ -40,8 +40,12 @@
                         });
                         console.log(res.status)
                         console.log(JSON.stringify(res,null,2));
-                        localStorage.setItem('gameId', item.id);
-                        window.location.href = '/play';
+                        if(res.ok){
+                            localStorage.setItem('gameId', item.id);
+                            window.location.href = '/play';
+                        }else{
+                            alert("FAILED TO JOIN GAME");
+                        }
                     });
                     lobbyWrapper.appendChild(game);
                 });

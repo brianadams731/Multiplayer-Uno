@@ -1,6 +1,9 @@
 import express from 'express';
 import { requireWithUserAsync } from '../middleware/requiresWithUserAsync';
-import { connection } from '../utils/connection';
+import { Game } from '../models/Game';
+import { GameCards } from '../models/GameCards';
+import { GameState } from '../models/GameState';
+import { GameUser } from '../models/GameUser';
 import { generateHashedPasswordAsync } from '../utils/passwordHash';
 
 const createGameRouter = express.Router();
@@ -15,29 +18,19 @@ createGameRouter.post('/createGame', requireWithUserAsync, async (req, res) => {
         password = await generateHashedPasswordAsync(`${req.body.password}`);
     }
 
-    const game = await connection.any(
-        `
-        INSERT INTO "Game"(name, password)
-        VALUES ($1, $2)
-        RETURNING id;
-    `,
-        [req.body.name, password]
-    );
-
-    if (game.length === 0) {
+    const game = await Game.insertIntoGame(req.body.name, password!);
+    if (!game) {
         return res.status(500).send();
     }
 
-    await connection.any(
-        `
-        INSERT INTO "GameUser" (uid, gid)
-        VALUES ($1, $2);
-    `,
-        [req.userId, game[0].id]
-    );
+    await GameState.init(game.id);
+    await GameCards.init(game.id);
+    
+    await GameUser.insertIntoGameUser(req.userId, game.id);
+    await GameCards.drawNCardsForPlayer(req.userId, game.id, 5);
 
     return res.status(200).json({
-        gameId: game[0].id,
+        gameId: game.id,
     });
 });
 

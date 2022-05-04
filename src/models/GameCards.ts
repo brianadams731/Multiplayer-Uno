@@ -57,12 +57,25 @@ class GameCards{
         return cards;
     }
 
+    public static async getUserCards(uid:number, gid:number){
+        const cardVal = await connection.any(`
+            SELECT l.val, l.color, l.lid
+            FROM "Lookup" l, "Card" c
+            WHERE l.lid = c.ref and c.uid = $1 and c.gid = $2;
+        `,[uid, gid]);
+       return cardVal.map((item)=>({value:this.formatCard(item.color, item.val), gid: gid, ref: item.lid}))
+    }
+
     private static async getUnplayedCards(gid:number){
         return await connection.any(`
             SELECT ref, gid
             FROM "Card"
             WHERE uid IS NULL and gid=$1;
         `,[gid]);
+    }
+
+    public static formatCard(color: string, val: string){
+        return `${color}-${val}`;
     }
 
     private static getRandomArrayIndex(vector: any[]):number{

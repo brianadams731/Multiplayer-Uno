@@ -1,6 +1,6 @@
 import express from 'express';
-import { connect } from 'http2';
 import { requireWithUserAsync } from '../middleware/requiresWithUserAsync';
+import { User } from '../models/User';
 import { connection } from '../utils/connection';
 import { checkHashedPasswordAsync } from '../utils/passwordHash';
 
@@ -12,45 +12,27 @@ loginRouter.post('/login', async (req, res) => {
     if (!username && !password) {
         return res.status(400).send('Error: Malformed Request');
     }
-    let user: any[] = [];
-    try {
-        user = await connection.any(
-            `
-            SELECT uid, password
-            FROM "User"
-            WHERE username = $1
-        `,
-            [username]
-        );
-    } catch (error) {
-        console.log(error);
-    }
-    if (user.length === 0) {
+    const user = await User.getUserByUsername(username);
+
+    if(!user){
         return res.status(404).send('Error: User not found');
     }
-    const passMatch = await checkHashedPasswordAsync(password, user[0].password);
+    
+    const passMatch = await checkHashedPasswordAsync(password, user.password);
     if(passMatch){
-        req.session.userId = user[0].uid;
+        req.session.userId = user.id;
         return res.status(200).send();
     }
+    
     return res.status(401).send("Error: Invalid Credentials");
 });
 
 loginRouter.get('/loginTest', requireWithUserAsync, async (req, res) => {
-    try {
-        const user = await connection.any(
-            `
-            SELECT username
-            FROM "User"
-            WHERE uid = $1
-        `,
-            [req.userId]
-        );
-        console.log(user);
-        return res.status(200).send(user[0].username);
-    } catch (err) {
+    const user = await User.getUserById(req.userId!);
+    if(!user){
         return res.status(500).send('Error');
     }
+    return res.status(200).send(user.username);
 });
 
 export { loginRouter };

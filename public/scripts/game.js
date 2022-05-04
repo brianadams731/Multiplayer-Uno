@@ -13,8 +13,11 @@ socket.on("failed-to-join", (msg) => {
     alert(msg);
     location.href = "/login";
 });
-socket.on("game-init", (msg) => {
-    console.log(msg);
+socket.on("init-game", (msg) => {
+    messageBox.appendManyMessages(msg.messages);
+    msg.cards.forEach((card) => {
+        console.log(card);
+    });
 });
 socket.on("player-joined", (msg) => {
     console.log(msg);

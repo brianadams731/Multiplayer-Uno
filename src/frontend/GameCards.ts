@@ -109,10 +109,7 @@ class GameCards {
         // ADDING
         if (destination === CardState.playerHand) {
             this.addCardToPlayersHand(cardId);
-        } /*else if (destination === CardState.discardPile) { // this got moved to transition
-            this.shiftTopOfDiscardPile(cardId);
-            internalDestination = CardState.topOfDiscardPile;
-        }*/
+        }
 
         if(!suppressMoveFlag){
             this.setCardMovingState(cardId, true);

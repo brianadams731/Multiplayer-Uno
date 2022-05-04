@@ -1,5 +1,8 @@
 import express from 'express';
 import { requireWithUserAsync } from '../middleware/requiresWithUserAsync';
+import { Game } from '../models/Game';
+import { GameCards } from '../models/GameCards';
+import { GameUser } from '../models/GameUser';
 import { connection } from '../utils/connection';
 import { checkHashedPasswordAsync } from '../utils/passwordHash';
 
@@ -10,14 +13,8 @@ joinGameRouter.post('/joinGame', requireWithUserAsync, async (req, res) => {
         return res.status(400).send();
     }
 
-    const game = await connection.one(
-        `
-        SELECT id, password
-        FROM "Game"
-        WHERE id=$1;
-    `,
-        [req.body.gameId]
-    );
+    const game = await Game.getGameById(req.body.gameId);
+
 
     if (!game) {
         return res.status(400).send();
@@ -29,13 +26,8 @@ joinGameRouter.post('/joinGame', requireWithUserAsync, async (req, res) => {
         }
     }
     try{
-        await connection.any(
-            `
-            INSERT INTO "GameUser" (uid, gid)
-            VALUES ($1, $2);
-        `,
-            [req.userId, game.id]
-        );
+        await GameUser.insertIntoGameUser(req.userId, game.id);
+        await GameCards.drawNCardsForPlayer(req.userId, game.id, 5);
     }catch(err: any){
         if(err?.code != '23505'){
             // This means a duplicate key error from pg has not occurred

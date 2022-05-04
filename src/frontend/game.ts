@@ -18,8 +18,11 @@ socket.on("failed-to-join",(msg:string)=>{
     location.href = "/login";
 })
 
-socket.on("game-init",(msg:any)=>{
-    console.log(msg);
+socket.on("init-game",(msg:any)=>{    
+    messageBox.appendManyMessages(msg.messages);
+    msg.cards.forEach((card:any)=>{
+        console.log(card);
+    })
 })
 
 socket.on("player-joined",(msg: any)=>{

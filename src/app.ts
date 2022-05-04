@@ -22,6 +22,9 @@ import { gameFinderRouter } from './routes/gameFinderRouter';
 import { gameRouter } from './routes/gameRouter';
 import { User } from './models/User';
 import { GameUser } from './models/GameUser';
+import { Message } from './models/Message';
+import { GameCards } from './models/GameCards';
+import { GameState } from './models/GameState';
 
 app.use(session(sessionConfig));
 app.use(express.json());
@@ -50,7 +53,6 @@ io.on('connection', (socket) => {
         const userId = (socket.request as any).session.userId
         const gameId = req.gameId;
         
-        // TODO SWITCH TO GAME USER!
         const user = await GameUser.getGameUserByUidGid(userId, gameId);
 
         if(!user){
@@ -60,8 +62,15 @@ io.on('connection', (socket) => {
         
         socket.join(gameId);
 
-        socket.emit("init-game",{
+        const gameMessages = await Message.getAllGameMessages(gameId)
+        const cardsInHand = await GameCards.getUserCards(userId, gameId);
+        const state = await GameState.getGameState(gameId);
 
+        
+        socket.emit("init-game",{
+            messages: gameMessages,
+            cards: cardsInHand,
+            state
         });
         
         io.to(gameId).emit("player-joined", {

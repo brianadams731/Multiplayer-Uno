@@ -4,6 +4,8 @@ interface IGameUser {
     username: string;
 }
 
+type id = number | string;
+
 class GameUser {
     private constructor() {}
 
@@ -24,6 +26,16 @@ class GameUser {
         } catch (err) {
             return undefined;
         }
+    }
+
+    public static async insertIntoGameUser(uid: id, gid: id){
+        await connection.any(
+            `
+            INSERT INTO "GameUser" (uid, gid)
+            VALUES ($1, $2);
+        `,
+            [uid, gid]
+        );
     }
 }
 

@@ -153,7 +153,7 @@ class Messages {
         });
     }
 
-    private appendManyMessages(messages: IMessage[]) {
+    public appendManyMessages(messages: IMessage[]) {
         const docFrag = document.createDocumentFragment();
         messages.forEach((message) => {
             const msg = document.createElement('p');
