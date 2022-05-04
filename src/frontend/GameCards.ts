@@ -11,11 +11,13 @@ enum CardState {
 }
 
 class GameCards {
+    private gameId: string;
     private cards: ICards;
     private playersHand: string[];
     private topOfDiscard: string;
 
-    constructor() {
+    constructor(gameId:string) {
+        this.gameId = gameId;
         this.cards = {};
         this.playersHand = [];
 

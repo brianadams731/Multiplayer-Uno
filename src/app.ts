@@ -20,6 +20,8 @@ import { createGameRouter } from './routes/createGameRouter';
 import { joinGameRouter } from './routes/joinGameRouter';
 import { gameFinderRouter } from './routes/gameFinderRouter';
 import { gameRouter } from './routes/gameRouter';
+import { User } from './models/User';
+import { GameUser } from './models/GameUser';
 
 app.use(session(sessionConfig));
 app.use(express.json());
@@ -44,19 +46,26 @@ app.use('/api', gameRouter);
 app.use('/public', express.static('public', { extensions: ['html'] }));
 
 io.on('connection', (socket) => {
-    socket.on("game-load",(req)=>{
+    socket.on("game-load", async (req)=>{
         const userId = (socket.request as any).session.userId
         const gameId = req.gameId;
         
-        socket.join(gameId);
+        // TODO SWITCH TO GAME USER!
+        const user = await GameUser.getGameUserByUidGid(userId, gameId);
+
+        if(!user){
+            socket.emit("failed-to-join","user-or-gameId-does-not-exist")
+            return;
+        }
         
+        socket.join(gameId);
+
         socket.emit("init-game",{
 
         });
         
         io.to(gameId).emit("player-joined", {
-            username: "test",
-            id: 1
+            username: user.username
         })
     })
 });

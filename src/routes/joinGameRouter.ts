@@ -36,8 +36,12 @@ joinGameRouter.post('/joinGame', requireWithUserAsync, async (req, res) => {
         `,
             [req.userId, game.id]
         );
-    }catch(err){
-        return res.status(409).send();
+    }catch(err: any){
+        if(err?.code != '23505'){
+            // This means a duplicate key error from pg has not occurred
+            console.log(err);
+            return res.status(409).send();
+        }
     }
 
     return res.status(200).json({

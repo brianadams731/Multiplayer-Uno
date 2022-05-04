@@ -7,7 +7,8 @@ var CardState;
     CardState["drawCardPile"] = "drawCardPile";
 })(CardState || (CardState = {}));
 class GameCards {
-    constructor() {
+    constructor(gameId) {
+        this.gameId = gameId;
         this.cards = {};
         this.playersHand = [];
         for (let i = 0; i < 52; i++) {

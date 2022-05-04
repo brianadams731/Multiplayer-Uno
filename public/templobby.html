@@ -1,38 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <div id="lobby"></div>
-    <script>
-        const lobbyWrapper = document.querySelector("#lobby");
-        
-        /*{
-        "id": 1,
-        "name": "test game",
-        "passwordProtected": false,
-        "playerCount": "1"
-        }*/
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <div id="lobby"></div>
+        <script>
+            const lobbyWrapper = document.querySelector('#lobby');
 
-        (async function(){
-            const res = await fetch("/api/findGame/all");
-            const parsed = await res.json();
-            parsed.forEach((item)=>{
-                const game = document.createElement('div');
-                game.style.padding = "25px";
-                game.style.border = "1px solid black";
-                game.innerText = `id: ${item.id}, name: ${item.name}, reqpass: ${item.passwordProtected}`; 
-                game.addEventListener("click",()=>{
-                    localStorage.setItem("gameId",item.id);
-                    window.location.href = "/play";
-                })
-                lobbyWrapper.appendChild(game);
-            },"")
-        }());
-    </script>
-</body>
+            /*{
+                "id": 1,
+                "name": "test game",
+                "passwordProtected": false,
+                "playerCount": "1"
+            }*/
+
+            (async function () {
+                const res = await fetch('/api/findGame/all');
+                const parsed = await res.json();
+
+                parsed.forEach((item) => {
+                    const game = document.createElement('div');
+                    game.style.padding = '25px';
+                    game.style.border = '1px solid black';
+                    game.innerText = `id: ${item.id}, name: ${item.name}, reqpass: ${item.passwordProtected}`;
+                    game.addEventListener('click', async () => {
+                        const res = await fetch('/api/joinGame', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                gameId: item.id,
+                                password: '',
+                            }),
+                        });
+                        console.log(res.status)
+                        console.log(JSON.stringify(res,null,2));
+                        localStorage.setItem('gameId', item.id);
+                        window.location.href = '/play';
+                    });
+                    lobbyWrapper.appendChild(game);
+                });
+            }());
+
+        </script>
+    </body>
 </html>

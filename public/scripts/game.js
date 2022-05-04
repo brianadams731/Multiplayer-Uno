@@ -6,10 +6,12 @@ if (!gameId) {
     alert("ERROR: Invalid Id");
     window.location.href = "/gamelist";
 }
-const card = new GameCards();
+const card = new GameCards(gameId);
 const messageBox = new Messages(gameId);
-socket.emit("game-load", {
-    gameId
+socket.emit("game-load", { gameId });
+socket.on("failed-to-join", (msg) => {
+    alert(msg);
+    location.href = "/login";
 });
 socket.on("game-init", (msg) => {
     console.log(msg);
