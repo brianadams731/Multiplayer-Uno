@@ -37,6 +37,20 @@ class GameUser {
             [uid, gid]
         );
     }
+
+    public static async getAllUsersInGame(gid: id){
+        const users = await connection.any(`
+            SELECT gu.uid, u.username
+            FROM "GameUser" gu, "User" u
+            WHERE gu.uid = u.uid and gu.gid = 6
+            ORDER BY gu.time_joined;
+        `,[gid])
+
+        return users.map((user)=>({
+            username: user.username,
+            id: user.uid
+        }))
+    }
 }
 
 export { GameUser };

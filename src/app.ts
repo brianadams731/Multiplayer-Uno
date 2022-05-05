@@ -65,11 +65,15 @@ io.on('connection', (socket) => {
         const gameMessages = await Message.getAllGameMessages(gameId)
         const cardsInHand = await GameCards.getUserCards(userId, gameId);
         const state = await GameState.getGameState(gameId);
+        const gameUsers = await GameUser.getAllUsersInGame(gameId);
 
+        console.log(gameUsers);
+        
         
         socket.emit("init-game",{
             messages: gameMessages,
             cards: cardsInHand,
+            users: gameUsers,
             state
         });
         

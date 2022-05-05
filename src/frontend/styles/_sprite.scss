@@ -47,7 +47,7 @@
                 background-position: $xPos $yPos;
             }   
         }@else if $x == 10{
-            .#{$color}-block {
+            .#{$color}-skip {
                 background-position: $xPos $yPos;
             }  
         }@else if $x == 11{

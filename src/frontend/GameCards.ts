@@ -8,6 +8,7 @@ enum CardState {
     discardPile = 'discardPile',
     topOfDiscardPile = 'topOfDiscardPile',
     drawCardPile = 'drawCardPile',
+    lastCardInDrawPile = 'lastCardInDrawPile'
 }
 
 class GameCards {
@@ -21,7 +22,14 @@ class GameCards {
         this.cards = {};
         this.playersHand = [];
 
-        for (let i = 0; i < 52; i++) {
+        this.addCardEvents();
+
+        const placeHolderCardInDrawPile = this.makeCard("-1");
+        placeHolderCardInDrawPile.setAttribute('data-card-state', CardState.lastCardInDrawPile);
+        this.cards["-1"] = placeHolderCardInDrawPile;
+        document.querySelector("#game-board")?.appendChild(placeHolderCardInDrawPile);
+
+        /*for (let i = 0; i < 52; i++) {
             const cardId = `${i}`;
             this.cards[cardId] = this.makeCard(cardId);
             this.setCardState(cardId, CardState.drawCardPile);
@@ -58,14 +66,23 @@ class GameCards {
             if (id === '4' || id === '5' || id === '6') {
                 this.moveCard(id, CardState.opponentHand, true);
             }
-        });
+        });*/
+        
     }
 
-    public getCard(id: string): HTMLDivElement {
+    /*private appendAllCardsToDOM() {
+        const domFragment = document.createDocumentFragment();
+        this.forEachCard((card) => {
+            domFragment.prepend(card);
+        });
+        document.querySelector('#game-board')?.appendChild(domFragment);
+    }*/
+
+    private getCard(id: string): HTMLDivElement {
         return this.cards[id];
     }
 
-    public forEachCard(
+    /*private forEachCard(
         callback: (card: HTMLDivElement, cardId: string) => void
     ): void {
         for (const [key, value] of Object.entries(this.cards)) {
@@ -73,7 +90,7 @@ class GameCards {
         }
     }
 
-    public forFistOfStateFound(
+    private forFistOfStateFound(
         stateToFind: CardState,
         callback: (card: HTMLDivElement, index: string) => void
     ): void {
@@ -83,9 +100,9 @@ class GameCards {
                 break;
             }
         }
-    }
+    }*/
 
-    public forEachCardInPlayersHand(
+    private forEachCardInPlayersHand(
         callback: (card: HTMLDivElement, index: number) => void
     ): void {
         this.playersHand.forEach((currentCardId, currentIndex) => {
@@ -93,7 +110,7 @@ class GameCards {
         });
     }
 
-    public moveCard(
+    private moveCard(
         cardId: string,
         destination: Exclude<CardState, CardState.topOfDiscardPile>,
         suppressMoveFlag?: boolean
@@ -117,15 +134,15 @@ class GameCards {
         this.setCardState(cardId, internalDestination);
     }
 
-    public setCardFace(cardId: string, cardFaceClass: string): void {
+    /*private setCardFace(cardId: string, cardFaceClass: string): void {
         const card = this.getCard(cardId);
         const cardFace = card.querySelector<HTMLDivElement>('.front')!;
         cardFace.classList.add(cardFaceClass);
-    }
+    }*/
 
     private addCardToPlayersHand(cardId: string): void {
         this.playersHand.push(cardId);
-        this.cards.playersHand;
+        //this.cards.playersHand; ?
         this.recalculatePlayersHandTransform();
     }
 
@@ -172,13 +189,6 @@ class GameCards {
         return this.getCard(cardId).getAttribute('data-card-state');
     }
 
-    private appendAllCardsToDOM() {
-        const domFragment = document.createDocumentFragment();
-        this.forEachCard((card) => {
-            domFragment.prepend(card);
-        });
-        document.querySelector('#game-board')?.appendChild(domFragment);
-    }
 
     private makeCard(id: string): HTMLDivElement {
         const element = document.createElement('div');
@@ -195,6 +205,13 @@ class GameCards {
         element.appendChild(cardFront);
         element.appendChild(cardBack);
 
+        return element;
+    }
+
+    private makeCardWithFace(id: string, face: string): HTMLDivElement {
+        const element = this.makeCard(id);
+        const cardFace = element.querySelector<HTMLDivElement>('.front')!;
+        cardFace.classList.add(face);
         return element;
     }
 
@@ -232,6 +249,51 @@ class GameCards {
             }
         });
     }
+
+    public drawPlayerCard(id: string, face: string){
+        const card = this.makeCardWithFace(id, face);
+        card.setAttribute('data-card-state', CardState.drawCardPile);
+        this.cards[id] = card;
+        card.addEventListener('click', (e) => {
+            const id = (e.currentTarget as HTMLDivElement).getAttribute(
+                'data-cardId'
+            )!;
+
+            console.log(id);
+        });
+        
+        document.querySelector('#game-board')?.appendChild(card);
+        setTimeout(()=>{
+            this.moveCard(id,CardState.playerHand);
+        }, 500);
+    }
+
+    public discardPlayerCard(id: string){
+        this.moveCard(id, CardState.discardPile);
+    }
+
+    public drawOpponentCard(){
+        const card = this.makeCard("-1");
+        card.setAttribute('data-card-state', CardState.drawCardPile);
+        card.addEventListener('transition-end', (e) => {
+            card.remove();
+        });
+        document.querySelector('#game-board')?.appendChild(card);
+        setTimeout(()=>{
+            card.setAttribute('data-card-state', CardState.opponentHand);
+        }, 500);
+    }
+
+    public discardOpponentCard(id: string, face: string){
+        const card = this.makeCardWithFace(id, face);
+        card.setAttribute('data-card-state', CardState.opponentHand);
+        this.cards[id] = card;
+        document.querySelector('#game-board')?.appendChild(card);
+        setTimeout(()=>{
+            this.moveCard(id,CardState.discardPile);
+        }, 0);
+    }
+
 }
 
 export { GameCards };

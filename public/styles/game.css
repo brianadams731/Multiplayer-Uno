@@ -267,19 +267,19 @@ ul {
   background-position: -1440px -720px;
 }
 
-.red-block {
+.red-skip {
   background-position: -1600px 0px;
 }
 
-.yellow-block {
+.yellow-skip {
   background-position: -1600px -240px;
 }
 
-.green-block {
+.green-skip {
   background-position: -1600px -480px;
 }
 
-.blue-block {
+.blue-skip {
   background-position: -1600px -720px;
 }
 
@@ -380,7 +380,7 @@ ul {
     original card height: 360px
     original card width: 240px
 */
-[data-card-state=drawCardPile] {
+[data-card-state=opponentHand], [data-card-state=drawCardPile], [data-card-state=lastCardInDrawPile] {
   transform: rotateY(180deg);
 }
 
@@ -428,7 +428,7 @@ ul {
   z-index: 10;
 }
 
-[data-card-state=drawCardPile] {
+[data-card-state=drawCardPile], [data-card-state=lastCardInDrawPile] {
   bottom: 50%;
   left: 50%;
 }
@@ -441,5 +441,4 @@ ul {
 [data-card-state=opponentHand] {
   bottom: 110vh;
   left: calc(50% - 80px);
-  transform: rotate(-180deg);
 }

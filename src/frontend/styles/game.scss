@@ -116,7 +116,7 @@ $card-border-radius: 28px;
     z-index: 10;
 }
 
-[data-card-state="drawCardPile"]{
+[data-card-state="drawCardPile"], [data-card-state="lastCardInDrawPile"]{
     bottom: 50%;
     left: 50%;
 
@@ -132,5 +132,5 @@ $card-border-radius: 28px;
     bottom: 110vh;
     left: minusHalfCardWidth(50%);
 
-    transform: rotate(-180deg);
+    @extend %faceDown;
 }
