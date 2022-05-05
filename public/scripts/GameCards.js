@@ -1,3 +1,13 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+import { postDataAsync } from "./utils/postDataAsync.js";
 var CardState;
 (function (CardState) {
     CardState["playerHand"] = "playerHand";
@@ -8,16 +18,15 @@ var CardState;
     CardState["lastCardInDrawPile"] = "lastCardInDrawPile";
 })(CardState || (CardState = {}));
 class GameCards {
-    constructor(gameId) {
-        var _a;
-        this.gameId = gameId;
+    constructor(gameState) {
+        this.gameState = gameState;
         this.cards = {};
         this.playersHand = [];
         this.addCardEvents();
         const placeHolderCardInDrawPile = this.makeCard("-1");
         placeHolderCardInDrawPile.setAttribute('data-card-state', CardState.lastCardInDrawPile);
         this.cards["-1"] = placeHolderCardInDrawPile;
-        (_a = document.querySelector("#game-board")) === null || _a === void 0 ? void 0 : _a.appendChild(placeHolderCardInDrawPile);
+        this.gameState.gameBoard.appendChild(placeHolderCardInDrawPile);
         /*for (let i = 0; i < 52; i++) {
             const cardId = `${i}`;
             this.cards[cardId] = this.makeCard(cardId);
@@ -62,7 +71,7 @@ class GameCards {
         this.forEachCard((card) => {
             domFragment.prepend(card);
         });
-        document.querySelector('#game-board')?.appendChild(domFragment);
+        this.gameState.gameBoard.appendChild(domFragment);
     }*/
     getCard(id) {
         return this.cards[id];
@@ -170,8 +179,7 @@ class GameCards {
         return element;
     }
     addCardEvents() {
-        const gameBoard = document.querySelector('#game-board');
-        gameBoard === null || gameBoard === void 0 ? void 0 : gameBoard.addEventListener('transitionstart', (e) => {
+        this.gameState.gameBoard.addEventListener('transitionstart', (e) => {
             const id = e.target.getAttribute("data-cardId");
             const isMoving = id ? this.getCardMovingState(id) : false;
             if (isMoving) {
@@ -182,7 +190,7 @@ class GameCards {
                 card.style.zIndex = "100";
             }
         });
-        gameBoard === null || gameBoard === void 0 ? void 0 : gameBoard.addEventListener('transitionend', (e) => {
+        this.gameState.gameBoard.addEventListener('transitionend', (e) => {
             const id = e.target.getAttribute("data-cardId");
             const isMoving = id ? this.getCardMovingState(id) : false;
             if (isMoving) {
@@ -199,44 +207,70 @@ class GameCards {
             }
         });
     }
-    drawPlayerCard(id, face) {
-        var _a;
-        const card = this.makeCardWithFace(id, face);
-        card.setAttribute('data-card-state', CardState.drawCardPile);
-        this.cards[id] = card;
-        card.addEventListener('click', (e) => {
-            const id = e.currentTarget.getAttribute('data-cardId');
-            console.log(id);
+    playPlayerCard(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // TODO: Uncomment return when finished with debug
+            if (this.gameState.currentTurn != this.gameState.userId) {
+                console.log("Not Players Turn");
+                //return
+            }
+            yield postDataAsync("/api/playCard", {
+                cardRefId: id,
+                gameId: this.gameState.gameId,
+                userId: this.gameState.userId
+            });
         });
-        (_a = document.querySelector('#game-board')) === null || _a === void 0 ? void 0 : _a.appendChild(card);
-        setTimeout(() => {
-            this.moveCard(id, CardState.playerHand);
-        }, 500);
     }
     discardPlayerCard(id) {
         this.moveCard(id, CardState.discardPile);
     }
+    drawPlayerCard(id, face) {
+        const card = this.makeCardWithFace(id, face);
+        card.setAttribute('data-card-state', CardState.drawCardPile);
+        this.cards[id] = card;
+        card.addEventListener('click', (e) => __awaiter(this, void 0, void 0, function* () {
+            const id = e.currentTarget.getAttribute('data-cardId');
+            yield this.playPlayerCard(id);
+            console.log(`PLAYER: ${this.gameState.userId}\nCurrent Turn: ${this.gameState.currentTurn}`);
+        }));
+        this.gameState.gameBoard.appendChild(card);
+        setTimeout(() => {
+            this.moveCard(id, CardState.playerHand);
+        }, 500);
+    }
     drawOpponentCard() {
-        var _a;
         const card = this.makeCard("-1");
         card.setAttribute('data-card-state', CardState.drawCardPile);
         card.addEventListener('transition-end', (e) => {
             card.remove();
         });
-        (_a = document.querySelector('#game-board')) === null || _a === void 0 ? void 0 : _a.appendChild(card);
+        this.gameState.gameBoard.appendChild(card);
         setTimeout(() => {
             card.setAttribute('data-card-state', CardState.opponentHand);
         }, 500);
     }
     discardOpponentCard(id, face) {
-        var _a;
         const card = this.makeCardWithFace(id, face);
         card.setAttribute('data-card-state', CardState.opponentHand);
         this.cards[id] = card;
-        (_a = document.querySelector('#game-board')) === null || _a === void 0 ? void 0 : _a.appendChild(card);
+        this.gameState.gameBoard.appendChild(card);
         setTimeout(() => {
             this.moveCard(id, CardState.discardPile);
         }, 0);
+    }
+    animateInitialHand(cards) {
+        cards.forEach((card, index) => {
+            setTimeout(() => {
+                this.drawPlayerCard(card.ref, card.value);
+            }, index * 1250);
+            console.log(card);
+        });
+        cards.forEach((card, index) => {
+            setTimeout(() => {
+                this.drawOpponentCard();
+            }, (index * 1250) + 625);
+            console.log(card);
+        });
     }
 }
 export { GameCards };

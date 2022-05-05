@@ -1,35 +1,42 @@
-import { GameCards } from './GameCards.js';
 import { Messages } from './Messages.js';
+import { GameCards } from './GameCards.js';
+import { Users } from './Users.js';
 import { socket } from './socket.js';
-const gameId = localStorage.getItem("gameId");
-if (!gameId) {
+const gameState = {
+    userId: -1,
+    currentTurn: -1,
+    gameId: localStorage.getItem("gameId"),
+    gameBoard: document.querySelector("#game-board")
+};
+if (!gameState.gameId) {
     alert("ERROR: Invalid Id");
-    window.location.href = "/gamelist";
+    window.location.href = "/login";
 }
-const cards = new GameCards(gameId);
-const messageBox = new Messages(gameId);
-socket.emit("game-load", { gameId });
 socket.on("failed-to-join", (msg) => {
     alert(msg);
     location.href = "/login";
 });
+const cards = new GameCards(gameState);
+const messageBox = new Messages(gameState);
+const usersBox = new Users(gameState);
+socket.emit("game-load", { gameId: gameState.gameId });
 socket.on("init-game", (msg) => {
+    console.log(msg.users);
+    gameState.userId = msg.playerId;
+    gameState.currentTurn = msg.state.currentTurn;
     messageBox.appendManyMessages(msg.messages);
-    msg.cards.forEach((card, index) => {
-        setTimeout(() => {
-            cards.drawPlayerCard(card.ref, card.value);
-        }, index * 1250);
-        console.log(card);
-    });
-    msg.cards.forEach((card, index) => {
-        setTimeout(() => {
-            cards.drawOpponentCard();
-        }, (index * 1250) + 625);
-        console.log(card);
-    });
+    usersBox.addUsers(msg.users);
+    usersBox.setTurn(msg.state.currentTurn);
+    setTimeout(() => {
+        usersBox.setTurn(17);
+    }, 3000);
+    cards.animateInitialHand(msg.cards);
 });
 socket.on("player-joined", (msg) => {
-    console.log(msg);
+    usersBox.addUser({
+        username: msg.username,
+        id: msg.id
+    });
 });
 socket.on("message", (msg) => {
     messageBox.appendMessage(msg);

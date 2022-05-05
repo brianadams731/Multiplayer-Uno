@@ -3,13 +3,14 @@ import { requireWithUserAsync } from '../middleware/requiresWithUserAsync';
 import { Game } from '../models/Game';
 import { GameCards } from '../models/GameCards';
 import { GameUser } from '../models/GameUser';
-import { connection } from '../utils/connection';
 import { checkHashedPasswordAsync } from '../utils/passwordHash';
 
 const joinGameRouter = express.Router();
 
 joinGameRouter.post('/joinGame', requireWithUserAsync, async (req, res) => {
     if (!req.body.gameId || !req.userId) {
+        console.log("User data not present");
+        
         return res.status(400).send();
     }
 
@@ -17,11 +18,16 @@ joinGameRouter.post('/joinGame', requireWithUserAsync, async (req, res) => {
 
 
     if (!game) {
+        console.log("Game does not exist");
+        
         return res.status(400).send();
     }
 
     if (game.password) {
         if (!req.body.password || !(await checkHashedPasswordAsync(req.body.password, game.password))) {
+            console.log("Error: No pass");
+            console.log(game.password);
+            
             return res.status(401).send();
         }
     }

@@ -1,3 +1,4 @@
+import { IGameState } from './interfaces/IGameState.js';
 import { Endpoints } from './utils/endpoints.js';
 import { postDataAsync } from './utils/postDataAsync.js';
 
@@ -13,7 +14,7 @@ interface IMessage {
 }
 
 class Messages {
-    private gameId:string;
+    private gameState: IGameState;
     private outChannel: Channels;
     
     private msgBox: HTMLDivElement;
@@ -21,9 +22,8 @@ class Messages {
     private msgFeed: HTMLDivElement;
     private msgInput: HTMLInputElement;
 
-    public constructor(gameId:string) {
-        this.gameId = gameId;
-
+    public constructor(gameState:IGameState) {
+        this.gameState = gameState;
         [this.msgBox, this.form, this.msgInput, this.msgFeed] = this.createMessageBox();
         this.outChannel = Channels.PUBLIC;
 
@@ -80,7 +80,7 @@ class Messages {
             const res = await postDataAsync(Endpoints.Message, {
                 channel: this.outChannel,
                 content: this.msgInput.value,
-                gameId: this.gameId,
+                gameId: this.gameState.gameId,
                 author: 'self',
             });
 
@@ -139,7 +139,7 @@ class Messages {
     }
 
     private appendToDom() {
-        document.querySelector('#game-board')!.appendChild(this.msgBox);
+        this.gameState.gameBoard.appendChild(this.msgBox);
     }
 
     public appendMessage(message: IMessage) {

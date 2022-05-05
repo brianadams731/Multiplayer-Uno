@@ -1,5 +1,13 @@
+import { IGameState } from "./interfaces/IGameState";
+import { postDataAsync } from "./utils/postDataAsync.js";
+
 interface ICards {
     [id: string]: HTMLDivElement;
+}
+
+interface ResCard{
+    value: string;
+    ref: number|string;
 }
 
 enum CardState {
@@ -12,13 +20,13 @@ enum CardState {
 }
 
 class GameCards {
-    private gameId: string;
+    private gameState: IGameState;
     private cards: ICards;
     private playersHand: string[];
     private topOfDiscard: string;
 
-    constructor(gameId:string) {
-        this.gameId = gameId;
+    constructor(gameState: IGameState) {
+        this.gameState = gameState;
         this.cards = {};
         this.playersHand = [];
 
@@ -27,7 +35,7 @@ class GameCards {
         const placeHolderCardInDrawPile = this.makeCard("-1");
         placeHolderCardInDrawPile.setAttribute('data-card-state', CardState.lastCardInDrawPile);
         this.cards["-1"] = placeHolderCardInDrawPile;
-        document.querySelector("#game-board")?.appendChild(placeHolderCardInDrawPile);
+        this.gameState.gameBoard.appendChild(placeHolderCardInDrawPile);
 
         /*for (let i = 0; i < 52; i++) {
             const cardId = `${i}`;
@@ -75,7 +83,7 @@ class GameCards {
         this.forEachCard((card) => {
             domFragment.prepend(card);
         });
-        document.querySelector('#game-board')?.appendChild(domFragment);
+        this.gameState.gameBoard.appendChild(domFragment);
     }*/
 
     private getCard(id: string): HTMLDivElement {
@@ -216,9 +224,7 @@ class GameCards {
     }
 
     private addCardEvents() {
-        const gameBoard = document.querySelector<HTMLDivElement>('#game-board');
-
-        gameBoard?.addEventListener('transitionstart', (e) => {
+        this.gameState.gameBoard.addEventListener('transitionstart', (e) => {
             const id = (e.target as HTMLElement).getAttribute("data-cardId");
             const isMoving = id? this.getCardMovingState(id):false;
             if(isMoving){
@@ -230,7 +236,7 @@ class GameCards {
             }
         });
 
-        gameBoard?.addEventListener('transitionend', (e) => {
+        this.gameState.gameBoard.addEventListener('transitionend', (e) => {
             const id = (e.target as HTMLElement).getAttribute("data-cardId");
             const isMoving = id?this.getCardMovingState(id):false;
             if(isMoving){
@@ -250,26 +256,42 @@ class GameCards {
         });
     }
 
-    public drawPlayerCard(id: string, face: string){
-        const card = this.makeCardWithFace(id, face);
-        card.setAttribute('data-card-state', CardState.drawCardPile);
-        this.cards[id] = card;
-        card.addEventListener('click', (e) => {
-            const id = (e.currentTarget as HTMLDivElement).getAttribute(
-                'data-cardId'
-            )!;
+    private async playPlayerCard(id: string){
+        // TODO: Uncomment return when finished with debug
+        if(this.gameState.currentTurn != this.gameState.userId){
+            console.log("Not Players Turn");
+            //return
+        }
 
-            console.log(id);
-        });
-        
-        document.querySelector('#game-board')?.appendChild(card);
-        setTimeout(()=>{
-            this.moveCard(id,CardState.playerHand);
-        }, 500);
+        await postDataAsync("/api/playCard",{
+            cardRefId: id,
+            gameId: this.gameState.gameId,
+            userId: this.gameState.userId
+        }); 
+
     }
 
     public discardPlayerCard(id: string){
         this.moveCard(id, CardState.discardPile);
+    }
+
+    public drawPlayerCard(id: string, face: string){
+        const card = this.makeCardWithFace(id, face);
+        card.setAttribute('data-card-state', CardState.drawCardPile);
+        this.cards[id] = card;
+        card.addEventListener('click', async (e) => {
+            const id = (e.currentTarget as HTMLDivElement).getAttribute(
+                'data-cardId'
+            )!;
+            
+            await this.playPlayerCard(id);
+            console.log(`PLAYER: ${this.gameState.userId}\nCurrent Turn: ${this.gameState.currentTurn}`);
+        });
+        
+        this.gameState.gameBoard.appendChild(card);
+        setTimeout(()=>{
+            this.moveCard(id,CardState.playerHand);
+        }, 500);
     }
 
     public drawOpponentCard(){
@@ -278,7 +300,7 @@ class GameCards {
         card.addEventListener('transition-end', (e) => {
             card.remove();
         });
-        document.querySelector('#game-board')?.appendChild(card);
+        this.gameState.gameBoard.appendChild(card);
         setTimeout(()=>{
             card.setAttribute('data-card-state', CardState.opponentHand);
         }, 500);
@@ -288,12 +310,27 @@ class GameCards {
         const card = this.makeCardWithFace(id, face);
         card.setAttribute('data-card-state', CardState.opponentHand);
         this.cards[id] = card;
-        document.querySelector('#game-board')?.appendChild(card);
+        this.gameState.gameBoard.appendChild(card);
         setTimeout(()=>{
             this.moveCard(id,CardState.discardPile);
         }, 0);
     }
 
+    public animateInitialHand(cards: ResCard[]):void{
+        cards.forEach((card:any, index:number)=>{
+            setTimeout(()=>{
+                this.drawPlayerCard(card.ref, card.value);
+            }, index * 1250);
+            console.log(card);
+        })
+    
+        cards.forEach((card:any, index:number)=>{
+            setTimeout(()=>{
+                this.drawOpponentCard();
+            }, (index * 1250) + 625);
+            console.log(card);
+        })
+    }
 }
 
 export { GameCards };

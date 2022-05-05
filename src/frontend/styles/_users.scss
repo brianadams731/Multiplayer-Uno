@@ -1,0 +1,45 @@
+$transition-time: .5s;
+
+.users-wrapper{
+    position: absolute;
+    left: 0;
+    top:0;
+    width: 250px;
+    background-color: rgba(0, 0, 0, 0.301);
+
+    div{
+        position: relative;
+        color: white;
+    }
+
+    p{
+        position: relative;
+        padding: 5px;
+        font-family: var(--font-header);
+        font-size: var(--fs-standard-large);
+        text-align: center;
+    }
+
+    [data-current="false"]::before, [data-current="true"]::before{
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background-color: rgb(175, 175, 175);
+        transform-origin: left;
+        transition: all $transition-time ease-in-out;
+    }
+
+    [data-current="false"]::before{
+        transform: scaleX(0);
+    }
+
+    [data-current="true"]::before{
+        transform: scaleX(1);
+    }
+    [data-current="true"]{
+        color: black;
+    }
+}

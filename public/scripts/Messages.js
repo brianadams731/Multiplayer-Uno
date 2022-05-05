@@ -15,8 +15,8 @@ var Channels;
     Channels["GAME"] = "game";
 })(Channels || (Channels = {}));
 class Messages {
-    constructor(gameId) {
-        this.gameId = gameId;
+    constructor(gameState) {
+        this.gameState = gameState;
         [this.msgBox, this.form, this.msgInput, this.msgFeed] = this.createMessageBox();
         this.outChannel = Channels.PUBLIC;
         this.addFormEvents();
@@ -55,7 +55,7 @@ class Messages {
             const res = yield postDataAsync(Endpoints.Message, {
                 channel: this.outChannel,
                 content: this.msgInput.value,
-                gameId: this.gameId,
+                gameId: this.gameState.gameId,
                 author: 'self',
             });
             if (res.ok) {
@@ -107,7 +107,7 @@ class Messages {
         });
     }
     appendToDom() {
-        document.querySelector('#game-board').appendChild(this.msgBox);
+        this.gameState.gameBoard.appendChild(this.msgBox);
     }
     appendMessage(message) {
         const msg = document.createElement('p');

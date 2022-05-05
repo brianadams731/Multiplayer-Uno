@@ -81,6 +81,49 @@ class GameCards{
     private static getRandomArrayIndex(vector: any[]):number{
         return Math.floor(Math.random() * (vector.length - 1));
     }
+
+    public static async getLookUpCardByRef(ref: string|number){
+        const card = await connection.one(`
+            SELECT val, color, lid
+            FROM "Lookup"
+            WHERE lid=$1
+        `,[ref]);
+
+        return {
+            value: card.val,
+            color: card.color,
+            ref: card.lid
+        }
+    }
+
+    public static async userHasCardInHand(uid: string|number, gid: string|number, ref: string|number){
+        const card = await connection.one(`
+            SELECT count(*)
+            FROM "Card"
+            WHERE uid=$1 and gid=$2 and ref=$3;
+        `,[uid, gid, ref]);
+        
+        return card.count == "1";
+    }
+
+    public static async playCard(uid: string|number, gid: string|number, ref: string|number){
+    
+        return await connection.tx(transaction =>{
+            // TODO: SHOULD WE REMOVE CARD ON PLAY?
+            const t1 = transaction.none(`
+                DELETE FROM "Card"
+                WHERE uid=$1 and gid=$2 and ref=$3;
+            `,[uid, gid, ref]);
+
+            const t2 = transaction.none(`
+                UPDATE "State"
+                SET last_card_played=$1
+                WHERE gid=$2
+            `,[ref, gid]);
+
+            return transaction.batch([t1, t2])
+        })        
+    }
 }
 
 export {GameCards};

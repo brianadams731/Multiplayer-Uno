@@ -25,6 +25,7 @@ import { GameUser } from './models/GameUser';
 import { Message } from './models/Message';
 import { GameCards } from './models/GameCards';
 import { GameState } from './models/GameState';
+import { playCardRouter } from './routes/playCardRouter';
 
 app.use(session(sessionConfig));
 app.use(express.json());
@@ -45,11 +46,13 @@ app.use('/api', createGameRouter);
 app.use('/api', joinGameRouter);
 app.use('/api', gameFinderRouter);
 app.use('/api', gameRouter);
+app.use("/api", playCardRouter);
 
 app.use('/public', express.static('public', { extensions: ['html'] }));
 
 io.on('connection', (socket) => {
-    socket.on("game-load", async (req)=>{
+    // This event fires when a user loads into the game board
+    socket.on("game-load", async (req)=>{                
         const userId = (socket.request as any).session.userId
         const gameId = req.gameId;
         
@@ -65,20 +68,19 @@ io.on('connection', (socket) => {
         const gameMessages = await Message.getAllGameMessages(gameId)
         const cardsInHand = await GameCards.getUserCards(userId, gameId);
         const state = await GameState.getGameState(gameId);
-        const gameUsers = await GameUser.getAllUsersInGame(gameId);
-
-        console.log(gameUsers);
-        
+        const gameUsers = await GameUser.getAllUsersInGame(gameId);        
         
         socket.emit("init-game",{
             messages: gameMessages,
             cards: cardsInHand,
             users: gameUsers,
-            state
+            state,
+            playerId: userId
         });
         
         io.to(gameId).emit("player-joined", {
-            username: user.username
+            username: user.username,
+            id: userId
         })
     })
 });

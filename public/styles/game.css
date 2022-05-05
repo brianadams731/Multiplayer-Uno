@@ -374,6 +374,45 @@ ul {
   color: rgb(122, 206, 255);
 }
 
+.users-wrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 250px;
+  background-color: rgba(0, 0, 0, 0.301);
+}
+.users-wrapper div {
+  position: relative;
+  color: white;
+}
+.users-wrapper p {
+  position: relative;
+  padding: 5px;
+  font-family: var(--font-header);
+  font-size: var(--fs-standard-large);
+  text-align: center;
+}
+.users-wrapper [data-current=false]::before, .users-wrapper [data-current=true]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgb(175, 175, 175);
+  transform-origin: left;
+  transition: all 0.5s ease-in-out;
+}
+.users-wrapper [data-current=false]::before {
+  transform: scaleX(0);
+}
+.users-wrapper [data-current=true]::before {
+  transform: scaleX(1);
+}
+.users-wrapper [data-current=true] {
+  color: black;
+}
+
 /*
     total width: 3362
     total height: 2882
