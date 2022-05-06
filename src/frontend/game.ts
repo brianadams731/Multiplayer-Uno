@@ -20,7 +20,7 @@ if(!gameState.gameId){
 
 socket.on("failed-to-join",(msg:string)=>{
     alert(msg);
-    location.href = "/login";
+    window.location.href = "/login";
 })
 
 const cards = new GameCards(gameState);
@@ -30,6 +30,7 @@ const usersBox = new Users(gameState);
 socket.emit("game-load",{gameId: gameState.gameId});
 
 socket.on("init-game",(msg:any)=>{
+    console.log(msg);
     gameState.userId = msg.playerId;
     gameState.currentTurn = msg.state.currentTurn;
     
@@ -47,9 +48,17 @@ socket.on("init-game",(msg:any)=>{
 })
 
 socket.on("player-joined",(msg: any)=>{
+    console.log(msg);
+
     usersBox.addUser({
         username: msg.username,
         id: msg.id
+    })
+})
+
+socket.on("draw-cards",(msg: any)=>{    
+    msg.cards.forEach((card: any)=>{
+        cards.drawPlayerCard(card.ref, card.value);
     })
 })
 
@@ -58,7 +67,18 @@ socket.on("message",(msg: IMessage)=>{
 })
 
 socket.on("turn-end",(msg:any)=>{
-    console.log(msg);   
+    gameState.currentTurn = msg.state.currentTurn;
+
+    if(msg.userWhoPlayedCard == gameState.userId){
+        console.log("here");
+    }else{
+        cards.discardOpponentCard(msg.state.lastCardPlayed, msg.state.lastCardPlayed);
+        setTimeout(()=>{
+            cards.drawOpponentCard();
+        },400)
+    }
+    
+    usersBox.setTurn(msg.state.uid);
 })
 
 

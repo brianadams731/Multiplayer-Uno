@@ -66,6 +66,15 @@ class GameCards{
        return cardVal.map((item)=>({value:this.formatCard(item.color, item.val), gid: gid, ref: item.lid}))
     }
 
+    public static async getUserCardCount(uid: number, gid:number){
+        const cardCount = await connection.one(`
+            SELECT count(*)
+            FROM "Card" 
+            WHERE uid=$1 and gid=$2;
+        `,[uid, gid]);
+
+        return cardCount.count;
+    }
     private static async getUnplayedCards(gid:number){
         return await connection.any(`
             SELECT ref, gid

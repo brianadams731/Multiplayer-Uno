@@ -5,7 +5,7 @@ import { GameState } from '../models/GameState';
 
 const gameRouter = express.Router();
 
-gameRouter.get("/game/init/:gameId", requireWithUserAsync, async(req, res)=>{
+/*gameRouter.get("/game/init/:gameId", requireWithUserAsync, async(req, res)=>{
     if(!req.params.gameId || !req.userId || !Number.isInteger(Number(req.params.gameId))){
         return res.status(400).send();
     }
@@ -14,9 +14,8 @@ gameRouter.get("/game/init/:gameId", requireWithUserAsync, async(req, res)=>{
     await GameCards.init(gameId);
 
     return res.status(200).send();
-})
+})*/
 
-gameRouter
 
 
 export { gameRouter };

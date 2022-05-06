@@ -157,9 +157,8 @@ class GameCards {
     private removeCardFromPlayersHand(cardId: string): void {
         this.getCard(cardId).style.transform = 'translateX(0)';
         const indexToRemove = this.playersHand.findIndex(
-            (card) => card === cardId
+            (card) => card == cardId
         );
-
         this.playersHand.splice(indexToRemove, 1);
         this.recalculatePlayersHandTransform();
     }
@@ -260,15 +259,18 @@ class GameCards {
         // TODO: Uncomment return when finished with debug
         if(this.gameState.currentTurn != this.gameState.userId){
             console.log("Not Players Turn");
-            //return
+            return
         }
 
-        await postDataAsync("/api/playCard",{
+        const res = await postDataAsync("/api/playCard",{
             cardRefId: id,
             gameId: this.gameState.gameId,
             userId: this.gameState.userId
-        }); 
+        });
 
+        if(res.ok){
+            this.discardPlayerCard(id);
+        }
     }
 
     public initDiscardPile(face: string){

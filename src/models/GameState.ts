@@ -30,7 +30,7 @@ class GameState {
             SET current_turn = $1, started = TRUE
             WHERE gid = $2
         `,
-            [gid, firstPlayer.uid]
+            [firstPlayer.uid, gid]
         );
     }
 
@@ -67,6 +67,7 @@ class GameState {
             started: state.started,
             lastCardPlayed: cardPlayed,
             username: state.username,
+            uid: state.uid,
             currentTurn: state.current_turn,
             modifier: state.modifier,
         };

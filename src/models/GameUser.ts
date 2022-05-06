@@ -42,7 +42,7 @@ class GameUser {
         const users = await connection.any(`
             SELECT gu.uid, u.username
             FROM "GameUser" gu, "User" u
-            WHERE gu.uid = u.uid and gu.gid = 6
+            WHERE gu.uid = u.uid and gu.gid = $1
             ORDER BY gu.time_joined;
         `,[gid])
 

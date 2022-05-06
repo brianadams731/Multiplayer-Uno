@@ -20,12 +20,13 @@ import { createGameRouter } from './routes/createGameRouter';
 import { joinGameRouter } from './routes/joinGameRouter';
 import { gameFinderRouter } from './routes/gameFinderRouter';
 import { gameRouter } from './routes/gameRouter';
-import { User } from './models/User';
 import { GameUser } from './models/GameUser';
 import { Message } from './models/Message';
 import { GameCards } from './models/GameCards';
 import { GameState } from './models/GameState';
 import { playCardRouter } from './routes/playCardRouter';
+
+import { getUserRoom } from './utils/getUserRoom';
 
 app.use(session(sessionConfig));
 app.use(express.json());
@@ -57,19 +58,20 @@ io.on('connection', (socket) => {
         const gameId = req.gameId;
         
         const user = await GameUser.getGameUserByUidGid(userId, gameId);
-
+        
         if(!user){
             socket.emit("failed-to-join","user-or-gameId-does-not-exist")
             return;
         }
         
         socket.join(gameId);
-
+        socket.join(getUserRoom(userId,gameId));
+        
         const gameMessages = await Message.getAllGameMessages(gameId)
         const cardsInHand = await GameCards.getUserCards(userId, gameId);
         const state = await GameState.getGameState(gameId);
         const gameUsers = await GameUser.getAllUsersInGame(gameId);        
-        
+                
         socket.emit("init-game",{
             messages: gameMessages,
             cards: cardsInHand,

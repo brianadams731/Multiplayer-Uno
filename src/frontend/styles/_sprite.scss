@@ -55,7 +55,7 @@
                 background-position: $xPos $yPos;
             }  
         }@else if $x == 12{
-            .#{$color}-draw-two {
+            .#{$color}-drawtwo {
                 background-position: $xPos $yPos;
             }  
         }
