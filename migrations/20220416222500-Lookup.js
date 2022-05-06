@@ -6,7 +6,7 @@ module.exports = {
       CREATE TABLE "Lookup" (
         lid SERIAL PRIMARY KEY,
         val VARCHAR(10),
-        color VARCHAR(6);
+        color VARCHAR(6));
     `)
   },
 
