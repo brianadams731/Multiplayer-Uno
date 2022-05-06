@@ -27,6 +27,7 @@ import { GameState } from './models/GameState';
 import { playCardRouter } from './routes/playCardRouter';
 
 import { getUserRoom } from './utils/getUserRoom';
+import { drawCardRouter } from './routes/drawCardRouter';
 
 app.use(session(sessionConfig));
 app.use(express.json());
@@ -48,6 +49,7 @@ app.use('/api', joinGameRouter);
 app.use('/api', gameFinderRouter);
 app.use('/api', gameRouter);
 app.use("/api", playCardRouter);
+app.use("/api", drawCardRouter);
 
 app.use('/public', express.static('public', { extensions: ['html'] }));
 

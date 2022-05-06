@@ -10,7 +10,7 @@ const playCardRouter = express.Router();
 
 playCardRouter.post("/playCard", requireWithUserAsync, async(req, res)=>{    
     if(!req.body.cardRefId || !req.body.gameId || !req.userId){
-        return res.status(500).send();
+        return res.status(400).send();
     }
 
     const userId = req.userId;
@@ -29,11 +29,14 @@ playCardRouter.post("/playCard", requireWithUserAsync, async(req, res)=>{
     const gameState = await GameState.getCurrentTurnMod(gameId);
         
     await GameCards.playCard(userId, gameId, ref);
-    const card = await GameCards.drawCardForPlayer(userId,gameId);
 
+
+    /*
+    const card = await GameCards.drawCardForPlayer(userId,gameId);
     io.to(getUserRoom(userId, gameId)).emit("draw-cards",{
         cards: card
     })
+    */
 
     const nextUser = getNextTurn(gameUsers, gameState.currentTurn, gameState.modifier);
     await GameState.updateCurrentTurn(nextUser, gameId);
