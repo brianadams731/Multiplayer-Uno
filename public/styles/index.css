@@ -92,9 +92,12 @@ ul {
 }
 
 .header-wrapper {
+  z-index: 950;
+  width: 100%;
+  height: 15%;
   position: fixed;
   top: 0;
-  right: 0;
+  left: 80%;
   padding-top: clamp(15px, 5vh, 50px);
   padding-right: clamp(15px, 10%, 50px);
 }
