@@ -25,7 +25,7 @@ body {
     font-weight: var(--bodyFontWeight);
     line-height: var(--bodyLineHeight);
     padding-top: 10%;
-    padding-bottom: 5%;
+    padding-bottom: 3%;
     overflow: auto;
 }
 
@@ -39,7 +39,7 @@ h1 {
     font-family: inherit;
     font-weight: bolder;
     font-size: 260%;
-    padding-bottom: 5%;
+    padding-bottom: 3%;
 }
 
 input {
@@ -74,7 +74,7 @@ p {
     color: hsl(0, 0%, 100%);
     /* width: 80%; */
     align-self: center;
-    height: 400px;
+    height: 500px;
     min-width: 500px;
     margin-left: 10%;
     margin-right: 10%;
