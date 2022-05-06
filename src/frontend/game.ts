@@ -29,9 +29,7 @@ const usersBox = new Users(gameState);
 
 socket.emit("game-load",{gameId: gameState.gameId});
 
-
 socket.on("init-game",(msg:any)=>{
-    console.log(msg.users);
     gameState.userId = msg.playerId;
     gameState.currentTurn = msg.state.currentTurn;
     
@@ -40,10 +38,11 @@ socket.on("init-game",(msg:any)=>{
     usersBox.addUsers(msg.users);
     usersBox.setTurn(msg.state.currentTurn);
     
-    setTimeout(()=>{
+    /*setTimeout(()=>{
         usersBox.setTurn(17);
-    },3000)
+    },3000)*/
 
+    cards.initDiscardPile(msg.state.lastCardPlayed);
     cards.animateInitialHand(msg.cards);
 })
 
@@ -58,6 +57,9 @@ socket.on("message",(msg: IMessage)=>{
     messageBox.appendMessage(msg);
 })
 
+socket.on("turn-end",(msg:any)=>{
+    console.log(msg);   
+})
 
 
 

@@ -21,15 +21,15 @@ const messageBox = new Messages(gameState);
 const usersBox = new Users(gameState);
 socket.emit("game-load", { gameId: gameState.gameId });
 socket.on("init-game", (msg) => {
-    console.log(msg.users);
     gameState.userId = msg.playerId;
     gameState.currentTurn = msg.state.currentTurn;
     messageBox.appendManyMessages(msg.messages);
     usersBox.addUsers(msg.users);
     usersBox.setTurn(msg.state.currentTurn);
-    setTimeout(() => {
+    /*setTimeout(()=>{
         usersBox.setTurn(17);
-    }, 3000);
+    },3000)*/
+    cards.initDiscardPile(msg.state.lastCardPlayed);
     cards.animateInitialHand(msg.cards);
 });
 socket.on("player-joined", (msg) => {
@@ -40,5 +40,8 @@ socket.on("player-joined", (msg) => {
 });
 socket.on("message", (msg) => {
     messageBox.appendMessage(msg);
+});
+socket.on("turn-end", (msg) => {
+    console.log(msg);
 });
 //# sourceMappingURL=game.js.map

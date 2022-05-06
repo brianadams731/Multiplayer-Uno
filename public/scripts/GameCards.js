@@ -221,6 +221,19 @@ class GameCards {
             });
         });
     }
+    initDiscardPile(face) {
+        if (!face) {
+            return;
+        }
+        const id = "-2";
+        const card = this.makeCardWithFace(id, face);
+        card.setAttribute('data-card-state', CardState.opponentHand);
+        this.cards[id] = card;
+        this.gameState.gameBoard.appendChild(card);
+        setTimeout(() => {
+            this.moveCard(id, CardState.discardPile);
+        }, 250);
+    }
     discardPlayerCard(id) {
         this.moveCard(id, CardState.discardPile);
     }
