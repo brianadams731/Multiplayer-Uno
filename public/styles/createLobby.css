@@ -1,0 +1,243 @@
+:root {
+    --baseColor: white;
+}
+    
+/* helpers/align.css */
+    
+.align {
+    display: grid;
+    place-items: center;
+}
+    
+.grid {
+    position: absolute;
+    inline-size: 110%;
+    margin-inline: auto;
+    max-inline-size: 22rem;
+    position: inherit;
+    padding-right: 33px;
+    background-color: #4c5259;
+    opacity: 0.99;
+    border-radius: 15px 15px 15px 15px;
+    -webkit-box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
+    -moz-box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
+}
+    
+/* helpers/hidden.css */
+    
+.hidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+    
+/* helpers/icon.css */
+    
+:root {
+    --iconFill: var(--baseColor);
+}
+    
+.icons {
+    display: none;
+}
+    
+.icon {
+    block-size: 1em;
+    display: inline-block;
+    fill: var(--iconFill);
+    inline-size: 1em;
+    vertical-align: middle;
+}
+     
+/* layout/base.css */
+
+:root {
+    --htmlFontSize: 18px;
+
+    --bodyBackgroundColor: hsl(200, 5%, 89%);
+    --bodyColor: var(--baseColor);
+    --bodyFontFamily: "Open Sans";
+    --bodyFontFamilyFallback: sans-serif;
+    --bodyFontSize: 1.0rem;
+    --bodyFontWeight: 400;
+    --bodyLineHeight: 1.5;
+}
+    
+* {
+    box-sizing: inherit;
+}
+
+html {
+    box-sizing: border-box;
+    font-size: var(--htmlFontSize);
+}
+
+body {
+    background-color: var(--bodyBackgroundColor);
+    color: var(--bodyColor);
+    font-family: var(--bodyFontFamily), var(--bodyFontFamilyFallback);
+    font-size: var(--bodyFontSize);
+    font-weight: var(--bodyFontWeight);
+    line-height: var(--bodyLineHeight);
+    margin: 0;
+    min-block-size: 100vh;
+    padding-top: 10%;
+    padding-bottom: 5%;
+}
+
+/* modules/anchor.css */
+
+:root {
+    --anchorColor: #eee;
+}
+
+.link {
+    display: inline;
+    font-weight: bolder;
+    color: rgb(255, 255, 255);
+    overflow: hidden;
+    background: linear-gradient(to right, rgb(146, 146, 227), rgb(146, 146, 227) 50%, rgb(255, 255, 255) 50%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 100%;
+    background-position: 100%;
+    transition: background-position 275ms ease;
+    text-decoration: underline;
+}
+
+.link:focus,
+.link:hover {
+    text-decoration: underline;
+    font-weight: bolder;
+    background-position: 0 100%;
+}
+
+/* modules/form.css */
+
+:root {
+    --formGap: 0.875rem;
+}
+
+h1 {
+    text-align: center;
+    color: inherit;
+    font-family: inherit;
+    font-size: 260%;
+} 
+
+input {
+    background-image: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    margin: 0;
+    outline: 0;
+    padding: 0;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"] {
+    cursor: pointer;
+}
+
+.form {
+    display: grid;
+    justify-content: center;
+    border-radius: 10px 10px 10px 10px;
+    padding: 50px;
+    width: 110%;
+    gap: var(--formGap);
+}
+
+.form input[type="password"],
+.form input[type="text"],
+.form input[type="submit"] {
+    inline-size: 100%;
+}
+
+.lobby-wrapper {
+    display: flex;
+}
+
+.lobby-input {
+    flex: 1;
+}
+
+/* modules/lobby.css */
+
+:root {
+    --lobbyBorderRadus: 0.25rem;
+    --lobbyColor: #eee;
+
+    --lobbyInputBackgroundColor: #3b4148;
+    --lobbyInputHoverBackgroundColor: #434a52;
+
+    --lobbyLabelBackgroundColor: #363b41;
+
+    --lobbySubmitBackgroundColor: #d14c4c;
+    --lobbySubmitColor: #eee;
+    --lobbySubmitHoverBackgroundColor: #ef383e;
+}
+
+.lobby {
+    color: var(--lobbyColor);
+}
+
+.lobby label,
+.lobby input[type="text"],
+.lobby input[type="password"],
+.lobby input[type="submit"] {
+    border-radius: var(--lobbyBorderRadus);
+    padding: 1rem;
+}
+
+.lobby label {
+    background-color: var(--lobbyLabelBackgroundColor);
+    color: white;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    padding-inline: 1.25rem;
+}
+
+.lobby input[type="password"],
+.lobby input[type="text"] {
+    background-color: var(--lobbyInputBackgroundColor);
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+
+.lobby input[type="password"]:focus,
+.lobby input[type="password"]:hover,
+.lobby input[type="text"]:focus,
+.lobby input[type="text"]:hover {
+    background-color: var(--lobbyInputHoverBackgroundColor);
+}
+
+.lobby input[type="submit"] {
+    background-color: var(--lobbySubmitBackgroundColor);
+    color: var(--lobbySubmitColor);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.lobby input[type="submit"]:focus,
+.lobby input[type="submit"]:hover {
+    background-color: var(--lobbySubmitHoverBackgroundColor);
+}
+
+/* modules/text.css */
+
+p {
+    margin-block: 1.5rem;
+}
+
+.text--center {
+    text-align: center;
+}

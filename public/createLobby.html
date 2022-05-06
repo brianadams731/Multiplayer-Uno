@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/styles/global.css">
+    <link rel="stylesheet" href="/public/styles/index.css">
+    <link rel="stylesheet" href="/public/styles/createLobby.css" />
+    <title>Join Lobby</title>
+</head>
+
+<header class="header-wrapper">
+    <ul class="nav">
+        <li><a href="/" class="about">Home</a></li>
+        <li><a href="/login" class="log">Log In</a></li>
+        <li><a href="/register" class="register">Register</a></li>
+    </ul>
+</header>
+
+<body>
+
+    <svg xmlns="http://www.w3.org/2000/svg" class="icons" width="40" height="40" >
+        <symbol id="icon-lock" viewBox="0 0 1792 1792">
+            <path d="M640 768h512V576q0-106-75-181t-181-75-181 75-75 181v192zm832 96v576q0 40-28 68t-68 28H416q-40 0-68-28t-28-68V864q0-40 28-68t68-28h32V576q0-184 132-316t316-132 316 132 132 316v192h32q40 0 68 28t28 68z" />
+        </symbol>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" class="icons" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-lobby">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </symbol>
+    </svg>
+
+    <div class="grid">
+        <form class="form lobby" id="formWrap">
+            <h1>CREATE LOBBY</h1>
+
+            <div class="lobby-wrapper">
+                <label for="lobby-name">
+                    <svg class="icon">
+                        <use xlink:href="#icon-lobby"></use>
+                    </svg>
+                    <span class="hidden">Lobby Name</span></label>
+                <input autocomplete="username" id="lobby-name" type="text" name="lobby-name" class="lobby-input"
+                    placeholder="Lobby Name..." required>
+            </div>
+
+            <div class="lobby-wrapper">
+                <label for="lobby-password">
+                    <svg class="icon">
+                        <use xlink:href="#icon-lock"></use>
+                    </svg>
+                    <span class="hidden">Password</span>
+                </label>
+                <input id="lobby-password" type="password" name="password" class="lobby-input" 
+                    placeholder="Lobby Password...">
+            </div>
+
+            <div class="lobby-wrapper">
+                <input type="submit" id="create-game-test" value="Create Lobby">
+            </div>
+
+            <p class="text--center">To go back to the dashboard <a class="link" href="register.html">Click Here!</a></p>
+
+    <script>  
+        const createGameBtn = document.querySelector("#create-game-test");
+        createGameBtn.addEventListener("click", async(e)=>{
+            const res = await fetch("http://localhost:8080/api/createGame",{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body: JSON.stringify({
+                    name:"test game",
+                    password: ""
+                })
+            })
+            if(!res.ok){
+                alert(`ERROR: YOU MUST BE LOGGED IN, CODE: ${res.status}`);
+            }
+        }); 
+        
+    </script>
+</body>
+</html>
