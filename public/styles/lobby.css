@@ -11,6 +11,14 @@
     --bodyLineHeight: 1.5;
 }
 
+.join-game:hover{
+    cursor: pointer;
+}
+.create-game{
+    display: block;
+    margin: auto;
+    margin-top: 5px;
+}
 html {
     font-size: var(--htmlFontSize);
 }
