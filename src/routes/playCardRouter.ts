@@ -17,17 +17,65 @@ playCardRouter.post("/playCard", requireWithUserAsync, async(req, res)=>{
     const gameId = req.body.gameId;
     const ref = req.body.cardRefId;
 
+    
+    // console.log("userId: ", userId);
+    // console.log("gameId: ", gameId);
+    // console.log("ref: ", ref);
+
+    
     const cardInUsersHand = await GameCards.userHasCardInHand(userId, gameId, ref);
     const isUsersTurn = await GameState.isUsersTurn(userId, gameId);
 
+    
+    // console.log("cardInUsersHand: ", cardInUsersHand);
+    // console.log("cardInUsersHand: ", isUsersTurn);
+
+    
     if(!cardInUsersHand || !isUsersTurn){
         return res.status(500).send("ERROR: Invalid Turn");
     }
     
     const refCard = await GameCards.getLookUpCardByRef(req.body.cardRefId);  
     const gameUsers = await GameUser.getAllUsersInGame(gameId);
-    const gameState = await GameState.getCurrentTurnMod(gameId);
+    const gameTurnMod = await GameState.getCurrentTurnMod(gameId);
+
+    
+    // console.log("refCard: ", refCard);
+    // console.log("gameUsers: ", gameUsers);
+    // console.log("gameTurnMod: ", gameTurnMod);
+    
+    
+    const currentGameState = await GameState.getGameState(gameId);
+    const lastCardPlayed = currentGameState.lastCardPlayed;
+
+    
+    // console.log("currentGameState: ", currentGameState);
+    // console.log("lastCardPlayed: ", lastCardPlayed);
+
+    
+    /* TODO: Should we add a random card at begining of game 
+            or allow first player to place any card */
+    if(lastCardPlayed != null){
         
+        const [lastPlayedColor, lastPlayedValue] = lastCardPlayed.split('-');
+        
+        
+        // console.log("lastPlayedColor: ", lastPlayedColor);
+        // console.log("lastPlayedValue: ", lastPlayedValue);
+        // console.log("refCard.color: ", refCard.color);
+        // console.log("refCard.value: ", refCard.value);
+
+        
+        if(lastPlayedColor != refCard.color && lastPlayedValue != refCard.value){
+            return res.status(500).send("ERROR: Invalid Turn");
+        }
+        
+        if(lastPlayedValue === "reverse"){
+            gameTurnMod.modifier = "reverse";
+        }
+    }
+
+
     await GameCards.playCard(userId, gameId, ref);
 
 
@@ -38,11 +86,18 @@ playCardRouter.post("/playCard", requireWithUserAsync, async(req, res)=>{
     })
     */
 
-    const nextUser = getNextTurn(gameUsers, gameState.currentTurn, gameState.modifier);
+    const nextUser = getNextTurn(gameUsers, gameTurnMod.currentTurn, gameTurnMod.modifier);
     await GameState.updateCurrentTurn(nextUser, gameId);
 
+    
+    // console.log("nextUser: ", nextUser);
 
+    
     const newGameState = await GameState.getGameState(gameId);
+    
+    
+    // console.log("newGameState: ", newGameState);
+
     
     // Win condition
     const countInUsersHand = await GameCards.getUserCardCount(userId, gameId);
@@ -57,6 +112,9 @@ playCardRouter.post("/playCard", requireWithUserAsync, async(req, res)=>{
             state: newGameState
         })
     }
+
+    
+    // console.log(countInUsersHand);
     //console.log(`USER ID: ${userId} | GAME ID: ${gameId} | REF: ${ref}`);
     //console.log(`Card in players hand: ${cardInUsersHand}`);
     //console.log(JSON.stringify(refCard, null, 2));
