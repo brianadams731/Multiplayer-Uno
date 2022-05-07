@@ -4,6 +4,7 @@ var Endpoints;
     Endpoints["Register"] = "api/register";
     Endpoints["Gamestart"] = "api/gamestart";
     Endpoints["Message"] = "api/message";
+    Endpoints["DrawCard"] = "api/drawCard";
 })(Endpoints || (Endpoints = {}));
 export { Endpoints };
 //# sourceMappingURL=endpoints.js.map

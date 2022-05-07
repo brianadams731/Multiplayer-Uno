@@ -21,7 +21,9 @@ class GameList {
         const raw = await connection.any(`
             SELECT id, name, password, count(*) as player_count
             FROM "Game" G, "GameUser" GU
-            GROUP BY id
+            GROUP BY id, Gu.gid
+            HAVING G.id = Gu.gid
+            ORDER BY G.id;
         `);
         return this.generateGameList(raw);
     }
