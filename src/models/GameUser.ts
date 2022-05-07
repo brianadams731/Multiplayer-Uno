@@ -70,6 +70,18 @@ class GameUser {
                 
         return userCount.count == 1;
     }
+
+    public static async getOldestPlayer(gid: id){
+        const firstPlayer = await connection.one(`
+            SELECT uid
+            FROM "GameUser"
+            WHERE gid = $1
+            ORDER BY time_joined
+            LIMIT 1;
+        `,[gid]);
+
+        return firstPlayer.uid;
+    }
 }
 
 export { GameUser };

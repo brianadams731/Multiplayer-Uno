@@ -17,12 +17,18 @@ class GameState {
     }
 
     public static async start(gid: id) {
+        const hasGameStarted = await this.gameHasStarted(gid);
+        if(hasGameStarted){
+            return;
+        }
+        
         const firstPlayer = await connection.one(`
             SELECT uid
             FROM "GameUser"
+            WHERE gid = $1
             ORDER BY time_joined
             LIMIT 1;
-        `);
+        `,[gid]);
 
         await connection.none(
             `

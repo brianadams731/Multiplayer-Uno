@@ -113,6 +113,7 @@
                 alert("Error: Lobby could not be created. Please try again!");
             }
             const parsed = await res.json();
+            localStorage.setItem('gameId', parsed.gameId);
             window.location.href = `/gameLobby/${parsed.gameId}` //<--- add lobby endpoint here
         })
         
