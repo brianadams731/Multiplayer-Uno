@@ -30,7 +30,6 @@ socket.on("init-game", (msg) => {
     cards.animateInitialHand(msg.cards);
 });
 socket.on("player-joined", (msg) => {
-    console.log(msg);
     usersBox.addUser({
         username: msg.username,
         id: msg.id

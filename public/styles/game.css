@@ -468,6 +468,10 @@ ul {
   z-index: 10;
 }
 
+[data-card-state=drawCardPile]:hover, [data-card-state=lastCardInDrawPile]:hover, [data-card-state=playerHand] {
+  cursor: pointer;
+}
+
 [data-card-state=drawCardPile], [data-card-state=lastCardInDrawPile] {
   bottom: 50%;
   left: 50%;

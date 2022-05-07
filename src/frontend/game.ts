@@ -43,8 +43,6 @@ socket.on("init-game",(msg:any)=>{
 })
 
 socket.on("player-joined",(msg: any)=>{
-    console.log(msg);
-
     usersBox.addUser({
         username: msg.username,
         id: msg.id
