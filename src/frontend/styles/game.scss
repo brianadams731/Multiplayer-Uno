@@ -91,13 +91,12 @@ $card-border-radius: 28px;
         border-radius: $card-border-radius;
         -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
-
         z-index: inherit;
-        @extend %withSpriteSheet;
     }
 
     .front{
         background-color: rgb(175, 175, 175);
+        @extend %withSpriteSheet;
     }
     .back{
         background-color: rgb(39, 39, 39);
