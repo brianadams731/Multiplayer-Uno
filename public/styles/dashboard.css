@@ -12,7 +12,7 @@
 }
 .button-wrapper {
     display: flex;
-    gap: 10vh;
+    gap: 2rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -24,6 +24,10 @@
 .create-lobby,
 .join-lobby{
     display: block;
+    min-width: 50vh;
+    max-width: 50vh;
+    min-height: 10vh;
+    max-height: 10vh;
 }
 
 html {
@@ -54,7 +58,7 @@ h1 {
     font-family: inherit;
     font-weight: bolder;
     font-size: 260%;
-    padding-bottom: 3%;
+    padding-bottom: 1.5vh;
 }
 
 input {
@@ -75,8 +79,9 @@ input[type='submit'] {
 /* modules/text.css */
 
 p {
-    margin-block: 1rem;
-    font-weight: bolder;
+    font-weight: bold;
+    text-align: center;
+    padding-bottom: 5%;
 }
 
 :root {

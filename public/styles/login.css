@@ -52,6 +52,7 @@
     display: inline-block;
     fill: var(--iconFill);
     inline-size: 1em;
+    font-size: larger;
     vertical-align: middle;
 }
      

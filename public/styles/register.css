@@ -16,8 +16,11 @@
     margin-inline: auto;
     max-inline-size: 22rem;
     position: inherit;
+    min-width: 450px;
     background-color: #4c5259;
-    padding: 18px;
+    padding-top: 50px;
+    padding-left: 6vh;
+    padding-bottom: 30px;
     opacity: 0.99;
     width: 150rem;
     border-radius: 15px 15px 15px 15px;
@@ -54,6 +57,7 @@
     display: inline-block;
     fill: var(--iconFill);
     inline-size: 1em;
+    font-size: larger;
     vertical-align: middle;
 }
     
@@ -91,6 +95,8 @@ body {
     min-block-size: 100vh;
     padding-top: 10%;
     padding-bottom: 5%;
+    overflow-x: auto;
+    overflow-y: scroll;
 }
 
 /* modules/anchor.css */
