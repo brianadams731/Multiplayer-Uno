@@ -8,8 +8,8 @@ import { generateHashedPasswordAsync } from '../utils/passwordHash';
 
 const createGameRouter = express.Router();
 
-createGameRouter.post('/createGame', requireWithUserAsync, async (req, res) => {
-    if (!req.body.name || !req.userId) {
+createGameRouter.post('/createGame', requireWithUserAsync, async (req, res) => {    
+    if (!req.body.name || !req.userId || !req.body.playerCap) {
         return res.status(400).send();
     }
 
@@ -18,7 +18,7 @@ createGameRouter.post('/createGame', requireWithUserAsync, async (req, res) => {
         password = await generateHashedPasswordAsync(`${req.body.password}`);
     }
 
-    const game = await Game.insertIntoGame(req.body.name, password!);
+    const game = await Game.insertIntoGame(req.body.name, password!, req.body.playerCap);
     if (!game) {
         return res.status(500).send();
     }
@@ -28,9 +28,6 @@ createGameRouter.post('/createGame', requireWithUserAsync, async (req, res) => {
     
     await GameUser.insertIntoGameUser(req.userId, game.id);
     await GameCards.drawNCardsForPlayer(req.userId, game.id, 5);
-
-    // TODO: DETERMINE WHEN GAME SHOULD ACTUALLY START, REMOVE THIS
-    await GameState.start(game.id);
 
     return res.status(200).json({
         gameId: game.id,

@@ -27,6 +27,7 @@ import { playCardRouter } from './routes/playCardRouter';
 
 import { getUserRoom } from './utils/getUserRoom';
 import { drawCardRouter } from './routes/drawCardRouter';
+import { gameLobbyRouter } from './routes/gameLobbyRotuer';
 
 app.use(session(sessionConfig));
 app.use(express.json());
@@ -48,6 +49,7 @@ app.use('/api', joinGameRouter);
 app.use('/api', gameFinderRouter);
 app.use("/api", playCardRouter);
 app.use("/api", drawCardRouter);
+app.use("/api", gameLobbyRouter);
 
 app.use('/public', express.static('public', { extensions: ['html'] }));
 
@@ -81,6 +83,34 @@ io.on('connection', (socket) => {
         });
         
         io.to(gameId).emit("player-joined", {
+            username: user.username,
+            id: userId
+        })
+    })
+
+    socket.on("lobby-joined", async (req)=>{
+        const userId = (socket.request as any).session.userId
+        const gameId = req.gameId;
+        
+        const user = await GameUser.getGameUserByUidGid(userId, gameId);
+        
+        if(!user){
+            socket.emit("failed-to-join","user-or-gameId-does-not-exist")
+            return;
+        }
+
+        socket.join(gameId);
+        socket.join(getUserRoom(userId,gameId));
+        const gameMessages = await Message.getAllGameMessages(gameId);
+        const gameUsers = await GameUser.getAllUsersInGame(gameId);
+
+        socket.emit("init-lobby",{
+            messages: gameMessages,
+            users: gameUsers,
+            playerId: userId
+        });
+
+        io.to(gameId).emit("player-joined-lobby", {
             username: user.username,
             id: userId
         })

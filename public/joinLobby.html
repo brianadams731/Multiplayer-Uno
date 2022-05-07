@@ -20,16 +20,34 @@
 </header>
 
 <body>
-    <div class="join-lobby">
+    <div class="join-lobby" id="lobby-wrapper">
         <div class="lobby-head">
             <h1>Join Lobby</h1>
             <div class="search-wrapper"></div>
                 <input type="search" class="search" id="search" placeholder="Search for Lobbies...">
                     <button class="search-button" id="searchBtn">Search</button>
             </div>
+            <div class="game-data" id="game-data"></div>
         </div>
-        <div class="game-data" id="game-data"></div>     
     </div>
+
+    <dialog class="popup" id="popup">
+        <div class="overlay"></div>
+        <div class="content">
+            <form>
+                <fieldset>
+                    <label for="password">Enter Lobby Password </label>
+                    <input type="text" name="name" id="name"
+                        class="text ui-widget-content ui-corner-all">
+                    <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+                </fieldset>
+            </form>
+            <footer>
+                <button type="button" id="submit">Submit</button>
+                <button type="button" id="cancel">Cancel</button>
+            </footer>
+        </div>
+    </dialog>
 
     <script>
         (async function(){
@@ -38,10 +56,16 @@
                 window.location.href = "/login";
             }
         }());
+        
+        document.querySelector("#lobby-wrapper").onclick = ()=> popup.close();
+        const popup = document.querySelector("#popup");
+        popup.onclick = (e)=>e.stopPropagation();
 
         const searchBar = document.querySelector(".search");
         const searchInput = document.querySelector("#search");
         const searchBtn = document.querySelector("#searchBtn");
+        
+        
 
         searchBtn.addEventListener("click",async ()=>{
             if(!searchInput.value){
@@ -61,13 +85,6 @@
         });
         
         const createGameNode = (item) =>{
-            
-            /*{             item interface
-                "id": 1,
-                "name": "test game",
-                "passwordProtected": false,
-                "playerCount": "1"
-            }*/
 
             const game = document.createElement('div');
             game.classList.add("game-node");
@@ -91,10 +108,21 @@
             joinLobby.classList.add("join-game")
             game.appendChild(joinLobby);
 
-            joinLobby.addEventListener('click', async () => {
-            
+            joinLobby.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                //password modal
                 if(item.passwordProtected){
-                    // open enter password modal here
+                    const popup = document.querySelector("#popup");  
+                    popup.show();
+
+                    document.querySelector("#cancel").onclick = function() {
+                        popup.close();
+                    };
+                    document.querySelector("#submit").click(function() {
+
+                    // Add password validation here.
+                    
+                    });
                 }else{
                     const res = await fetch('/api/joinGame', {
                         method: 'POST',
@@ -106,8 +134,14 @@
                             password: '',
                         }),
                     });
-                    localStorage.setItem('gameId', item.id);
-                    window.location.href = '/play';
+                    if(res.ok){
+                        localStorage.setItem('gameId', item.id);
+                        window.location.href = `/gameLobby/${item.id}`;
+                    }else if(res.status === 400){
+                        alert("Error: Game is Full");
+                    }else if(res.status === 401){
+                        alert("Error: Invalid Credentials");
+                    }
                 }
 
             });

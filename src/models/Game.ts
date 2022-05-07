@@ -5,14 +5,14 @@ type id = number | string;
 class Game {
     private constructor() {}
 
-    public static async insertIntoGame(name: string, password: string) {
+    public static async insertIntoGame(name: string, password: string, playerCount:number) {
         const game = await connection.one(
             `
-            INSERT INTO "Game"(name, password)
-            VALUES ($1, $2)
+            INSERT INTO "Game"(name, password, player_cap)
+            VALUES ($1, $2, $3)
             RETURNING id;
         `,
-            [name, password]
+            [name, password, playerCount]
         );
         return {
             id: game.id
@@ -22,7 +22,7 @@ class Game {
     public static async getGameById(gid: id){
         const game = await connection.one(
             `
-            SELECT id, password
+            SELECT id, password, player_cap
             FROM "Game"
             WHERE id=$1;
         `,
@@ -31,7 +31,8 @@ class Game {
         
         return ({
             id: game.id,
-            password: game.password
+            password: game.password,
+            playerCap: game.player_cap
         })
     }
 
