@@ -7,6 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import { Endpoints } from "./utils/endpoints.js";
 import { postDataAsync } from "./utils/postDataAsync.js";
 var CardState;
 (function (CardState) {
@@ -124,7 +125,6 @@ class GameCards {
     }*/
     addCardToPlayersHand(cardId) {
         this.playersHand.push(cardId);
-        //this.cards.playersHand; ?
         this.recalculatePlayersHandTransform();
     }
     removeCardFromPlayersHand(cardId) {
@@ -179,6 +179,18 @@ class GameCards {
         return element;
     }
     addCardEvents() {
+        this.gameState.gameBoard.addEventListener('click', (e) => __awaiter(this, void 0, void 0, function* () {
+            var _a, _b;
+            const cardState = (_b = (_a = e.target) === null || _a === void 0 ? void 0 : _a.parentElement) === null || _b === void 0 ? void 0 : _b.getAttribute("data-card-state");
+            if (!cardState) {
+                return;
+            }
+            if (cardState === CardState.drawCardPile || cardState === CardState.lastCardInDrawPile) {
+                yield postDataAsync(Endpoints.DrawCard, {
+                    gameId: this.gameState.gameId
+                });
+            }
+        }));
         this.gameState.gameBoard.addEventListener('transitionstart', (e) => {
             const id = e.target.getAttribute("data-cardId");
             const isMoving = id ? this.getCardMovingState(id) : false;

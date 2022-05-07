@@ -1,4 +1,5 @@
 import { IGameState } from "./interfaces/IGameState";
+import { Endpoints } from "./utils/endpoints.js";
 import { postDataAsync } from "./utils/postDataAsync.js";
 
 interface ICards {
@@ -150,7 +151,6 @@ class GameCards {
 
     private addCardToPlayersHand(cardId: string): void {
         this.playersHand.push(cardId);
-        //this.cards.playersHand; ?
         this.recalculatePlayersHandTransform();
     }
 
@@ -223,6 +223,19 @@ class GameCards {
     }
 
     private addCardEvents() {
+
+        this.gameState.gameBoard.addEventListener('click', async (e: any)=>{
+            const cardState = e.target?.parentElement?.getAttribute("data-card-state");
+            if(!cardState){
+                return;
+            }
+            if(cardState === CardState.drawCardPile || cardState === CardState.lastCardInDrawPile){
+                await postDataAsync(Endpoints.DrawCard,{
+                    gameId: this.gameState.gameId
+                })
+            }            
+        })
+
         this.gameState.gameBoard.addEventListener('transitionstart', (e) => {
             const id = (e.target as HTMLElement).getAttribute("data-cardId");
             const isMoving = id? this.getCardMovingState(id):false;

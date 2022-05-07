@@ -19,7 +19,6 @@ import { messageRouter } from './routes/messageRouter';
 import { createGameRouter } from './routes/createGameRouter';
 import { joinGameRouter } from './routes/joinGameRouter';
 import { gameFinderRouter } from './routes/gameFinderRouter';
-import { gameRouter } from './routes/gameRouter';
 import { GameUser } from './models/GameUser';
 import { Message } from './models/Message';
 import { GameCards } from './models/GameCards';
@@ -47,7 +46,6 @@ app.use('/api', messageRouter);
 app.use('/api', createGameRouter);
 app.use('/api', joinGameRouter);
 app.use('/api', gameFinderRouter);
-app.use('/api', gameRouter);
 app.use("/api", playCardRouter);
 app.use("/api", drawCardRouter);
 

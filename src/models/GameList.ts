@@ -22,6 +22,8 @@ class GameList {
             SELECT id, name, password, count(*) as player_count
             FROM "Game" G, "GameUser" GU
             GROUP BY id
+            WHERE G.id = Gu.gid
+            ORDER BY G.id;
         `);
         return this.generateGameList(raw);
     }

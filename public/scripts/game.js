@@ -21,15 +21,11 @@ const messageBox = new Messages(gameState);
 const usersBox = new Users(gameState);
 socket.emit("game-load", { gameId: gameState.gameId });
 socket.on("init-game", (msg) => {
-    console.log(msg);
     gameState.userId = msg.playerId;
     gameState.currentTurn = msg.state.currentTurn;
     messageBox.appendManyMessages(msg.messages);
     usersBox.addUsers(msg.users);
     usersBox.setTurn(msg.state.currentTurn);
-    /*setTimeout(()=>{
-        usersBox.setTurn(17);
-    },3000)*/
     cards.initDiscardPile(msg.state.lastCardPlayed);
     cards.animateInitialHand(msg.cards);
 });

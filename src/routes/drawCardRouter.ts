@@ -1,4 +1,5 @@
 import express from 'express';
+import { requireWithUserAsync } from '../middleware/requiresWithUserAsync';
 import { GameCards } from '../models/GameCards';
 import { GameState } from '../models/GameState';
 import { getUserRoom } from '../utils/getUserRoom';
@@ -6,8 +7,12 @@ import { io } from '../utils/server';
 
 const drawCardRouter = express.Router();
 
-drawCardRouter.post('/drawCard', async (req, res) => {
-    const userId = req.body.userId;
+drawCardRouter.post('/drawCard', requireWithUserAsync, async (req, res) => {
+    if(!req.userId || !req.body.gameId){
+        return res.status(400).send();
+    }
+
+    const userId = req.userId;
     const gameId = req.body.gameId;
 
     const isUsersTurn = await GameState.isUsersTurn(userId, gameId);
