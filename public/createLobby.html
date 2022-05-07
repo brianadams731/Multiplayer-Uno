@@ -64,6 +64,13 @@
             <p class="text--center">To go back to the dashboard <a class="link" href="register.html">Click Here!</a></p>
 
     <script>  
+        (async function(){
+            const res = await fetch("/api/loginTest");
+            if(!res.ok){
+                window.location.href = "/login";
+            }
+        }());
+
         const createGameBtn = document.querySelector("#create-game-test");
         createGameBtn.addEventListener("click", async(e)=>{
             const res = await fetch("http://localhost:8080/api/createGame",{
