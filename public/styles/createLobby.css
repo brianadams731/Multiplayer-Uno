@@ -243,6 +243,7 @@ input[type="submit"] {
     font-size: inherit;
     margin-bottom: 4vh;
     border-radius: 0.5vh;
+    border-color: transparent;
     outline: none;
     background-color:#3b4148;
     color: white;

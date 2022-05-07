@@ -125,16 +125,6 @@ p {
     background-color: white;
 }
 
-.clear-icon {
-    position: fixed;
-    size: 80px;
-    border: 3px;
-    right: 420px;
-    top: 218px;
-    cursor: pointer;
-    visibility: hidden;
-}
-
 :root {
     --loginBorderRadus: 0.25rem;
     --loginColor: #eee;
