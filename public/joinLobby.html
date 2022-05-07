@@ -136,7 +136,7 @@
                     });
                     if(res.ok){
                         localStorage.setItem('gameId', item.id);
-                        window.location.href = '/play';
+                        window.location.href = `/gameLobby/${item.id}`;
                     }else if(res.status === 400){
                         alert("Error: Game is Full");
                     }else if(res.status === 401){

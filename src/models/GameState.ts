@@ -111,6 +111,16 @@ class GameState {
             [modifier, gameId]
         );
     }
+
+    public static async gameHasStarted(gid: id){
+        const hasStarted = await connection.one(`
+            SELECT started
+            FROM "State"
+            WHERE gid=$1;        
+        `,[gid]);
+
+        return hasStarted.started;
+    }
 }
 
 export { GameState };

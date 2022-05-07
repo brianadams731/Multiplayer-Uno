@@ -12,6 +12,13 @@ joinGameRouter.post('/joinGame', requireWithUserAsync, async (req, res) => {
         return res.status(400).send("Malformed Request");
     }
 
+    const userAlreadyInGame = await GameUser.userAlreadyJoinedGame(req.body.gameId, req.userId);    
+    if(userAlreadyInGame){
+        return res.status(200).json({
+            gameId: req.body.gameId
+        });
+    }
+
     const game = await Game.getGameById(req.body.gameId);
     const playerCount = await GameUser.getPlayerCount(req.body.gameId);
 
