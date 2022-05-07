@@ -31,16 +31,18 @@ playCardRouter.post("/playCard", requireWithUserAsync, async(req, res)=>{
     const gameUsers = await GameUser.getAllUsersInGame(gameId);
     const gameTurnMod = await GameState.getCurrentTurnMod(gameId);
     
-    
     const currentGameState = await GameState.getGameState(gameId);
     const lastCardPlayed = currentGameState.lastCardPlayed;
+
+
+    console.log("refCard: ", refCard, ";", lastCardPlayed);
 
     
     if(lastCardPlayed != null){
 
         const [lastPlayedColor, lastPlayedValue] = lastCardPlayed.split('-');
         
-        if(lastPlayedValue == "wildcard" || lastCardPlayed == ""){
+        if(refCard.value == "wildcard" || refCard.value == "drawfour" || lastPlayedColor == "any"){
             // pass if wildcard or wild draw four
         }else if(lastPlayedColor != refCard.color && lastPlayedValue != refCard.value){
             return res.status(500).send("ERROR: Invalid Turn");
