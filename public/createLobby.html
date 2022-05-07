@@ -64,7 +64,13 @@
             <p class="text--center">To go back to dashboard <a class="link" href="/register">Click Here!</a></p>
         </form>
     <script>  
-
+        (async function(){
+            const res = await fetch("/api/loginTest");
+            if(!res.ok){
+                window.location.href = "/login";
+            }
+        }());
+        
         const formElement = document.querySelector("#formWrap");
         const lobbyName = document.querySelector("#lobby-name");
         const pass = document.querySelector("lobby-password");

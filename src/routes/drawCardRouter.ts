@@ -22,7 +22,10 @@ drawCardRouter.post('/drawCard', requireWithUserAsync, async (req, res) => {
     
     // start draw logic
     const card = await GameCards.drawCardForPlayer(userId, gameId);
-    io.to(getUserRoom(userId, gameId)).emit('draw-cards', {
+    io.to(getUserRoom(userId, gameId)).emit('draw-player-cards', {
+        cards: card,
+    });
+    io.to(gameId).except(getUserRoom(userId, gameId)).emit('draw-opponent-cards', {
         cards: card,
     });
     // end draw logic

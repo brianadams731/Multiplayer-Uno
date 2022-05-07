@@ -49,10 +49,14 @@ socket.on("player-joined",(msg: any)=>{
     })
 })
 
-socket.on("draw-cards",(msg: any)=>{    
+socket.on("draw-player-cards",(msg: any)=>{    
     msg.cards.forEach((card: any)=>{
         cards.drawPlayerCard(card.ref, card.value);
     })
+})
+
+socket.on("draw-opponent-cards",(msg: any)=>{   
+    cards.drawOpponentCard();
 })
 
 socket.on("message",(msg: IMessage)=>{
@@ -63,12 +67,9 @@ socket.on("turn-end",(msg:any)=>{
     gameState.currentTurn = msg.state.currentTurn;
 
     if(msg.userWhoPlayedCard == gameState.userId){
-        console.log("here");
+
     }else{
         cards.discardOpponentCard(msg.state.lastCardPlayed, msg.state.lastCardPlayed);
-        setTimeout(()=>{
-            cards.drawOpponentCard();
-        },400)
     }
     
     usersBox.setTurn(msg.state.uid);
