@@ -18,5 +18,12 @@ staticRoutes.get('/about', (req, res) => {
 staticRoutes.get('/joinLobby', (req, res) => {
     return res.sendFile("joinLobby.html", { root : path.join(__dirname, '../../public/')});
 });
+staticRoutes.get('/createLobby', (req, res) => {
+    return res.sendFile("createLobby.html", { root : path.join(__dirname, '../../public/')});
+});
+staticRoutes.get('/dashboard', (req, res) => {
+    return res.sendFile("dashboard.html", { root : path.join(__dirname, '../../public/')});
+});
+
 
 export { staticRoutes };

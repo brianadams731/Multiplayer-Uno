@@ -2,13 +2,6 @@
     --baseColor: white;
 }
     
-/* helpers/align.css */
-    
-.align {
-    display: grid;
-    place-items: center;
-}
-    
 .grid {
     position: absolute;
     inline-size: 110%;
@@ -52,6 +45,7 @@
     display: inline-block;
     fill: var(--iconFill);
     inline-size: 1em;
+    font-size: larger;
     vertical-align: middle;
 }
      

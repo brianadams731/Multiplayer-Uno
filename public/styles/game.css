@@ -89,14 +89,15 @@ ul {
     14 columns
     8 rows ( 4 unique rows)
 */
-.card .front, .card .back {
+.card .front {
   background-image: url("/public/assets/uno-cards.svg");
   /*width * scale factor*/
   background-size: 2241.3333333333px;
 }
 
 .card .back {
-  background-position: 100% 100%;
+  background-image: url("/public/assets/card-back.png");
+  background-size: cover;
 }
 
 .all-wild {

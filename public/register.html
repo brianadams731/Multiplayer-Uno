@@ -8,16 +8,17 @@
         <link rel="stylesheet" href="/public/styles/register.css" />
         <title>Register</title>
     </head>
-
-    <body class="align">
         
-        <header class="header-wrapper">
-            <ul class="nav">
-                <li><a href="/" class="about">Home</a></li>
-                <li><a href="/login" class="log">Log In</a></li>
-                <li><a href="/register" class="register">Register</a></li>
-            </ul>
-        </header>
+    <header class="header-wrapper">
+        <ul class="nav">
+            <li><a href="/" class="about">Home</a></li>
+            <li><a href="/login" class="log">Log In</a></li>
+            <li><a href="/register" class="register">Register</a></li>
+            <li><a href="/dashboard" class="dashboard">Play Now!</a></li>
+        </ul>
+    </header>
+
+    <body>
 
         <svg xmlns="http://www.w3.org/2000/svg" class="icons">
             <symbol id="icon-lock" viewBox="0 0 1792 1792">
@@ -30,7 +31,7 @@
 
         <div class="grid">
             <form class="form login" id="formId">
-            <h1>REGISTRATION</h1>
+            <h1>REGISTER</h1>
             <div class="register-field">
                 <label for="register-username">
                     <svg class="icon"><use xlink:href="#icon-user"></use></svg>
@@ -127,7 +128,11 @@
             })
 
             if(res.ok){
-                window.location = "/joinLobby";
+                alert("Success! You have registered successfully.");
+                window.location = "/";
+            }
+            else {
+
             }
         })
     </script>

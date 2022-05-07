@@ -15,7 +15,8 @@
 }
 
 %spriteBack{
-    background-position: 100% 100%;
+    background-image: url("/public/assets/card-back.png");
+    background-size: cover;
 }
 
 .all-wild{
