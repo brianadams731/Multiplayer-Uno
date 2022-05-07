@@ -35,10 +35,13 @@ socket.on("player-joined", (msg) => {
         id: msg.id
     });
 });
-socket.on("draw-cards", (msg) => {
+socket.on("draw-player-cards", (msg) => {
     msg.cards.forEach((card) => {
         cards.drawPlayerCard(card.ref, card.value);
     });
+});
+socket.on("draw-opponent-cards", (msg) => {
+    cards.drawOpponentCard();
 });
 socket.on("message", (msg) => {
     messageBox.appendMessage(msg);
@@ -46,13 +49,9 @@ socket.on("message", (msg) => {
 socket.on("turn-end", (msg) => {
     gameState.currentTurn = msg.state.currentTurn;
     if (msg.userWhoPlayedCard == gameState.userId) {
-        console.log("here");
     }
     else {
         cards.discardOpponentCard(msg.state.lastCardPlayed, msg.state.lastCardPlayed);
-        setTimeout(() => {
-            cards.drawOpponentCard();
-        }, 400);
     }
     usersBox.setTurn(msg.state.uid);
 });
