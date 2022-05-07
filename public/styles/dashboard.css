@@ -37,7 +37,7 @@ html {
 body {
     z-index: 900;
     width: fill;
-    background-color: var(--bodyBackgroundColor);
+    background-color:#DFCFBE;
     color: black;
     font-family: var(--bodyFontFamily), var(--bodyFontFamilyFallback);
     font-size: var(--bodyFontSize);

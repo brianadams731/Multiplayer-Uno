@@ -2,13 +2,6 @@
     --baseColor: white;
 }
     
-/* helpers/align.css */
-    
-.align {
-    display: grid;
-    place-items: center;
-}
-    
 .grid {
     position: absolute;
     inline-size: 110%;
