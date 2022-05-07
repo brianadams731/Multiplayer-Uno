@@ -1,0 +1,205 @@
+:root {
+    --baseColor: white;
+    --htmlFontSize: 18px;
+
+    --bodyBackgroundColor: hsl(200, 5%, 89%);
+    --bodyColor: var(--baseColor);
+    --bodyFontFamily: 'Open Sans';
+    --bodyFontFamilyFallback: sans-serif;
+    --bodyFontSize: 1rem;
+    --bodyFontWeight: 400;
+    --bodyLineHeight: 1.5;
+}
+
+.join-game:hover{
+    cursor: pointer;
+}
+.create-game{
+    display: block;
+    margin: auto;
+    margin-top: 5px;
+}
+html {
+    font-size: var(--htmlFontSize);
+}
+
+body {
+    z-index: 900;
+    width: fill;
+    background-color: var(--bodyBackgroundColor);
+    color: black;
+    font-family: var(--bodyFontFamily), var(--bodyFontFamilyFallback);
+    font-size: var(--bodyFontSize);
+    font-weight: var(--bodyFontWeight);
+    line-height: var(--bodyLineHeight);
+    padding-top: 10%;
+    padding-bottom: 3%;
+    overflow: auto;
+}
+
+:root {
+    --formGap: 0.875rem;
+}
+
+h1 {
+    text-align: center;
+    color: inherit;
+    font-family: inherit;
+    font-weight: bolder;
+    font-size: 260%;
+    padding-bottom: 3%;
+}
+
+input {
+    background-image: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    margin: 0;
+    outline: 0;
+    padding: 0;
+    transition: background-color 0.3s;
+}
+
+input[type='submit'] {
+    cursor: pointer;
+}
+
+/* modules/text.css */
+
+p {
+    margin-block: 1rem;
+    font-weight: bolder;
+}
+
+.join-lobby {
+    align-items: center;
+    align-content: center;
+    text-align: center;
+}
+.game-data {
+    position: inherit;
+    color: hsl(0, 0%, 100%);
+    /* width: 80%; */
+    align-self: center;
+    height: 500px;
+    min-width: 500px;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-top: 20px;
+    padding-bottom: 30px;
+    overflow-y: auto;
+    background-color: #4c5259;
+    opacity: 0.99;
+    border-radius: 15px 15px 15px 15px;
+    -webkit-box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+.search-wrapper {
+    position: relative;
+    display: flex;
+    min-width: 100px;
+}
+
+.search {
+    border: 2.5px solid #4c5259;
+    width: 60%;
+    position: relative;
+    justify-content: center;
+    font-size: medium;
+    margin-bottom: 10px;
+    height: 2rem;
+    background-color: #f5f5f5;
+    outline: 0;
+    
+    margin-right: 10px;
+    padding: 0 10px 0 10px;
+}
+
+.search:hover, .search:focus {
+    border: 3px solid #377973;
+    background-color: white;
+}
+
+.clear-icon {
+    position: fixed;
+    size: 80px;
+    border: 3px;
+    right: 420px;
+    top: 218px;
+    cursor: pointer;
+    visibility: hidden;
+}
+
+:root {
+    --loginBorderRadus: 0.25rem;
+    --loginColor: #eee;
+
+    --loginInputBackgroundColor: #3b4148;
+    --loginInputHoverBackgroundColor: #434a52;
+
+    --loginLabelBackgroundColor: #363b41;
+
+    --loginSubmitBackgroundColor: #d14c4c;
+    --loginSubmitColor: #eee;
+    --loginSubmitHoverBackgroundColor: #ef383e;
+}
+
+.search-button {
+    background-image: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    margin: 0;
+    outline: 0;
+    padding: 0;
+    transition: background-color 0.3s;
+    inline-size: auto;
+    width: 150px;
+    flex: 1;
+    color: var(--loginColor);
+    border-radius: var(--loginBorderRadus);
+    padding: 1rem;
+    background-color: var(--loginSubmitBackgroundColor);
+    color: var(--loginSubmitColor);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+button {
+    background-image: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    margin: 0;
+    outline: 0;
+    padding: 0.5rem;
+    transition: background-color 0.3s;
+    inline-size: auto;
+    width: 20%;
+    flex: 1;
+    color: var(--loginColor);
+    border-radius: var(--loginBorderRadus);
+    background-color: var(--loginSubmitBackgroundColor);
+    color: var(--loginSubmitColor);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.search-button:focus,
+button:focus,
+.search-button:hover,
+button:hover {
+    background-color: var(--loginSubmitHoverBackgroundColor);
+}
+
+
+@media only screen and (max-width: 60%) {
+    .search {
+        padding: 0 5px 0 5px;
+    }
+}
