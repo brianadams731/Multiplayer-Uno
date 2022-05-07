@@ -1,0 +1,13 @@
+.lobby-wrapper{
+    position: relative;
+    min-height: calc(85vh - 75px);
+    margin-top: 75px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.start-btn{
+    padding: 15px 25px;
+}

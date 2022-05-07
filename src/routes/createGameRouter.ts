@@ -29,9 +29,6 @@ createGameRouter.post('/createGame', requireWithUserAsync, async (req, res) => {
     await GameUser.insertIntoGameUser(req.userId, game.id);
     await GameCards.drawNCardsForPlayer(req.userId, game.id, 5);
 
-    // TODO: DETERMINE WHEN GAME SHOULD ACTUALLY START, REMOVE THIS
-    await GameState.start(game.id);
-
     return res.status(200).json({
         gameId: game.id,
     });

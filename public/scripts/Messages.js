@@ -62,6 +62,7 @@ class Messages {
                 this.msgInput.value = '';
                 return;
             }
+            console.log(res.status);
             alert('Error: Cannot send message');
         }));
     }

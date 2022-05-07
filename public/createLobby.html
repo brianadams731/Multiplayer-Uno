@@ -112,8 +112,8 @@
             if(!res.ok){
                 alert("Error: Lobby could not be created. Please try again!");
             }
-
-            window.location.href = "/joinLobby" //<--- add lobby endpoint here
+            const parsed = await res.json();
+            window.location.href = `/gameLobby/${parsed.gameId}` //<--- add lobby endpoint here
         })
         
     </script>
