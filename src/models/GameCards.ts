@@ -24,7 +24,7 @@ class GameCards{
         })
     }
 
-    public static async drawCardForPlayer(pid:number, gid:number):Promise<Cards[]>{
+    public static async drawCardForPlayer(pid:number | string, gid:number):Promise<Cards[]>{
         const unplayedCards = await this.getUnplayedCards(gid);
         if(unplayedCards.length === 0){
             return [];
@@ -47,7 +47,7 @@ class GameCards{
         return cardVal.map((item)=>({value:`${item.color}-${item.val}`, gid: gid, ref: cardRef}))
     }
 
-    public static async drawNCardsForPlayer(pid:number, gid:number, numberOfCards:number){
+    public static async drawNCardsForPlayer(pid:number | string, gid:number, numberOfCards:number){
         // TODO: Rewrite this, this is incredibly inefficient!
         const cards:Cards[] = [];
         for(let i=0;i<numberOfCards;i++){

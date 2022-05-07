@@ -18,63 +18,40 @@ playCardRouter.post("/playCard", requireWithUserAsync, async(req, res)=>{
     const ref = req.body.cardRefId;
 
     
-    // console.log("userId: ", userId);
-    // console.log("gameId: ", gameId);
-    // console.log("ref: ", ref);
-
-    
     const cardInUsersHand = await GameCards.userHasCardInHand(userId, gameId, ref);
     const isUsersTurn = await GameState.isUsersTurn(userId, gameId);
-
-    
-    // console.log("cardInUsersHand: ", cardInUsersHand);
-    // console.log("cardInUsersHand: ", isUsersTurn);
 
     
     if(!cardInUsersHand || !isUsersTurn){
         return res.status(500).send("ERROR: Invalid Turn");
     }
     
+    
     const refCard = await GameCards.getLookUpCardByRef(req.body.cardRefId);  
     const gameUsers = await GameUser.getAllUsersInGame(gameId);
     const gameTurnMod = await GameState.getCurrentTurnMod(gameId);
-
-    
-    // console.log("refCard: ", refCard);
-    // console.log("gameUsers: ", gameUsers);
-    // console.log("gameTurnMod: ", gameTurnMod);
     
     
     const currentGameState = await GameState.getGameState(gameId);
     const lastCardPlayed = currentGameState.lastCardPlayed;
 
     
-    // console.log("currentGameState: ", currentGameState);
-    // console.log("lastCardPlayed: ", lastCardPlayed);
-
-    
-    /* TODO: Should we add a random card at begining of game 
-            or allow first player to place any card */
     if(lastCardPlayed != null){
-        
+
         const [lastPlayedColor, lastPlayedValue] = lastCardPlayed.split('-');
         
-        
-        // console.log("lastPlayedColor: ", lastPlayedColor);
-        // console.log("lastPlayedValue: ", lastPlayedValue);
-        // console.log("refCard.color: ", refCard.color);
-        // console.log("refCard.value: ", refCard.value);
-
-        
-        if(lastPlayedColor != refCard.color && lastPlayedValue != refCard.value){
+        if(lastPlayedValue == "wildcard" || lastCardPlayed == ""){
+            // pass if wildcard or wild draw four
+        }else if(lastPlayedColor != refCard.color && lastPlayedValue != refCard.value){
             return res.status(500).send("ERROR: Invalid Turn");
         }
         
-        if(lastPlayedValue === "reverse"){
-            gameTurnMod.modifier = "reverse";
-        }
     }
 
+    if(refCard.value === "reverse"){
+        // change modifier if reverse card is played
+        await GameState.updateModifier(gameTurnMod.modifier == "reverse" ? null : "", gameId);
+    }
 
     await GameCards.playCard(userId, gameId, ref);
 
@@ -90,13 +67,7 @@ playCardRouter.post("/playCard", requireWithUserAsync, async(req, res)=>{
     await GameState.updateCurrentTurn(nextUser, gameId);
 
     
-    // console.log("nextUser: ", nextUser);
-
-    
     const newGameState = await GameState.getGameState(gameId);
-    
-    
-    // console.log("newGameState: ", newGameState);
 
     
     // Win condition
@@ -109,6 +80,53 @@ playCardRouter.post("/playCard", requireWithUserAsync, async(req, res)=>{
     }else{
         io.to(gameId).emit("turn-end",{
             userWhoPlayedCard: userId,
+            state: newGameState
+        })
+    }
+
+    if(refCard.value == "skip"){    
+        
+        const gameTurnMod = await GameState.getCurrentTurnMod(gameId);
+        const nextUser = getNextTurn(gameUsers, gameTurnMod.currentTurn, gameTurnMod.modifier);
+        await GameState.updateCurrentTurn(nextUser, gameId);
+        const newGameState = await GameState.getGameState(gameId);
+
+        io.to(gameId).emit("turn-end",{
+            userWhoPlayedCard: nextUser,
+            state: newGameState
+        })
+
+    }else if(refCard.value == "drawtwo"){    
+
+        const gameTurnMod = await GameState.getCurrentTurnMod(gameId);
+        const nextUser = getNextTurn(gameUsers, gameTurnMod.currentTurn, gameTurnMod.modifier);
+        
+        const drawUser = gameUsers
+        GameCards.drawNCardsForPlayer(nextUser,gameId,2);
+
+        await GameState.updateCurrentTurn(nextUser, gameId);
+        const newGameState = await GameState.getGameState(gameId);
+
+
+
+        io.to(gameId).emit("turn-end",{
+            userWhoPlayedCard: nextUser,
+            state: newGameState
+        })
+
+    }else if(refCard.value == "drawfour"){    
+        
+        const gameTurnMod = await GameState.getCurrentTurnMod(gameId);
+        const nextUser = getNextTurn(gameUsers, gameTurnMod.currentTurn, gameTurnMod.modifier);
+        
+        const drawUser = gameUsers
+        GameCards.drawNCardsForPlayer(nextUser,gameId,4);
+        
+        await GameState.updateCurrentTurn(nextUser, gameId);
+        const newGameState = await GameState.getGameState(gameId);
+
+        io.to(gameId).emit("turn-end",{
+            userWhoPlayedCard: nextUser,
             state: newGameState
         })
     }
