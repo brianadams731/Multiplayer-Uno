@@ -27,8 +27,26 @@
                 <input type="search" class="search" id="search" placeholder="Search for Lobbies...">
                     <button class="search-button" id="searchBtn">Search</button>
             </div>
+            <div class="game-data" id="game-data"></div>
         </div>
-        <div class="game-data" id="game-data"></div>     
+    </div>
+
+    <div class="popup" id="popup" style="display: none;">
+        <div class="overlay"></div>
+        <div class="content">
+            <form>
+                <fieldset>
+                    <label for="password">Enter Lobby Password </label>
+                    <input type="text" name="name" id="name"
+                        class="text ui-widget-content ui-corner-all">
+                    <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+                </fieldset>
+            </form>
+            <footer>
+                <button type="button" id="submit">Submit</button>
+                <button type="button" id="cancel">Cancel</button>
+            </footer>
+        </div>
     </div>
 
     <script>
@@ -92,9 +110,17 @@
             game.appendChild(joinLobby);
 
             joinLobby.addEventListener('click', async () => {
-            
-                if(item.passwordProtected){
-                    // open enter password modal here
+                //password modal
+                if(item.passwordProtected){    
+                    $("#popup").show();
+                    $("#cancel").click(function() {
+                        $("#popup").hide();
+                    });
+                    $("#submit").click(function() {
+
+                    // Add password validation here.
+                    
+                    });
                 }else{
                     const res = await fetch('/api/joinGame', {
                         method: 'POST',
