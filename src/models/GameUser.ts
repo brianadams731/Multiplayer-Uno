@@ -51,6 +51,15 @@ class GameUser {
             id: user.uid
         }))
     }
+
+    public static async getPlayerCount(gid:id){
+        const playerCount = await connection.one(`
+            SELECT count(*)
+            FROM "GameUser"
+            WHERE gid=$1;
+        `,[gid]);
+        return playerCount.count;
+    }
 }
 
 export { GameUser };

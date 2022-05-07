@@ -45,8 +45,7 @@
                         <use xlink:href="#icon-lobby"></use>
                     </svg>
                     <span class="hidden">Lobby Name</span></label>
-                <input autocomplete="username" id="lobby-name" type="text" name="lobby-name" class="lobby-input"
-                    placeholder="Create Lobby Name..." required>
+                <input autocomplete="username" id="lobby-name" type="text" name="lobby-name" class="lobby-input" placeholder="Create Lobby Name..." required>
             </div>
 
             <div class="lobby-wrapper">
@@ -62,18 +61,18 @@
 
             <div class="dropdown">
                 <p class="dropdown-label">Select Maximum Player Count in Lobby :</p>
-                <select class="dropdown-values">
-                    <option value="default" disabled selected>Select Player Count...</option>
-                    <option value="2">2 Player Game</option>
-                    <option value="3">3 Player Game</option>
-                    <option value="4">4 Player Game</option>
-                    <option value="5">5 Player Game</option>
-                    <option value="6">6 Player Game</option>
-                    <option value="7">7 Player Game</option>
-                    <option value="8">8 Player Game</option>
-                    <option value="9">9 Player Game</option>
-                    <option value="10">10 Player Game</option>
-                    <option value="default">Default</option>
+                <select class="dropdown-values" id="player-number" required>
+                    <option value="" disabled selected>Select Player Count...</option>
+                    <option value=2>2 Player Game</option>
+                    <option value=3>3 Player Game</option>
+                    <option value=4>4 Player Game</option>
+                    <option value=5>5 Player Game</option>
+                    <option value=6>6 Player Game</option>
+                    <option value=7>7 Player Game</option>
+                    <option value=8>8 Player Game</option>
+                    <option value=9>9 Player Game</option>
+                    <option value=10>10 Player Game</option>
+                    <option value=4>Default</option>
                 </select>
             </div>
 
@@ -87,20 +86,17 @@
         (async function(){
             const res = await fetch("/api/loginTest");
             if(!res.ok){
-                window.location.href = "/login";
+                window.location.href = "/joinLobby";
             }
         }());
         
         const formElement = document.querySelector("#formWrap");
         const lobbyName = document.querySelector("#lobby-name");
-        const pass = document.querySelector("lobby-password");
+        const pass = document.querySelector("#lobby-password");
+        const playerNumber = document.querySelector("#player-number");
 
         formElement.addEventListener("submit",async (e)=>{
             e.preventDefault();
-            if(!lobbyName.value){
-                return;
-            }
-
             const res = await fetch("http://localhost:8080/api/createGame",{
                 method:"POST",
                 headers:{
@@ -108,7 +104,8 @@
                 },
                 body: JSON.stringify({
                     name: lobbyName.value,
-                    password: pass.value
+                    password: pass.value,
+                    playerCap: Number(playerNumber.value)
                 })
             })
 
@@ -116,7 +113,7 @@
                 alert("Error: Lobby could not be created. Please try again!");
             }
 
-            window.location.href = "/" //<--- add lobby endpoint here
+            window.location.href = "/joinLobby" //<--- add lobby endpoint here
         })
         
     </script>

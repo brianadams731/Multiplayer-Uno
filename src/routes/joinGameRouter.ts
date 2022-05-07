@@ -9,25 +9,23 @@ const joinGameRouter = express.Router();
 
 joinGameRouter.post('/joinGame', requireWithUserAsync, async (req, res) => {
     if (!req.body.gameId || !req.userId) {
-        console.log("User data not present");
-        
-        return res.status(400).send();
+        return res.status(400).send("Malformed Request");
     }
 
     const game = await Game.getGameById(req.body.gameId);
-
+    const playerCount = await GameUser.getPlayerCount(req.body.gameId);
 
     if (!game) {
-        console.log("Game does not exist");
-        
+        console.log("Game not found");
         return res.status(400).send();
+    }  
+    
+    if(playerCount >= game.playerCap){
+        return res.status(400).send("The game is full")
     }
 
     if (game.password) {
         if (!req.body.password || !(await checkHashedPasswordAsync(req.body.password, game.password))) {
-            console.log("Error: No pass");
-            console.log(game.password);
-            
             return res.status(401).send();
         }
     }

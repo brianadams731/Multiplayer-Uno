@@ -19,6 +19,18 @@
     margin: auto;
     margin-top: 5px;
 }
+
+join-lobby{
+    position: relative;
+}
+
+.popup{
+    display: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
 html {
     font-size: var(--htmlFontSize);
 }
