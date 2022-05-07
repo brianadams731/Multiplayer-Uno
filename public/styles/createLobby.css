@@ -15,7 +15,8 @@
     margin-inline: auto;
     max-inline-size: 22rem;
     position: inherit;
-    padding-right: 33px;
+    padding-right: 6vh;
+    min-width: 500px;
     background-color: #4c5259;
     opacity: 0.99;
     border-radius: 15px 15px 15px 15px;
@@ -52,6 +53,7 @@
     display: inline-block;
     fill: var(--iconFill);
     inline-size: 1em;
+    font-size: larger;
     vertical-align: middle;
 }
      
@@ -85,7 +87,7 @@ body {
     font-size: var(--bodyFontSize);
     font-weight: var(--bodyFontWeight);
     line-height: var(--bodyLineHeight);
-    margin: 0;
+    margin-top: 20;
     min-block-size: 100vh;
     padding-top: 10%;
     padding-bottom: 5%;
@@ -232,12 +234,30 @@ input[type="submit"] {
     background-color: var(--lobbySubmitHoverBackgroundColor);
 }
 
+.dropdown-values {
+    align-items: center;
+    height: 8vh;
+    min-width: 50vh;
+    text-align: center;
+    font-family: inherit;
+    font-size: inherit;
+    margin-bottom: 4vh;
+    border-radius: 0.5vh;
+    outline: none;
+    background-color:#3b4148;
+    color: white;
+    border-width: 0.5vh;
+}
+
 /* modules/text.css */
 
-p {
-    margin-block: 1.5rem;
+.dropdown-label {
+    margin-top: 2vh;
+    margin-bottom: 1.5vh;
+    text-align: center;
 }
 
 .text--center {
     text-align: center;
+    margin-top: 1.vh;
 }
