@@ -81,9 +81,10 @@
                     })
                 })
                 if(res.ok){
-                    window.location = "/joinLobby";
+                    window.location = "/";
+                    alert("Success! You have been logged in successfully.");
                 }else{
-                    alert("Error: Invalid Credentials");
+                    alert("Error: Invalid Username or Password.");
                     password.value = "";
                 }
             })

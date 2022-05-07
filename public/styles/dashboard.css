@@ -1,0 +1,121 @@
+:root {
+    --baseColor: white;
+    --htmlFontSize: 18px;
+
+    --bodyBackgroundColor: hsl(200, 5%, 89%);
+    --bodyColor: var(--baseColor);
+    --bodyFontFamily: 'Open Sans';
+    --bodyFontFamilyFallback: sans-serif;
+    --bodyFontSize: 1rem;
+    --bodyFontWeight: 400;
+    --bodyLineHeight: 1.5;
+}
+
+.join-game:hover{
+    cursor: pointer;
+}
+.create-game{
+    display: block;
+    margin: auto;
+    margin-top: 5px;
+}
+html {
+    font-size: var(--htmlFontSize);
+}
+
+body {
+    z-index: 900;
+    width: fill;
+    background-color: var(--bodyBackgroundColor);
+    color: black;
+    font-family: var(--bodyFontFamily), var(--bodyFontFamilyFallback);
+    font-size: var(--bodyFontSize);
+    font-weight: var(--bodyFontWeight);
+    line-height: var(--bodyLineHeight);
+    padding-top: 10%;
+    padding-bottom: 3%;
+    overflow: auto;
+}
+
+:root {
+    --formGap: 0.875rem;
+}
+
+h1 {
+    text-align: center;
+    color: inherit;
+    font-family: inherit;
+    font-weight: bolder;
+    font-size: 260%;
+    padding-bottom: 3%;
+}
+
+input {
+    background-image: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    margin: 0;
+    outline: 0;
+    padding: 0;
+    transition: background-color 0.3s;
+}
+
+input[type='submit'] {
+    cursor: pointer;
+}
+
+/* modules/text.css */
+
+p {
+    margin-block: 1rem;
+    font-weight: bolder;
+}
+
+:root {
+    --loginBorderRadus: 0.25rem;
+    --loginColor: #eee;
+
+    --loginInputBackgroundColor: #3b4148;
+    --loginInputHoverBackgroundColor: #434a52;
+
+    --loginLabelBackgroundColor: #363b41;
+
+    --loginSubmitBackgroundColor: #d14c4c;
+    --loginSubmitColor: #eee;
+    --loginSubmitHoverBackgroundColor: #ef383e;
+}
+
+button {
+    background-image: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    margin: 0;
+    outline: 0;
+    padding: 0.5rem;
+    transition: background-color 0.3s;
+    inline-size: auto;
+    width: 20%;
+    flex: 1;
+    color: var(--loginColor);
+    border-radius: var(--loginBorderRadus);
+    background-color: var(--loginSubmitBackgroundColor);
+    color: var(--loginSubmitColor);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.search-button:focus,
+button:focus,
+.search-button:hover,
+button:hover {
+    background-color: var(--loginSubmitHoverBackgroundColor);
+}
+
+
+@media only screen and (max-width: 60%) {
+    .search {
+        padding: 0 5px 0 5px;
+    }
+}
