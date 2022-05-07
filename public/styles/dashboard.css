@@ -10,15 +10,22 @@
     --bodyFontWeight: 400;
     --bodyLineHeight: 1.5;
 }
-
-.join-game:hover{
+.button-wrapper {
+    display: flex;
+    gap: 10vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.create-lobby:hover, 
+.join-lobby:hover{
     cursor: pointer;
 }
-.create-game{
+.create-lobby,
+.join-lobby{
     display: block;
-    margin: auto;
-    margin-top: 5px;
 }
+
 html {
     font-size: var(--htmlFontSize);
 }
@@ -96,8 +103,6 @@ button {
     padding: 0.5rem;
     transition: background-color 0.3s;
     inline-size: auto;
-    width: 20%;
-    flex: 1;
     color: var(--loginColor);
     border-radius: var(--loginBorderRadus);
     background-color: var(--loginSubmitBackgroundColor);
@@ -106,9 +111,7 @@ button {
     text-transform: uppercase;
 }
 
-.search-button:focus,
 button:focus,
-.search-button:hover,
 button:hover {
     background-color: var(--loginSubmitHoverBackgroundColor);
 }
