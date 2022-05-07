@@ -32,7 +32,14 @@
         <div class="game-data" id="game-data"></div>     
     </div>
 
-    <script>  
+    <script>
+        (async function(){
+            const res = await fetch("/api/loginTest");
+            if(!res.ok){
+                window.location.href = "/login";
+            }
+        }());
+
         const clearIcon = document.querySelector(".clear-icon");
         const searchBar = document.querySelector(".search");
         const searchInput = document.querySelector("#search");
