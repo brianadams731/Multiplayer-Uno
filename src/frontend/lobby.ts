@@ -28,11 +28,27 @@ socket.on('init-lobby', (msg: any) => {
     
     if(msg.isOwner){
         createStartBtn();
-        //createEndGameBtn();
+        createEndGameBtn();
     }else{
         const waiting = document.createElement("h1");
-        waiting.innerText = "Waiting for Game to Start..."
+        const elipsesAnimationOne = document.createElement("h1");
+        const elipsesAnimationTwo = document.createElement("h1");
+        const elipsesAnimationThree = document.createElement("h1");
+
+        waiting.innerText = "Waiting for Lobby Admin to Start Game";
+        elipsesAnimationOne.innerText = ".";
+        elipsesAnimationTwo.innerText = ".";
+        elipsesAnimationThree.innerText = ".";
+
+        waiting.classList.add("header")
+        elipsesAnimationOne.classList.add("one")
+        elipsesAnimationTwo.classList.add("two")
+        elipsesAnimationThree.classList.add("three")
+
         gameState.gameBoard.appendChild(waiting);
+        gameState.gameBoard.appendChild(elipsesAnimationOne);
+        gameState.gameBoard.appendChild(elipsesAnimationTwo);
+        gameState.gameBoard.appendChild(elipsesAnimationThree);
     }
 });
 socket.on('player-joined-lobby', (msg: any) => {
@@ -60,4 +76,12 @@ function createStartBtn(): void {
         await fetch(`${Endpoints.StartLobby}/${gameState.gameId}`);
     });
     gameState.gameBoard.appendChild(startBtn);
+};
+
+function createEndGameBtn(): void {
+    const endBtn = document.createElement('button');
+    endBtn.classList.add('end-btn');
+    endBtn.innerText = 'Close Lobby';
+    // Closing game lobby logic goes here!
+    gameState.gameBoard.appendChild(endBtn);
 };
