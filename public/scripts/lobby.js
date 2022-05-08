@@ -67,6 +67,10 @@ socket.on('failed-to-join', (msg) => {
     alert(msg);
     window.location.href = '/login';
 });
+socket.on('lobby-deleted', () => {
+    console.log("here");
+    window.location.href = '/dashboard';
+});
 function createStartBtn() {
     const startBtn = document.createElement('button');
     startBtn.classList.add('start-btn');
@@ -81,7 +85,9 @@ function createEndGameBtn() {
     const endBtn = document.createElement('button');
     endBtn.classList.add('end-btn');
     endBtn.innerText = 'Close Lobby';
-    // Closing game lobby logic goes here!
+    endBtn.addEventListener('click', (e) => __awaiter(this, void 0, void 0, function* () {
+        yield fetch(`${Endpoints.DeleteLobby}/${gameState.gameId}`);
+    }));
     gameState.gameBoard.appendChild(endBtn);
 }
 ;

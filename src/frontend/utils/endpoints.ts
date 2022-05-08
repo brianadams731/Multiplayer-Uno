@@ -4,7 +4,8 @@ enum Endpoints {
     Gamestart = '/api/gamestart',
     Message = '/api/message',
     DrawCard = '/api/drawCard',
-    StartLobby = '/api/startLobby'
+    StartLobby = '/api/startLobby',
+    DeleteLobby = '/api/deleteLobby'
 }
 
 
