@@ -98,7 +98,6 @@ ul {
 .card .back {
   background-image: url("/public/assets/card-back.png");
   background-size: cover;
-  margin-left: -30px;
 }
 
 .all-wild {
@@ -368,7 +367,6 @@ ul {
   height: 200px;
   overflow: auto;
 }
-
 .messageFeed p {
   display: block;
   font-size: var(--fs-standard-large);
@@ -399,14 +397,6 @@ ul {
   border: none;
   border-top: 1px solid rgba(243, 243, 243, 0.301);
   border-left: 1px solid rgba(243, 243, 243, 0.301);
-  color:white;
-  font-weight: bolder;
-  font-size: medium;
-  cursor: pointer;
-}
-
-.messageForm button:hover {
-  cursor: pointer;
 }
 
 [data-channel=public] {
@@ -420,7 +410,7 @@ ul {
 .users-wrapper {
   position: absolute;
   left: 0;
-  top: 5%;
+  top: 0;
   width: 250px;
   background-color: rgba(0, 0, 0, 0.301);
 }
@@ -442,7 +432,7 @@ ul {
   left: 0;
   height: 100%;
   width: 100%;
-  background-color: rgb(57, 49, 161);
+  background-color: rgb(175, 175, 175);
   transform-origin: left;
   transition: all 0.5s ease-in-out;
 }
@@ -453,8 +443,7 @@ ul {
   transform: scaleX(1);
 }
 .users-wrapper [data-current=true] {
-  color: rgb(236, 236, 236);
-  font-weight: bolder;
+  color: black;
 }
 
 /*
@@ -470,7 +459,7 @@ ul {
 .board-wrapper {
   position: relative;
   overflow: hidden;
-  background-color: #DFCFBE;
+  background-color: green;
   height: 100vh;
   width: 100%;
   /*@extend %debugCenterLines;*/
@@ -522,7 +511,7 @@ ul {
 }
 
 [data-card-state=playerHand] {
-  bottom: 10vh;
+  bottom: 5vh;
   left: calc(50% - 80px);
 }
 
@@ -597,7 +586,7 @@ ul {
 
 .wildColorToggleWrapper {
   position: absolute;
-  z-index: 10000;
+  z-index: 99999999;
   left: 0;
   top: 0;
   background-color: rgba(0, 0, 0, 0.548);
@@ -615,7 +604,6 @@ ul {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   background-color: gray;
-  z-index: 10000;
   transform-origin: center center;
   width: 30vw;
   height: 30vw;

@@ -37,17 +37,14 @@ socket.on('init-lobby', (msg) => {
         const elipsesAnimationOne = document.createElement("h1");
         const elipsesAnimationTwo = document.createElement("h1");
         const elipsesAnimationThree = document.createElement("h1");
-
         waiting.innerText = "Waiting for Lobby Admin to Start Game";
         elipsesAnimationOne.innerText = ".";
         elipsesAnimationTwo.innerText = ".";
         elipsesAnimationThree.innerText = ".";
-
-        waiting.classList.add("header")
-        elipsesAnimationOne.classList.add("one")
-        elipsesAnimationTwo.classList.add("two")
-        elipsesAnimationThree.classList.add("three")
-
+        waiting.classList.add("header");
+        elipsesAnimationOne.classList.add("one");
+        elipsesAnimationTwo.classList.add("two");
+        elipsesAnimationThree.classList.add("three");
         gameState.gameBoard.appendChild(waiting);
         gameState.gameBoard.appendChild(elipsesAnimationOne);
         gameState.gameBoard.appendChild(elipsesAnimationTwo);
@@ -78,12 +75,14 @@ function createStartBtn() {
         yield fetch(`${Endpoints.StartLobby}/${gameState.gameId}`);
     }));
     gameState.gameBoard.appendChild(startBtn);
-};
+}
+;
 function createEndGameBtn() {
-    const endbtn = document.createElement('button');
-    endbtn.classList.add('end-btn');
-    endbtn.innerText = 'Close Lobby';
-    // Closing game lobby logic goes here
-    gameState.gameBoard.appendChild(endbtn);
-};
+    const endBtn = document.createElement('button');
+    endBtn.classList.add('end-btn');
+    endBtn.innerText = 'Close Lobby';
+    // Closing game lobby logic goes here!
+    gameState.gameBoard.appendChild(endBtn);
+}
+;
 //# sourceMappingURL=lobby.js.map

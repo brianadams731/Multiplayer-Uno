@@ -127,7 +127,7 @@ $card-border-radius: 28px;
 }
 
 [data-card-state="playerHand"]{
-    bottom: 10vh;
+    bottom: 5vh;
     left: minusHalfCardWidth(50%);
 }
 
@@ -203,7 +203,7 @@ $animationDuration: 1s;
 
 .wildColorToggleWrapper{
     position: absolute;
-    z-index: 10000;
+    z-index: 99999999;
     left:0;
     top: 0;
     background-color: rgba(0, 0, 0, 0.548);
@@ -220,7 +220,6 @@ $animationDuration: 1s;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr 1fr;
         background-color: gray;
-        z-index: 10000;
         transform-origin: center center;
         
         width: 30vw;

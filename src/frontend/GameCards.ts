@@ -93,10 +93,45 @@ class GameCards {
     }
 
     private recalculatePlayersHandTransform(): void {
-        const midIndex = this.playersHand.length / 2;
+        const displayWidthCardCount = 8;
+        const handSize = this.playersHand.length
+        let midIndex = (this.playersHand.length%displayWidthCardCount) / 2;        
         this.forEachCardInPlayersHand((card, index) => {
-            const distFromMid = index - midIndex;
-            card.style.transform = `translateX(${distFromMid * 100 + 50}%)`;
+            // TODO: Refactor this
+            const overFlowIndex = displayWidthCardCount/2;
+            if(index < displayWidthCardCount){
+                const distFromMid = index - (handSize < displayWidthCardCount?midIndex:overFlowIndex);
+                card.style.transform = `translateX(${distFromMid * 100 + 50}%)`;
+                card.style.zIndex = '1000000';
+            }else if( index >= displayWidthCardCount && index < displayWidthCardCount * 2){
+                const distFromMid = (index%8) - (handSize < (displayWidthCardCount * 2)?midIndex:overFlowIndex);
+                card.style.transform = `translate(${distFromMid * 100 + 50}%, -30%)`;
+                card.style.zIndex = '100000';
+            }else if( index >= displayWidthCardCount && index < displayWidthCardCount * 3){
+                const distFromMid = (index%8) - (handSize < (displayWidthCardCount * 3)?midIndex:overFlowIndex);
+                card.style.transform = `translate(${distFromMid * 100 + 50}%, -60%)`;
+                card.style.zIndex = '10000';
+            }else if( index >= displayWidthCardCount && index < displayWidthCardCount * 4){
+                const distFromMid = (index%8) - (handSize < (displayWidthCardCount * 4)?midIndex:overFlowIndex);
+                card.style.transform = `translate(${distFromMid * 100 + 50}%, -90%)`;
+                card.style.zIndex = '1000';
+            }else if( index >= displayWidthCardCount && index < displayWidthCardCount * 5){
+                const distFromMid = (index%8) - (handSize < (displayWidthCardCount * 5)?midIndex:overFlowIndex);
+                card.style.transform = `translate(${distFromMid * 100 + 50}%, -120%)`;
+                card.style.zIndex = '100';
+            }else if( index >= displayWidthCardCount && index < displayWidthCardCount * 6){
+                const distFromMid = (index%8) - (handSize < (displayWidthCardCount * 6)?midIndex:overFlowIndex);
+                card.style.transform = `translate(${distFromMid * 100 + 50}%, -150%)`;
+                card.style.zIndex = '10';
+            }else if( index >= displayWidthCardCount && index < displayWidthCardCount * 7){
+                const distFromMid = (index%8) - (handSize < (displayWidthCardCount * 7)?midIndex:overFlowIndex);
+                card.style.transform = `translate(${distFromMid * 100 + 50}%, -180%)`;
+                card.style.zIndex = '10';
+            }else if( index >= displayWidthCardCount && index < displayWidthCardCount * 8){
+                const distFromMid = (index%8) - (handSize < (displayWidthCardCount * 8)?midIndex:overFlowIndex);
+                card.style.transform = `translate(${distFromMid * 100 + 50}%, -210%)`;
+                card.style.zIndex = '10';
+            }
         });
     }
 
@@ -161,7 +196,6 @@ class GameCards {
     }
 
     private addCardEvents() {
-
         this.gameState.gameBoard.addEventListener('click', async (e: any)=>{
             const cardState = e.target?.parentElement?.getAttribute("data-card-state");
             if(!cardState){
