@@ -98,7 +98,7 @@
 
         formElement.addEventListener("submit",async (e)=>{
             e.preventDefault();
-            const res = await fetch("http://localhost:8080/api/createGame",{
+            const res = await fetch("/api/createGame",{
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json"
