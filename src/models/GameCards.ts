@@ -118,7 +118,6 @@ class GameCards{
     public static async playCard(uid: string|number, gid: string|number, ref: string|number){
     
         return await connection.tx(transaction =>{
-            // TODO: SHOULD WE REMOVE CARD ON PLAY?
             const t1 = transaction.none(`
                 DELETE FROM "Card"
                 WHERE uid=$1 and gid=$2 and ref=$3;
@@ -132,6 +131,19 @@ class GameCards{
 
             return transaction.batch([t1, t2])
         })        
+    }
+
+    public static async getWildCardRef(){
+        const wild = await connection.many(`
+            SELECT DISTINCT ON (color) color, lid
+            FROM "Lookup"
+            WHERE val='wildcard';
+        `);
+
+        return wild.map((row)=>({
+            color: row.color,
+            cardId: row.lid
+        }))
     }
 }
 

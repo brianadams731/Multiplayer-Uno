@@ -51,7 +51,7 @@ socket.on("turn-end", (msg) => {
     if (msg.userWhoPlayedCard == gameState.userId) {
     }
     else {
-        cards.discardOpponentCard(msg.state.lastCardPlayed, msg.state.lastCardPlayed);
+        cards.discardOpponentCard(msg.state.lastCardId, msg.state.lastCardPlayed);
     }
     usersBox.setTurn(msg.state.uid);
 });

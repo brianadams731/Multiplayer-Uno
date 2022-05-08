@@ -33,11 +33,16 @@ playCardRouter.post('/playCard', requireWithUserAsync, async (req, res) => {
 
     // This determines an illegal turn
     if (
-        prevCard &&
-        prevCard.color !== currentCard.color &&
-        prevCard?.value !== currentCard.value
-    ) {
-        return res.status(400).send();
+        prevCard &&                                 // if this is not the first turn
+        currentCard.value !== "wildcard" &&         // and the current card is not a wild card
+        prevCard.color !== currentCard.color &&     // and the color of the current and prev cards don't match
+        prevCard?.value !== currentCard.value       // and the values of the current and prev cards don't match
+    ) {                         
+        return res.status(400).send();              // then the turn is illegal
+    }
+
+    if(currentCard.value === 'reverse'){
+        await GameState.toggleReverse(gameId);
     }
 
     const gameUsers = await GameUser.getAllUsersInGame(gameId);

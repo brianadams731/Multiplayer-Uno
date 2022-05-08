@@ -314,7 +314,6 @@ class GameCards {
             )!;
             
             await this.playPlayerCard(id);
-            console.log(`PLAYER: ${this.gameState.userId}\nCurrent Turn: ${this.gameState.currentTurn}`);
         });
         
         this.gameState.gameBoard.appendChild(card);

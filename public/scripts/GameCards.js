@@ -259,7 +259,6 @@ class GameCards {
         card.addEventListener('click', (e) => __awaiter(this, void 0, void 0, function* () {
             const id = e.currentTarget.getAttribute('data-cardId');
             yield this.playPlayerCard(id);
-            console.log(`PLAYER: ${this.gameState.userId}\nCurrent Turn: ${this.gameState.currentTurn}`);
         }));
         this.gameState.gameBoard.appendChild(card);
         setTimeout(() => {
