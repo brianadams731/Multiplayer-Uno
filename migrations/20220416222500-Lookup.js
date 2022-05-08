@@ -5,7 +5,7 @@ module.exports = {
     await queryInterface.sequelize.query(`
       CREATE TABLE "Lookup" (
         lid SERIAL PRIMARY KEY,
-        val VARCHAR(10),
+        val VARCHAR(20),
         color VARCHAR(6));
     `)
   },

@@ -12,8 +12,7 @@ module.exports = {
 
   async down (queryInterface, Sequelize) {
     await queryInterface.sequelize.query(`
-      DROP INDEX gu_date
-      ON "GameUser(time_joined);
+      DROP INDEX gu_date;
     `)
   }
 };

@@ -18,15 +18,60 @@ module.exports = {
         })
       })
     })
+
+    color.forEach((color)=>{
+      value.forEach((val)=>{
+        tempArray.push({
+          color,
+          val
+        })
+      })
+    })
   
-    color.forEach(()=>{
+
+    color.forEach((color)=>{
       tempArray.push({
-        color: "any",
+        color,
         val: "wildcard"
       });
       tempArray.push({
-        color: "any",
-        val: "drawfour"
+        color,
+        val: "wilddrawfour"
+      })
+      tempArray.push({
+        color,
+        val: "drawtwo"
+      })
+      tempArray.push({
+        color,
+        val: "reverse"
+      })
+      tempArray.push({
+        color,
+        val: "skip"
+      })
+    })
+
+    color.forEach((color)=>{
+      tempArray.push({
+        color,
+        val: "wildcard"
+      });
+      tempArray.push({
+        color,
+        val: "wilddrawfour"
+      })
+      tempArray.push({
+        color,
+        val: "drawtwo"
+      })
+      tempArray.push({
+        color,
+        val: "reverse"
+      })
+      tempArray.push({
+        color,
+        val: "skip"
       })
     })
 
