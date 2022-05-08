@@ -51,7 +51,7 @@ socket.on("player-joined",(msg: any)=>{
 
 socket.on("draw-player-cards",(msg: any)=>{    
     msg.cards.forEach((card: any)=>{
-        cards.drawPlayerCard(card.ref, card.value);
+        cards.drawPlayerCard(card.ref, card.value, false);
     })
 })
 

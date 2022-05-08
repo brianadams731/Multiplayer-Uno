@@ -37,7 +37,7 @@ socket.on("player-joined", (msg) => {
 });
 socket.on("draw-player-cards", (msg) => {
     msg.cards.forEach((card) => {
-        cards.drawPlayerCard(card.ref, card.value);
+        cards.drawPlayerCard(card.ref, card.value, false);
     });
 });
 socket.on("draw-opponent-cards", (msg) => {

@@ -96,6 +96,23 @@ class GameState {
         };
     }
 
+    public static async getLastCardPlayed(gameId: id){
+        const state = await connection.oneOrNone(`
+            SELECT l.val, l.color, l.lid
+            FROM "State" s, "Lookup" l
+            WHERE s.last_card_played = l.lid and s.gid = $1;
+        `,[gameId]);
+
+        if(state){
+            return ({
+                color: state.color,
+                value: state.val,
+                ref: state.lid
+            })
+        }
+        return null;
+    }
+
     public static async updateCurrentTurn(currentUser: id, gameId: id) {
         await connection.none(
             `
