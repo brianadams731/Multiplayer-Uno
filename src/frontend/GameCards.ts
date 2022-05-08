@@ -213,15 +213,20 @@ class GameCards {
         const colors = {0:"red", 1:"yellow", 2:"green", 3:"blue"};
 
         const outerWrapper = document.createElement('div');
-        outerWrapper.classList.add("wildColorToggleWrapper");
+        outerWrapper.classList.add("wildColorToggleWrapper", "fadeIn");
         outerWrapper.addEventListener('click',(e)=>{
             e.stopPropagation();
             this.removeWildColorToggle();
         })
-        
+        outerWrapper.addEventListener('animationend',(e)=>{
+            if(e.animationName === "fadeOut"){
+                (e.target as HTMLElement).remove();
+                this.wildColorToggle = null;
+            }
+        })
         const wrapper = document.createElement('div');
         outerWrapper.appendChild(wrapper);
-        wrapper.classList.add("wildColorToggle");
+        wrapper.classList.add("wildColorToggle", "rotateIn");
         wrapper.addEventListener("click", async(e)=>{
             e.stopPropagation();
             const ele = e.target as HTMLElement;
@@ -263,8 +268,10 @@ class GameCards {
         if(!this.wildColorToggle){
             return;
         }
-        this.wildColorToggle.remove();
-        this.wildColorToggle = null;
+        this.wildColorToggle.classList.remove('fadeIn');
+        this.wildColorToggle.classList.add('fadeOut');
+        this.wildColorToggle.children[0].classList.remove("rotateIn");
+        this.wildColorToggle.children[0].classList.add("rotateOut");
     }
 
     private async playPlayerCard(id: string, value:string){

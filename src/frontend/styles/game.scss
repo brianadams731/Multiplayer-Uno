@@ -143,15 +143,75 @@ $card-border-radius: 28px;
     z-index: 100;
 }
 
+$animationDuration: 1s;
+
+@keyframes fadeIn {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+@keyframes fadeOut{
+    0%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
+}
+@keyframes rotateIn{
+    0%{
+        transform: rotate(-364deg) scale(0);
+    }
+    80%{
+        transform: rotate(15deg) scale(1.15);
+    }
+    100%{
+        transform: rotate(0deg) scale(1);
+    }
+}
+@keyframes rotateOut {
+    0%{
+        transform: rotate(0deg) scale(1);
+    }
+    100%{
+        transform: rotate(-364deg) scale(0);
+    }
+}
+.fadeIn{
+    animation-duration: $animationDuration;
+    animation-fill-mode: forwards;
+    animation-name: fadeIn;
+}
+.fadeOut{
+    animation-duration: $animationDuration;
+    animation-fill-mode: forwards;
+    animation-name: fadeOut;
+}
+.rotateOut{
+    animation-duration: $animationDuration;
+    animation-fill-mode: forwards;
+    animation-name: rotateOut;
+}
+.rotateIn{
+    animation-duration: $animationDuration;
+    animation-fill-mode: forwards;
+    animation-name: rotateIn;
+}
+
 .wildColorToggleWrapper{
     position: absolute;
     z-index: 10000;
     left:0;
     top: 0;
     background-color: rgba(0, 0, 0, 0.548);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 100vh;
     width: 100vw;
-
     .wildColorToggle {
         overflow: hidden;
         border-radius: 50%;
@@ -160,28 +220,40 @@ $card-border-radius: 28px;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr 1fr;
         background-color: gray;
-        left: 50%;
-        top: 50%;
         z-index: 10000;
-        transform: translate(-50%, -50%);
-    
+        transform-origin: center center;
+        
         width: 30vw;
         height: 30vw;
-    
         &:hover{
             cursor: pointer;
         }
         .yellow{
             background-color: #ffaa00;
+            &:hover{
+                background-color: #fac459;
+            }
         }
         .red{
             background-color: #ff5555;
+            &:hover{
+                background-color: #fd7f7f;
+            }
         }
         .green{
             background-color: #55aa55;
+            &:hover{
+                background-color: #73a873;
+            }
         }
         .blue{
             background-color: #5555ff;
+            &:hover{
+                background-color: #9090fc;
+            }
+        }
+        .yellow, .red, .green, .blue{
+            transition: all .2s ease-in-out;
         }
     }
 }

@@ -525,12 +525,74 @@ ul {
   z-index: 100;
 }
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes rotateIn {
+  0% {
+    transform: rotate(-364deg) scale(0);
+  }
+  80% {
+    transform: rotate(15deg) scale(1.15);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+@keyframes rotateOut {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  100% {
+    transform: rotate(-364deg) scale(0);
+  }
+}
+.fadeIn {
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-name: fadeIn;
+}
+
+.fadeOut {
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-name: fadeOut;
+}
+
+.rotateOut {
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-name: rotateOut;
+}
+
+.rotateIn {
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-name: rotateIn;
+}
+
 .wildColorToggleWrapper {
   position: absolute;
   z-index: 10000;
   left: 0;
   top: 0;
   background-color: rgba(0, 0, 0, 0.548);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 100vh;
   width: 100vw;
 }
@@ -542,10 +604,8 @@ ul {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   background-color: gray;
-  left: 50%;
-  top: 50%;
   z-index: 10000;
-  transform: translate(-50%, -50%);
+  transform-origin: center center;
   width: 30vw;
   height: 30vw;
 }
@@ -555,12 +615,27 @@ ul {
 .wildColorToggleWrapper .wildColorToggle .yellow {
   background-color: #ffaa00;
 }
+.wildColorToggleWrapper .wildColorToggle .yellow:hover {
+  background-color: #fac459;
+}
 .wildColorToggleWrapper .wildColorToggle .red {
   background-color: #ff5555;
+}
+.wildColorToggleWrapper .wildColorToggle .red:hover {
+  background-color: #fd7f7f;
 }
 .wildColorToggleWrapper .wildColorToggle .green {
   background-color: #55aa55;
 }
+.wildColorToggleWrapper .wildColorToggle .green:hover {
+  background-color: #73a873;
+}
 .wildColorToggleWrapper .wildColorToggle .blue {
   background-color: #5555ff;
+}
+.wildColorToggleWrapper .wildColorToggle .blue:hover {
+  background-color: #9090fc;
+}
+.wildColorToggleWrapper .wildColorToggle .yellow, .wildColorToggleWrapper .wildColorToggle .red, .wildColorToggleWrapper .wildColorToggle .green, .wildColorToggleWrapper .wildColorToggle .blue {
+  transition: all 0.2s ease-in-out;
 }
