@@ -6,6 +6,7 @@ var Endpoints;
     Endpoints["Message"] = "/api/message";
     Endpoints["DrawCard"] = "/api/drawCard";
     Endpoints["StartLobby"] = "/api/startLobby";
+    Endpoints["DeleteLobby"] = "/api/deleteLobby";
 })(Endpoints || (Endpoints = {}));
 export { Endpoints };
 //# sourceMappingURL=endpoints.js.map

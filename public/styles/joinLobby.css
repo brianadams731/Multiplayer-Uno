@@ -9,26 +9,21 @@
     --bodyFontSize: 1rem;
     --bodyFontWeight: 400;
     --bodyLineHeight: 1.5;
-}
 
-.join-game:hover{
-    cursor: pointer;
-}
-.create-game{
-    display: block;
-    margin: auto;
-    margin-top: 5px;
-}
+    --formGap: 0.875rem;
+    --iconFill: var(--baseColor);
 
-join-lobby{
-    position: relative;
-}
+    --borderRadus: 0.25rem;
+    --buttonTextColor: #eee;
 
-.popup{
-    display: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    --inputBackgroundColor: #3b4148;
+    --inputHoverBackgroundColor: #434a52;
+
+    --inputLabelBackgroundColor: #363b41;
+
+    --buttonBackgroundColor: #d14c4c;
+    --buttonTextColor: #eee;
+    --buttonHoverBackgroundColor: #ef383e;
 }
 
 html {
@@ -49,8 +44,32 @@ body {
     overflow: auto;
 }
 
-:root {
-    --formGap: 0.875rem;
+.grid {
+    position: absolute;
+    inline-size: 110%;
+    margin-inline: auto;
+    max-inline-size: 22rem;
+    position: inherit;
+    padding-right: 6vh;
+    min-width: 500px;
+    background-color: #4c5259;
+    opacity: 1;
+    border-radius: 15px 15px 15px 15px;
+    -webkit-box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
+    -moz-box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
+    overflow: auto;
+}
+    
+.hidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
 }
 
 h1 {
@@ -62,6 +81,36 @@ h1 {
     padding-bottom: 3%;
 }
 
+h2 {
+    text-align: center;
+    color: whitesmoke;
+    font-family: inherit;
+    font-weight: bolder;
+    padding-top: 5%;
+    padding-left: 10%;
+    font-size: 200%;
+    padding-bottom: 3%;
+}
+
+.join-lobby {
+    align-items: center;
+    align-content: center;
+    text-align: center;
+}  
+
+.icons {
+    display: none;
+}
+    
+.icon {
+    block-size: 1em;
+    display: inline-block;
+    fill: var(--iconFill);
+    inline-size: 1em;
+    font-size: larger;
+    vertical-align: middle;
+}
+     
 input {
     background-image: none;
     border: 0;
@@ -73,22 +122,11 @@ input {
     transition: background-color 0.3s;
 }
 
-input[type='submit'] {
-    cursor: pointer;
-}
-
-/* modules/text.css */
-
 p {
     margin-block: 1rem;
     font-weight: bolder;
 }
 
-.join-lobby {
-    align-items: center;
-    align-content: center;
-    text-align: center;
-}
 .game-data {
     position: inherit;
     color: hsl(0, 0%, 100%);
@@ -127,28 +165,40 @@ p {
     height: 2rem;
     background-color: #f5f5f5;
     outline: 0;
-    
+
     margin-right: 10px;
     padding: 0 10px 0 10px;
 }
 
-.search:hover, .search:focus {
+.search:hover,
+.search:focus {
     border: 3px solid #377973;
     background-color: white;
 }
 
-:root {
-    --loginBorderRadus: 0.25rem;
-    --loginColor: #eee;
+@media only screen and (max-width: 60%) {
+    .search {
+        padding: 0 5px 0 5px;
+    }
+}
 
-    --loginInputBackgroundColor: #3b4148;
-    --loginInputHoverBackgroundColor: #434a52;
+/* Button Specific Styling */
+.submit:hover,
+.cancel:hover,
+.join-game:hover,
+.search-button:hover {
+    cursor: pointer;
+}
 
-    --loginLabelBackgroundColor: #363b41;
-
-    --loginSubmitBackgroundColor: #d14c4c;
-    --loginSubmitColor: #eee;
-    --loginSubmitHoverBackgroundColor: #ef383e;
+.search-button:focus,
+.join-game:focus,
+.submit:focus,
+.cancel:focus,
+.search-button:hover,
+.join-game:hover,
+.submit:hover,
+.cancel:hover {
+    background-color: var(--buttonHoverBackgroundColor);
 }
 
 .search-button {
@@ -163,16 +213,16 @@ p {
     inline-size: auto;
     width: 150px;
     flex: 1;
-    color: var(--loginColor);
-    border-radius: var(--loginBorderRadus);
+    color: var(--buttonTextColor);
+    border-radius: var(--borderRadus);
     padding: 1rem;
-    background-color: var(--loginSubmitBackgroundColor);
-    color: var(--loginSubmitColor);
+    background-color: var(--buttonBackgroundColor);
+    color: var(--buttonTextColor);
     font-weight: 700;
     text-transform: uppercase;
 }
 
-button {
+.join-game {
     background-image: none;
     border: 0;
     color: inherit;
@@ -184,24 +234,135 @@ button {
     inline-size: auto;
     width: 20%;
     flex: 1;
-    color: var(--loginColor);
-    border-radius: var(--loginBorderRadus);
-    background-color: var(--loginSubmitBackgroundColor);
-    color: var(--loginSubmitColor);
+    color: var(--buttonTextColor);
+    border-radius: var(--borderRadus);
+    background-color: var(--buttonBackgroundColor);
+    color: var(--buttonTextColor);
     font-weight: 700;
     text-transform: uppercase;
 }
+/* End of Button Specific Styling */
 
-.search-button:focus,
-button:focus,
-.search-button:hover,
-button:hover {
-    background-color: var(--loginSubmitHoverBackgroundColor);
+/* Popup Form Styling */
+.lobby label,
+.lobby input {
+    border-radius: var(--borderRadus);
+    padding: 1rem;
 }
 
-
-@media only screen and (max-width: 60%) {
-    .search {
-        padding: 0 5px 0 5px;
-    }
+.lobby label {
+    background-color: var(--inputLabelBackgroundColor);
+    color: white;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    padding-inline: 1.25rem;
 }
+
+.lobby input[type="text"] {
+    background-color: var(--inputBackgroundColor);
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+
+.lobby input[type="text"]:focus,
+.lobby input[type="text"]:hover {
+    background-color: var(--inputHoverBackgroundColor);
+}
+
+.submit {
+    background-color: rgb(37, 123, 37);
+    color:white;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 12px;
+    margin-right: 3%
+}
+
+.cancel {
+    background-color: var(--buttonBackgroundColor);
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-left: 3%
+}
+
+.submit:focus,
+.submit:hover {
+    background-color: rgb(55, 168, 55);
+}
+
+.cancel:focus,
+.cancel:hover {
+    background-color: var(--buttonHoverBackgroundColor);
+}
+
+.submit,
+.cancel {
+    inline-size: 80%;
+}
+
+.form {
+    display: grid;
+    justify-content: center;
+    border-radius: 10px 10px 10px 10px;
+    padding-bottom: 50px;
+    width: 100%;
+    gap: var(--formGap);
+}
+
+.form input[type="text"] {
+    inline-size: 100%;
+    color:hsl(0, 0%, 100%)
+}
+
+.lobby-wrapper {
+    display: flex;
+}
+
+.lobby-input {
+    flex: 1;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 10%;
+    vertical-align: center;  
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    margin: auto;
+    opacity: 1;
+    min-width: 500px;
+    background-color: rgb(6, 6, 6);
+    border-radius: 15px 15px 15px 15px;
+    -webkit-box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
+    -moz-box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
+    width: 50%;
+}
+
+.close {
+    position: relative;
+    color: var(--buttonBackgroundColor);
+    float: right;
+    margin-right: 2rem;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: var(--buttonHoverBackgroundColor);
+    text-decoration: none;
+    cursor: pointer;
+}
+/* End of Popup Form Styling */

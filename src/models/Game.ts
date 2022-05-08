@@ -36,6 +36,13 @@ class Game {
         })
     }
 
+    public static async deleteGame(gid:id){
+        await connection.none(`
+            DELETE
+            FROM "Game"
+            WHERE id=$1
+        `,[gid])
+    }
 }
 
 export { Game };

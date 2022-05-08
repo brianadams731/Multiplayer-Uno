@@ -30,12 +30,25 @@ socket.on('init-lobby', (msg) => {
     usersBox.addUsers(msg.users);
     if (msg.isOwner) {
         createStartBtn();
-        //createEndGameBtn();
+        createEndGameBtn();
     }
     else {
         const waiting = document.createElement("h1");
-        waiting.innerText = "Waiting for Game to Start...";
+        const elipsesAnimationOne = document.createElement("h1");
+        const elipsesAnimationTwo = document.createElement("h1");
+        const elipsesAnimationThree = document.createElement("h1");
+        waiting.innerText = "Waiting for Lobby Admin to Start Game";
+        elipsesAnimationOne.innerText = ".";
+        elipsesAnimationTwo.innerText = ".";
+        elipsesAnimationThree.innerText = ".";
+        waiting.classList.add("header");
+        elipsesAnimationOne.classList.add("one");
+        elipsesAnimationTwo.classList.add("two");
+        elipsesAnimationThree.classList.add("three");
         gameState.gameBoard.appendChild(waiting);
+        gameState.gameBoard.appendChild(elipsesAnimationOne);
+        gameState.gameBoard.appendChild(elipsesAnimationTwo);
+        gameState.gameBoard.appendChild(elipsesAnimationThree);
     }
 });
 socket.on('player-joined-lobby', (msg) => {
@@ -54,6 +67,10 @@ socket.on('failed-to-join', (msg) => {
     alert(msg);
     window.location.href = '/login';
 });
+socket.on('lobby-deleted', () => {
+    console.log("here");
+    window.location.href = '/dashboard';
+});
 function createStartBtn() {
     const startBtn = document.createElement('button');
     startBtn.classList.add('start-btn');
@@ -62,6 +79,16 @@ function createStartBtn() {
         yield fetch(`${Endpoints.StartLobby}/${gameState.gameId}`);
     }));
     gameState.gameBoard.appendChild(startBtn);
+}
+;
+function createEndGameBtn() {
+    const endBtn = document.createElement('button');
+    endBtn.classList.add('end-btn');
+    endBtn.innerText = 'Close Lobby';
+    endBtn.addEventListener('click', (e) => __awaiter(this, void 0, void 0, function* () {
+        yield fetch(`${Endpoints.DeleteLobby}/${gameState.gameId}`);
+    }));
+    gameState.gameBoard.appendChild(endBtn);
 }
 ;
 //# sourceMappingURL=lobby.js.map

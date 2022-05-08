@@ -15,7 +15,7 @@ playCardRouter.post('/playCard', requireWithUserAsync, async (req, res) => {
 
     const userId = req.userId;
     const gameId = req.body.gameId;
-    const ref = req.body.cardRefId;
+    let ref = req.body.cardRefId;
 
     const cardInUsersHand = await GameCards.userHasCardInHand(userId, gameId, ref);
     const isUsersTurn = await GameState.isUsersTurn(userId, gameId);
@@ -29,7 +29,7 @@ playCardRouter.post('/playCard', requireWithUserAsync, async (req, res) => {
 
     // This determines an illegal turn
     if (prevCard &&                                 // if this is not the first turn
-        currentCard.value !== "wildcard" &&         // and the current card is not a wild card
+        !currentCard.value.includes("wild") &&         // and the current card is not a wild card
         prevCard.color !== currentCard.color &&     // and the color of the current and prev cards don't match
         prevCard?.value !== currentCard.value) {    // and the values of the current and prev cards don't match                            
         return res.status(400).send();              // then the turn is illegal
@@ -44,19 +44,28 @@ playCardRouter.post('/playCard', requireWithUserAsync, async (req, res) => {
     let gameState = await GameState.getCurrentTurnMod(gameId);
     let nextUser = getNextTurn(gameUsers,gameState.currentTurn,gameState.modifier);
 
-    if(currentCard.value === "wild"){
+    if(currentCard.value === "wildcard"){
+        const wildCards = await GameCards.getWildCardRef();
+        const mappedWildCard = wildCards.find(item => item.color == req.body.colorChoice)!;
+        await GameCards.playWildCard(userId, gameId, ref, mappedWildCard.cardId);
+        ref = mappedWildCard.cardId;
 
     }else if(currentCard.value === "wilddrawfour"){
+        const wildCards = await GameCards.getWildDrawFourCardRef();        
+        const mappedWildCard = wildCards.find(item => item.color == req.body.colorChoice)!;
         await drawCards(Number(nextUser), gameId, 4);
-    
+        await GameCards.playWildCard(userId, gameId, ref, mappedWildCard.cardId);
+        ref = mappedWildCard.cardId;
+
     }else if(currentCard.value === 'skip'){
         nextUser = nextUser = getNextTurn(gameUsers, nextUser, gameState.modifier);
     }else if(currentCard.value === 'drawtwo'){
         await drawCards(Number(nextUser), gameId, 2);
     }
     // END GAME MODS
-
-    await GameCards.playCard(userId, gameId, ref);
+    if(!currentCard.value.includes("wild")){
+        await GameCards.playCard(userId, gameId, ref);
+    }
     await GameState.updateCurrentTurn(nextUser, gameId);
 
     const newGameState = await GameState.getGameState(gameId);

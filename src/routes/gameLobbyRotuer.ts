@@ -1,5 +1,6 @@
 import express from 'express';
 import { requireWithUserAsync } from '../middleware/requiresWithUserAsync';
+import { Game } from '../models/Game';
 import { GameState } from '../models/GameState';
 import { GameUser } from '../models/GameUser';
 import { io } from '../utils/server';
@@ -13,16 +14,31 @@ gameLobbyRouter.get("/startLobby/:gameId", requireWithUserAsync, async (req,res)
     const userId = req.userId;
     const gameId = req.params.gameId;
     const oldestPlayer = await GameUser.getOldestPlayer(gameId);
-    if(oldestPlayer == userId){
-        await GameState.start(gameId);
-    }else{
-        console.log("Not owner");
+    if(oldestPlayer != userId){
+        return res.status(403).send();
     }
-
+    await GameState.start(gameId);
     io.to(gameId).emit("lobby-start",{
         gameId
     });
 
+    return res.status(200).send();
+})
+
+gameLobbyRouter.get("/deleteLobby/:gameId", requireWithUserAsync, async(req, res)=>{
+    if(!req.userId || !req.params.gameId){
+        return res.status(400).send();
+    }
+    const userId = req.userId;
+    const gameId = req.params.gameId;
+    const oldestPlayer = await GameUser.getOldestPlayer(gameId);
+    if(oldestPlayer != userId){
+        return res.status(403).send();
+    }
+
+    await Game.deleteGame(gameId);
+    io.to(gameId).emit("lobby-deleted");
+    
     return res.status(200).send();
 })
 
