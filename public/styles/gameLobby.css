@@ -1,13 +1,132 @@
+:root {
+    --borderRadus: 0.25rem;
+    --buttonTextColor: #eee;
+
+    --buttonBackgroundColor: #d14c4c;
+    --buttonTextColor: #eee;
+    --buttonHoverBackgroundColor: #ef383e;
+}
+
+.messageBoxWrapper {
+    top: 12px;
+    left: 99%;
+}
+
+.messageFeed {
+    height: 70vh;
+}
+
 .lobby-wrapper{
     position: relative;
     min-height: calc(85vh - 75px);
     margin-top: 75px;
-
+    min-width: min-content;
     display: flex;
     align-items: center;
-    justify-content: center
+    justify-content: center;
+}
+
+button {
+    background-image: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    margin: 0;
+    outline: 0;
+    padding: 0;
+    transition: background-color 0.3s;
 }
 
 .start-btn{
-    padding: 15px 25px;
+    background-color: rgb(37, 123, 37);
+    color:white;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-left: 10vh;
+    margin-right: 10vh;
+    margin-top: 60vh;
+    position: sticky;
+}
+
+.end-btn{
+    background-color: var(--buttonBackgroundColor);
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-left: 10vh;
+    margin-right: 10vh;
+    margin-top: 60vh;
+    position: sticky;
+}
+
+.start-btn,
+.end-btn {
+    border-radius: var(--borderRadus);
+    padding: 2rem;
+    outline: none;
+    border-color: none;
+    justify-content: center;
+    text-align: center;
+    font-size: larger;
+}
+.start-btn:hover,
+.end-btn:hover {
+    cursor: pointer;
+}
+
+.end-btn:focus,
+.end-btn:hover {
+    background-color: var(--buttonHoverBackgroundColor);
+}
+
+.start-btn:focus,
+.start-btn:hover {
+    background-color: rgb(55, 168, 55);
+}
+
+h1 {
+    min-height: calc(70vh - 75px);
+    margin-top: 8rem;
+}
+
+.header {
+    color:rgb(75, 66, 66)
+}
+.one {
+    opacity: 0;
+    -webkit-animation: dot 1.3s infinite;
+    -webkit-animation-delay: 0.1s;
+    animation: dot 1.3s infinite;
+    animation-delay: 0.0s;
+    color:rgb(75, 66, 66)
+}
+
+.two {
+    opacity: 0;
+    -webkit-animation: dot 1.3s infinite;
+    -webkit-animation-delay: 0.2s;
+      animation: dot 1.3s infinite;
+      animation-delay: 0.2s;
+      color:rgb(75, 66, 66)
+    }
+
+.three {
+    opacity: 0;
+    -webkit-animation: dot 1.3s infinite;
+    -webkit-animation-delay: 0.3s;
+     animation: dot 1.3s infinite;
+     animation-delay: 0.3s;
+     color:rgb(75, 66, 66)
+    }
+
+@-webkit-keyframes dot {
+      0% { opacity: 0; }
+     50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes dot {
+      0% { opacity: 0; }
+     50% { opacity: 0; }
+    100% { opacity: 1; }
 }

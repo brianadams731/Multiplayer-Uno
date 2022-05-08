@@ -98,6 +98,7 @@ ul {
 .card .back {
   background-image: url("/public/assets/card-back.png");
   background-size: cover;
+  margin-left: -30px;
 }
 
 .all-wild {
@@ -367,6 +368,7 @@ ul {
   height: 200px;
   overflow: auto;
 }
+
 .messageFeed p {
   display: block;
   font-size: var(--fs-standard-large);
@@ -397,6 +399,14 @@ ul {
   border: none;
   border-top: 1px solid rgba(243, 243, 243, 0.301);
   border-left: 1px solid rgba(243, 243, 243, 0.301);
+  color:white;
+  font-weight: bolder;
+  font-size: medium;
+  cursor: pointer;
+}
+
+.messageForm button:hover {
+  cursor: pointer;
 }
 
 [data-channel=public] {
@@ -410,7 +420,7 @@ ul {
 .users-wrapper {
   position: absolute;
   left: 0;
-  top: 0;
+  top: 5%;
   width: 250px;
   background-color: rgba(0, 0, 0, 0.301);
 }
@@ -432,7 +442,7 @@ ul {
   left: 0;
   height: 100%;
   width: 100%;
-  background-color: rgb(175, 175, 175);
+  background-color: rgb(57, 49, 161);
   transform-origin: left;
   transition: all 0.5s ease-in-out;
 }
@@ -443,7 +453,8 @@ ul {
   transform: scaleX(1);
 }
 .users-wrapper [data-current=true] {
-  color: black;
+  color: rgb(236, 236, 236);
+  font-weight: bolder;
 }
 
 /*
@@ -459,7 +470,7 @@ ul {
 .board-wrapper {
   position: relative;
   overflow: hidden;
-  background-color: green;
+  background-color: #DFCFBE;
   height: 100vh;
   width: 100%;
   /*@extend %debugCenterLines;*/

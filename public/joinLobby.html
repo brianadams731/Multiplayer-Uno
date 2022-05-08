@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,67 +19,88 @@
     </ul>
 </header>
 
+<svg xmlns="http://www.w3.org/2000/svg" class="icons" width="60" height="60">
+    <symbol id="icon-lock" viewBox="0 0 1792 1792">
+        <path
+            d="M640 768h512V576q0-106-75-181t-181-75-181 75-75 181v192zm832 96v576q0 40-28 68t-68 28H416q-40 0-68-28t-28-68V864q0-40 28-68t68-28h32V576q0-184 132-316t316-132 316 132 132 316v192h32q40 0 68 28t28 68z" />
+    </symbol>
+</svg>
+
 <body>
     <div class="join-lobby" id="lobby-wrapper">
         <div class="lobby-head">
             <h1>Join Lobby</h1>
             <div class="search-wrapper"></div>
-                <input type="search" class="search" id="search" placeholder="Search for Lobbies...">
-                    <button class="search-button" id="searchBtn">Search</button>
+            <input type="search" class="search" id="search" placeholder="Search for Lobbies...">
+            <button class="search-button" id="searchBtn">Search</button>
+        </div>
+        <div class="game-data" id="game-data"></div>
+    </div>
+
+    <div class="grid">
+        <div class="modal" id="popup" aria-labelledby="myModalLabel">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</span>
+                    <h2 class="modal-title" id="myModalLabel">Enter Lobby Password Below</h2>
+                </div>
+
+                <form class="form lobby">
+                    <div class="lobby-wrapper">
+                        <label for="lobby-password">
+                            <svg class="icon">
+                                <use xlink:href="#icon-lock"></use>
+                            </svg>
+                            <span class="hidden">Password</span>
+                        </label>
+                        <input type="text" class="lobby-input" id="password" placeholder="Lobby Password...">
+                    </div>
+                    <div class="lobby-wrapper">
+                        <input class="submit" type="button" id="submit" value="Validate">
+                        <input class="cancel" type="button" id="cancel" value="Cancel">
+                    </div>
+                </form>
+
             </div>
-            <div class="game-data" id="game-data"></div>
         </div>
     </div>
 
-    <dialog class="popup" id="popup">
-        <div class="overlay"></div>
-        <div class="content">
-            <form>
-                    <input type="text" id="password"
-                        class="text ui-widget-content ui-corner-all">
-                    <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
-                    <button type="button" id="submit">Submit</button>
-                    <button type="button" id="cancel">Cancel</button>
-            </form>
-        </div>
-    </dialog>
-
     <script>
-        (async function(){
+        (async function () {
             const res = await fetch("/api/loginTest");
-            if(!res.ok){
+            if (!res.ok) {
                 window.location.href = "/login";
             }
         }());
-        
-        document.querySelector("#lobby-wrapper").onclick = ()=> popup.close();
-        const popup = document.querySelector("#popup");
-        popup.onclick = (e)=>e.stopPropagation();
+
+        const popup = document.getElementById("popup");
+        const span = document.getElementsByClassName("close")[0];
+        popup.onclick = (e) => e.stopPropagation();
 
         const searchBar = document.querySelector(".search");
         const searchInput = document.querySelector("#search");
         const searchBtn = document.querySelector("#searchBtn");
-        
-        
 
-        searchBtn.addEventListener("click",async ()=>{
-            if(!searchInput.value){
+
+
+        searchBtn.addEventListener("click", async () => {
+            if (!searchInput.value) {
                 await fetchAllGames();
                 return;
             }
 
             await searchGames(searchInput.value);
         })
-        
+
         searchBar.addEventListener("keyup", () => {
-            if(searchBar.value && clearIcon.style.visibility != "visible"){
-            clearIcon.style.visibility = "visible";
-            } else if(!searchBar.value) {
-            clearIcon.style.visibility = "hidden";
+            if (searchBar.value && clearIcon.style.visibility != "visible") {
+                clearIcon.style.visibility = "visible";
+            } else if (!searchBar.value) {
+                clearIcon.style.visibility = "hidden";
             }
         });
-        
-        const createGameNode = (item) =>{
+
+        const createGameNode = (item) => {
 
             const game = document.createElement('div');
             game.classList.add("game-node");
@@ -105,14 +127,16 @@
             joinLobby.addEventListener('click', async (e) => {
                 e.stopPropagation();
                 //password modal
-                if(item.passwordProtected){
-                    const popup = document.querySelector("#popup");  
-                    popup.show();
-
-                    document.querySelector("#cancel").onclick = function() {
-                        popup.close();
-                    };
-                    document.querySelector("#submit").onclick = async function() {
+                if (item.passwordProtected) {
+                    popup.style.display = "block";
+                    span.onclick = function () {
+                        popup.style.display = "none";
+                    }
+                    document.querySelector("#cancel").onclick = function () {
+                        popup.style.display = "none";
+                    }
+                    
+                    document.querySelector("#submit").onclick = async function () {
                         const res = await fetch('/api/joinGame', {
                             method: 'POST',
                             headers: {
@@ -123,16 +147,17 @@
                                 password: document.querySelector('#password').value,
                             }),
                         });
-                        if(res.ok){
+                        if (res.ok) {
                             localStorage.setItem('gameId', item.id);
                             window.location.href = `/gameLobby/${item.id}`;
-                        }else if(res.status === 400){
-                            alert("Error: Game is Full");
-                        }else if(res.status === 401){
-                            alert("Error: Invalid Credentials");
+                        } else if (res.status === 400) {
+                            alert("Error: The game lobby you are trying to join is already at maximum capacity. Please join " +
+                                "another lobby instead.");
+                        } else if (res.status === 401) {
+                            alert("Error: The password you have entered is incorrect. Please try again.");
                         }
                     };
-                }else{
+                } else {
                     const res = await fetch('/api/joinGame', {
                         method: 'POST',
                         headers: {
@@ -143,29 +168,29 @@
                             password: '',
                         }),
                     });
-                    if(res.ok){
+                    if (res.ok) {
                         localStorage.setItem('gameId', item.id);
                         window.location.href = `/gameLobby/${item.id}`;
-                    }else if(res.status === 400){
-                        alert("Error: Game is Full");
-                    }else if(res.status === 401){
-                        alert("Error: Invalid Credentials");
+                    } else if (res.status === 400) {
+                        alert("Error: The lobby you have selected has reached maximum capacity. Please choose a different lobby to join!");
+                    } else if (res.status === 401) {
+                        alert("Error: The password you have entered is incorrect. Please try again.");
                     }
                 }
 
             });
-            
+
             return game;
         }
 
 
-        const fetchAllGames = async () =>{
+        const fetchAllGames = async () => {
             const lobbyWrapper = document.querySelector('#game-data');
             const res = await fetch('/api/findGame/all');
             const parsed = await res.json();
 
             const wrapper = document.createElement("div");
-            
+
             parsed.forEach((item) => {
                 const node = createGameNode(item);
                 wrapper.appendChild(node);
@@ -175,13 +200,13 @@
             lobbyWrapper.appendChild(wrapper);
         }
 
-        const searchGames = async (name) =>{
+        const searchGames = async (name) => {
             const lobbyWrapper = document.querySelector('#game-data');
             const res = await fetch(`/api/findGame/byName/${name}`);
             const parsed = await res.json();
 
             const wrapper = document.createElement("div");
-            
+
             parsed.forEach((item) => {
                 const node = createGameNode(item);
                 wrapper.appendChild(node);
@@ -193,7 +218,8 @@
 
         fetchAllGames();
 
-        
+
     </script>
 </body>
+
 </html>
