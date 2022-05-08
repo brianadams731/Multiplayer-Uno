@@ -28,6 +28,7 @@ socket.on('init-lobby', (msg: any) => {
     
     if(msg.isOwner){
         createStartBtn();
+        //createEndGameBtn();
     }else{
         const waiting = document.createElement("h1");
         waiting.innerText = "Waiting for Game to Start..."
