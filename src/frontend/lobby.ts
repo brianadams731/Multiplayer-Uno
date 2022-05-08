@@ -68,7 +68,6 @@ socket.on('failed-to-join', (msg: string) => {
     window.location.href = '/login';
 });
 socket.on('lobby-deleted',()=>{
-    console.log("here");
     window.location.href = '/dashboard';
 })
 
