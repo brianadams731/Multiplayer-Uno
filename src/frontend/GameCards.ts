@@ -26,7 +26,10 @@ class GameCards {
     private playersHand: string[];
     private topOfDiscard: string;
 
+    private wildColorToggle:HTMLDivElement|null;
+
     constructor(gameState: IGameState) {
+        this.wildColorToggle = null;
         this.gameState = gameState;
         this.cards = {};
         this.playersHand = [];
@@ -36,80 +39,12 @@ class GameCards {
         const placeHolderCardInDrawPile = this.makeCard("-1");
         placeHolderCardInDrawPile.setAttribute('data-card-state', CardState.lastCardInDrawPile);
         this.cards["-1"] = placeHolderCardInDrawPile;
-        this.gameState.gameBoard.appendChild(placeHolderCardInDrawPile);
-
-        /*for (let i = 0; i < 52; i++) {
-            const cardId = `${i}`;
-            this.cards[cardId] = this.makeCard(cardId);
-            this.setCardState(cardId, CardState.drawCardPile);
-            this.addCardEvents();
-            // debug
-            this.cards[cardId].addEventListener('click', (e) => {
-                const id = (e.currentTarget as HTMLDivElement).getAttribute(
-                    'data-cardId'
-                )!;
-                if (this.getCardState(id) === CardState.drawCardPile) {
-                    this.moveCard(id, CardState.playerHand);
-                    this.setCardFace(id, 'blue-1');
-                } else if (this.getCardState(id) === CardState.playerHand) {
-                    this.moveCard(id, CardState.discardPile);
-                } else if (
-                    this.getCardState(id) === CardState.topOfDiscardPile
-                ) {
-                    this.forFistOfStateFound(
-                        CardState.opponentHand,
-                        (_, id) => {
-                            this.moveCard(id, CardState.discardPile);
-                        }
-                    );
-                }
-            });
-        }
-
-        this.appendAllCardsToDOM();
-
-        this.forEachCard((_, id) => {
-            if (id === '1' || id === '2' || id === '3') {
-                this.moveCard(id, CardState.playerHand, true);
-            }
-            if (id === '4' || id === '5' || id === '6') {
-                this.moveCard(id, CardState.opponentHand, true);
-            }
-        });*/
-        
+        this.gameState.gameBoard.appendChild(placeHolderCardInDrawPile);       
     }
-
-    /*private appendAllCardsToDOM() {
-        const domFragment = document.createDocumentFragment();
-        this.forEachCard((card) => {
-            domFragment.prepend(card);
-        });
-        this.gameState.gameBoard.appendChild(domFragment);
-    }*/
 
     private getCard(id: string): HTMLDivElement {
         return this.cards[id];
     }
-
-    /*private forEachCard(
-        callback: (card: HTMLDivElement, cardId: string) => void
-    ): void {
-        for (const [key, value] of Object.entries(this.cards)) {
-            callback(value, key);
-        }
-    }
-
-    private forFistOfStateFound(
-        stateToFind: CardState,
-        callback: (card: HTMLDivElement, index: string) => void
-    ): void {
-        for (const [key, value] of Object.entries(this.cards)) {
-            if (this.getCardState(key) === stateToFind) {
-                callback(value, key);
-                break;
-            }
-        }
-    }*/
 
     private forEachCardInPlayersHand(
         callback: (card: HTMLDivElement, index: number) => void
@@ -142,12 +77,6 @@ class GameCards {
         }
         this.setCardState(cardId, internalDestination);
     }
-
-    /*private setCardFace(cardId: string, cardFaceClass: string): void {
-        const card = this.getCard(cardId);
-        const cardFace = card.querySelector<HTMLDivElement>('.front')!;
-        cardFace.classList.add(cardFaceClass);
-    }*/
 
     private addCardToPlayersHand(cardId: string): void {
         this.playersHand.push(cardId);
@@ -193,7 +122,6 @@ class GameCards {
         return this.getCard(cardId).getAttribute('data-card-state');
     }
 
-
     private makeCard(id: string): HTMLDivElement {
         const element = document.createElement('div');
         element.classList.add('card');
@@ -216,7 +144,20 @@ class GameCards {
         const element = this.makeCard(id);
         const cardFace = element.querySelector<HTMLDivElement>('.front')!;
         cardFace.classList.add(face);
+        element.setAttribute("card-value",face);
         return element;
+    }
+
+    private forFistOfStateFound(
+        stateToFind: CardState,
+        callback: (card: HTMLDivElement, index: string) => void
+    ): void {
+        for (const [key, value] of Object.entries(this.cards)) {
+            if (this.getCardState(key) === stateToFind) {
+                callback(value, key);
+                break;
+            }
+        }
     }
 
     private addCardEvents() {
@@ -258,6 +199,9 @@ class GameCards {
                 this.setCardMovingState(id, false);
                
                 if(this.getCardState(id) === CardState.discardPile){
+                    this.forFistOfStateFound(CardState.topOfDiscardPile,(card)=>{
+                        card.remove();
+                    });
                     this.shiftTopOfDiscardPile(id);
                     this.setCardState(id, CardState.topOfDiscardPile);
                 }
@@ -265,11 +209,73 @@ class GameCards {
         });
     }
 
-    private async playPlayerCard(id: string){
-        // TODO: Uncomment return when finished with debug
+    private createWildColorToggle(cardId: string):HTMLDivElement{
+        const colors = {0:"red", 1:"yellow", 2:"green", 3:"blue"};
+
+        const outerWrapper = document.createElement('div');
+        outerWrapper.classList.add("wildColorToggleWrapper");
+        outerWrapper.addEventListener('click',(e)=>{
+            e.stopPropagation();
+            this.removeWildColorToggle();
+        })
+        
+        const wrapper = document.createElement('div');
+        outerWrapper.appendChild(wrapper);
+        wrapper.classList.add("wildColorToggle");
+        wrapper.addEventListener("click", async(e)=>{
+            e.stopPropagation();
+            const ele = e.target as HTMLElement;
+            if(Object.values(colors).includes(ele?.id)){
+                console.log(ele);
+                
+                const res = await postDataAsync("/api/playCard",{
+                    cardRefId: cardId,
+                    colorChoice: ele.id,
+                    gameId: this.gameState.gameId,
+                    userId: this.gameState.userId
+                });
+        
+                if(res.ok){
+                    this.discardPlayerCard(cardId);
+                    this.removeWildColorToggle();
+                }
+            }
+        })
+
+        for (const [_, value] of Object.entries(colors)) {
+            const color = document.createElement('div');
+            color.classList.add(value);
+            color.id = value;
+            wrapper.appendChild(color);
+        }
+
+        return outerWrapper;
+    }
+
+    private showWildColorToggle(cardId: string){
+        if(this.wildColorToggle){
+            return;
+        }
+        this.wildColorToggle = this.createWildColorToggle(cardId);
+        this.gameState.gameBoard.appendChild(this.wildColorToggle);
+    }
+    private removeWildColorToggle(){
+        if(!this.wildColorToggle){
+            return;
+        }
+        this.wildColorToggle.remove();
+        this.wildColorToggle = null;
+    }
+
+    private async playPlayerCard(id: string, value:string){
         if(this.gameState.currentTurn != this.gameState.userId){
             console.log("Not Players Turn");
             return
+        }
+
+        if(value.includes('wild')){
+            this.showWildColorToggle(id);
+            return;
         }
 
         const res = await postDataAsync("/api/playCard",{
@@ -306,11 +312,9 @@ class GameCards {
         card.setAttribute('data-card-state', CardState.drawCardPile);
         this.cards[id] = card;
         card.addEventListener('click', async (e) => {
-            const id = (e.currentTarget as HTMLDivElement).getAttribute(
-                'data-cardId'
-            )!;
-            
-            await this.playPlayerCard(id);
+            const id = (e.currentTarget as HTMLDivElement).getAttribute('data-cardId')!;
+            const value = (e.currentTarget as HTMLDivElement).getAttribute('card-value')!;
+            await this.playPlayerCard(id, value);
         });
         
         this.gameState.gameBoard.appendChild(card);

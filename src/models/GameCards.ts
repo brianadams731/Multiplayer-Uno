@@ -133,11 +133,42 @@ class GameCards{
         })        
     }
 
+    public static async playWildCard(uid: string|number, gid: string|number, usersCard: string|number, refWildCard: string|number){
+    
+        return await connection.tx(transaction =>{
+            const t1 = transaction.none(`
+                DELETE FROM "Card"
+                WHERE uid=$1 and gid=$2 and ref=$3;
+            `,[uid, gid, usersCard]);
+
+            const t2 = transaction.none(`
+                UPDATE "State"
+                SET last_card_played=$1
+                WHERE gid=$2
+            `,[refWildCard, gid]);
+
+            return transaction.batch([t1, t2])
+        })        
+    }
+
     public static async getWildCardRef(){
         const wild = await connection.many(`
             SELECT DISTINCT ON (color) color, lid
             FROM "Lookup"
             WHERE val='wildcard';
+        `);
+
+        return wild.map((row)=>({
+            color: row.color,
+            cardId: row.lid
+        }))
+    }
+    
+    public static async getWildDrawFourCardRef(){
+        const wild = await connection.many(`
+            SELECT DISTINCT ON (color) color, lid
+            FROM "Lookup"
+            WHERE val='wilddrawfour';
         `);
 
         return wild.map((row)=>({

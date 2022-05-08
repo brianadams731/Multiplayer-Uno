@@ -70,8 +70,6 @@ $card-border-radius: 28px;
     /*@extend %debugCenterLines;*/    
 }
 
-
-
 .card{
     position: absolute;
     height: $card-height;
@@ -143,4 +141,47 @@ $card-border-radius: 28px;
 [data-moving="1"]{
     pointer-events: none;
     z-index: 100;
+}
+
+.wildColorToggleWrapper{
+    position: absolute;
+    z-index: 10000;
+    left:0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.548);
+    height: 100vh;
+    width: 100vw;
+
+    .wildColorToggle {
+        overflow: hidden;
+        border-radius: 50%;
+        position: absolute;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        background-color: gray;
+        left: 50%;
+        top: 50%;
+        z-index: 10000;
+        transform: translate(-50%, -50%);
+    
+        width: 30vw;
+        height: 30vw;
+    
+        &:hover{
+            cursor: pointer;
+        }
+        .yellow{
+            background-color: #ffaa00;
+        }
+        .red{
+            background-color: #ff5555;
+        }
+        .green{
+            background-color: #55aa55;
+        }
+        .blue{
+            background-color: #5555ff;
+        }
+    }
 }
