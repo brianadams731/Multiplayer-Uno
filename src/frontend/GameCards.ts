@@ -172,10 +172,7 @@ class GameCards {
     }
 
     private shiftTopOfDiscardPile(cardId: string): void {
-        this.setCardState(
-            this.topOfDiscard ? this.topOfDiscard : cardId,
-            CardState.discardPile
-        );
+        this.setCardState(this.topOfDiscard ? this.topOfDiscard : cardId, CardState.discardPile);
         this.topOfDiscard = cardId;
     }
 

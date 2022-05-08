@@ -36,12 +36,18 @@ socket.on("player-joined", (msg) => {
     });
 });
 socket.on("draw-player-cards", (msg) => {
-    msg.cards.forEach((card) => {
-        cards.drawPlayerCard(card.ref, card.value, false);
+    msg.cards.forEach((card, index) => {
+        setTimeout(() => {
+            cards.drawPlayerCard(card.ref, card.value, false);
+        }, index * 500);
     });
 });
 socket.on("draw-opponent-cards", (msg) => {
-    cards.drawOpponentCard();
+    msg.cards.forEach((item, index) => {
+        setTimeout(() => {
+            cards.drawOpponentCard();
+        }, index * 500);
+    });
 });
 socket.on("message", (msg) => {
     messageBox.appendMessage(msg);

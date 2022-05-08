@@ -30,6 +30,7 @@ socket.on('init-lobby', (msg) => {
     usersBox.addUsers(msg.users);
     if (msg.isOwner) {
         createStartBtn();
+        //createEndGameBtn();
     }
     else {
         const waiting = document.createElement("h1");
