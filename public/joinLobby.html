@@ -13,8 +13,7 @@
 <header class="header-wrapper">
     <ul class="nav">
         <li><a href="/" class="about">Home</a></li>
-        <li><a href="/login" class="log">Log In</a></li>
-        <li><a href="/register" class="register">Register</a></li>
+        <li><a href="/api/logout" class="log">Log Out</a></li>
         <li><a href="/dashboard" class="dashboard">Play Now!</a></li>
     </ul>
 </header>
@@ -35,17 +34,12 @@
         <div class="overlay"></div>
         <div class="content">
             <form>
-                <fieldset>
-                    <label for="password">Enter Lobby Password </label>
-                    <input type="text" name="name" id="name"
+                    <input type="text" id="password"
                         class="text ui-widget-content ui-corner-all">
                     <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
-                </fieldset>
+                    <button type="button" id="submit">Submit</button>
+                    <button type="button" id="cancel">Cancel</button>
             </form>
-            <footer>
-                <button type="button" id="submit">Submit</button>
-                <button type="button" id="cancel">Cancel</button>
-            </footer>
         </div>
     </dialog>
 
@@ -118,11 +112,26 @@
                     document.querySelector("#cancel").onclick = function() {
                         popup.close();
                     };
-                    document.querySelector("#submit").click(function() {
-
-                    // Add password validation here.
-                    
-                    });
+                    document.querySelector("#submit").onclick = async function() {
+                        const res = await fetch('/api/joinGame', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                gameId: item.id,
+                                password: document.querySelector('#password').value,
+                            }),
+                        });
+                        if(res.ok){
+                            localStorage.setItem('gameId', item.id);
+                            window.location.href = `/gameLobby/${item.id}`;
+                        }else if(res.status === 400){
+                            alert("Error: Game is Full");
+                        }else if(res.status === 401){
+                            alert("Error: Invalid Credentials");
+                        }
+                    };
                 }else{
                     const res = await fetch('/api/joinGame', {
                         method: 'POST',

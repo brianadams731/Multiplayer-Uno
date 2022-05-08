@@ -7,7 +7,7 @@ logoutRouter.get('/logout', async (req, res) => {
         if(err){
             return res.status(500).send("Error: Cannot Log out");
         }
-        return res.send("logged out")
+        return res.redirect("/");
     });
 });
 
