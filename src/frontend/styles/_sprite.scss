@@ -26,7 +26,7 @@
     background-position: 100% 100%;
 }
 
-@for $x from 0 to 13{
+@for $x from 0 to 15{
     @for $y from 0 to 4{
         $color: "none";
         @if $y == 0{
@@ -59,9 +59,20 @@
             .#{$color}-drawtwo {
                 background-position: $xPos $yPos;
             }  
+        }@else if $x == 13{
+            .#{$color}-wildcard {
+                background-position: $xPos $yPos;
+            }  
+        }@else if $x == 14{
+            $xPosFixed: (13 * 160) * -1px; 
+            $yPosFixed: (5 * 240) * -1px;
+            .#{$color}-wilddrawfour {
+                background-position:  $xPosFixed $yPosFixed;
+            }
         }
     }
 }
+
 
 /*
 *   .(red/yellow/green/blue)-(1/2/3/4/5/6/7/8/9)

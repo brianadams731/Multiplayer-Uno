@@ -304,7 +304,7 @@ class GameCards {
         this.moveCard(id, CardState.discardPile);
     }
 
-    public drawPlayerCard(id: string, face: string){
+    public drawPlayerCard(id: string, face: string, timeout = true){
         const card = this.makeCardWithFace(id, face);
         card.setAttribute('data-card-state', CardState.drawCardPile);
         this.cards[id] = card;
@@ -314,13 +314,12 @@ class GameCards {
             )!;
             
             await this.playPlayerCard(id);
-            console.log(`PLAYER: ${this.gameState.userId}\nCurrent Turn: ${this.gameState.currentTurn}`);
         });
         
         this.gameState.gameBoard.appendChild(card);
         setTimeout(()=>{
             this.moveCard(id,CardState.playerHand);
-        }, 500);
+        }, timeout?500:25);
     }
 
     public drawOpponentCard(){

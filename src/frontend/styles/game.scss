@@ -141,5 +141,6 @@ $card-border-radius: 28px;
 }
 
 [data-moving="1"]{
+    pointer-events: none;
     z-index: 100;
 }

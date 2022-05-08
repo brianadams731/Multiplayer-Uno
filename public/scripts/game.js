@@ -37,7 +37,7 @@ socket.on("player-joined", (msg) => {
 });
 socket.on("draw-player-cards", (msg) => {
     msg.cards.forEach((card) => {
-        cards.drawPlayerCard(card.ref, card.value);
+        cards.drawPlayerCard(card.ref, card.value, false);
     });
 });
 socket.on("draw-opponent-cards", (msg) => {
@@ -51,7 +51,7 @@ socket.on("turn-end", (msg) => {
     if (msg.userWhoPlayedCard == gameState.userId) {
     }
     else {
-        cards.discardOpponentCard(msg.state.lastCardPlayed, msg.state.lastCardPlayed);
+        cards.discardOpponentCard(msg.state.lastCardId, msg.state.lastCardPlayed);
     }
     usersBox.setTurn(msg.state.uid);
 });

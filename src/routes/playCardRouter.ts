@@ -8,8 +8,8 @@ import { io } from '../utils/server';
 
 const playCardRouter = express.Router();
 
-playCardRouter.post("/playCard", requireWithUserAsync, async(req, res)=>{    
-    if(!req.body.cardRefId || !req.body.gameId || !req.userId){
+playCardRouter.post('/playCard', requireWithUserAsync, async (req, res) => {
+    if (!req.body.cardRefId || !req.body.gameId || !req.userId) {
         return res.status(400).send();
     }
 
@@ -17,73 +17,60 @@ playCardRouter.post("/playCard", requireWithUserAsync, async(req, res)=>{
     const gameId = req.body.gameId;
     const ref = req.body.cardRefId;
 
-    
-    const cardInUsersHand = await GameCards.userHasCardInHand(userId, gameId, ref);
+    const cardInUsersHand = await GameCards.userHasCardInHand(
+        userId,
+        gameId,
+        ref
+    );
     const isUsersTurn = await GameState.isUsersTurn(userId, gameId);
 
-    
-    if(!cardInUsersHand || !isUsersTurn){
-        return res.status(500).send("ERROR: Invalid Turn");
+    if (!cardInUsersHand || !isUsersTurn) {
+        return res.status(500).send('ERROR: Invalid Turn');
     }
-    
-    
-    const refCard = await GameCards.getLookUpCardByRef(req.body.cardRefId);  
+
+    const currentCard = await GameCards.getLookUpCardByRef(req.body.cardRefId);
+    const prevCard = await GameState.getLastCardPlayed(gameId);
+
+    // This determines an illegal turn
+    if (
+        prevCard &&                                 // if this is not the first turn
+        currentCard.value !== "wildcard" &&         // and the current card is not a wild card
+        prevCard.color !== currentCard.color &&     // and the color of the current and prev cards don't match
+        prevCard?.value !== currentCard.value       // and the values of the current and prev cards don't match
+    ) {                         
+        return res.status(400).send();              // then the turn is illegal
+    }
+
+    if(currentCard.value === 'reverse'){
+        await GameState.toggleReverse(gameId);
+    }
+
     const gameUsers = await GameUser.getAllUsersInGame(gameId);
-    const gameTurnMod = await GameState.getCurrentTurnMod(gameId);
-    
-    const currentGameState = await GameState.getGameState(gameId);
-    const lastCardPlayed = currentGameState.lastCardPlayed;
-
-
-    console.log("refCard: ", refCard, ";", lastCardPlayed);
-
-    
-    if(lastCardPlayed != null){
-
-        const [lastPlayedColor, lastPlayedValue] = lastCardPlayed.split('-');
-        
-        if(refCard.value == "wildcard" || refCard.value == "drawfour" || lastPlayedColor == "any"){
-            // pass if wildcard or wild draw four
-        }else if(lastPlayedColor != refCard.color && lastPlayedValue != refCard.value){
-            return res.status(500).send("ERROR: Invalid Turn");
-        }
-        
-    }
-
-    if(refCard.value === "reverse"){
-        // change modifier if reverse card is played
-        await GameState.updateModifier(gameTurnMod.modifier == "reverse" ? null : "", gameId);
-    }
+    const gameState = await GameState.getCurrentTurnMod(gameId);
 
     await GameCards.playCard(userId, gameId, ref);
 
-
-    /*
-    const card = await GameCards.drawCardForPlayer(userId,gameId);
-    io.to(getUserRoom(userId, gameId)).emit("draw-cards",{
-        cards: card
-    })
-    */
-
-    const nextUser = getNextTurn(gameUsers, gameTurnMod.currentTurn, gameTurnMod.modifier);
+    const nextUser = getNextTurn(
+        gameUsers,
+        gameState.currentTurn,
+        gameState.modifier
+    );
     await GameState.updateCurrentTurn(nextUser, gameId);
 
-    
     const newGameState = await GameState.getGameState(gameId);
 
-    
     // Win condition
     const countInUsersHand = await GameCards.getUserCardCount(userId, gameId);
-    if(countInUsersHand === 0){
-        io.to(gameId).emit("game-end",{
+    if (countInUsersHand === 0) {
+        io.to(gameId).emit('game-end', {
             userWhoPlayedCard: userId,
-            state: newGameState
-        })
-    }else{
-        io.to(gameId).emit("turn-end",{
+            state: newGameState,
+        });
+    } else {
+        io.to(gameId).emit('turn-end', {
             userWhoPlayedCard: userId,
-            state: newGameState
-        })
+            state: newGameState,
+        });
     }
 
     if(refCard.value == "skip"){    
@@ -139,23 +126,27 @@ playCardRouter.post("/playCard", requireWithUserAsync, async(req, res)=>{
     //console.log(`Card in players hand: ${cardInUsersHand}`);
     //console.log(JSON.stringify(refCard, null, 2));
     return res.status(200).send();
-})
+});
 
-interface IUsers{
+interface IUsers {
     username: string;
-    id: string|number;
+    id: string | number;
 }
 
-function getNextTurn(users: IUsers[], currentTurn: string|number, modifier: string){
-    const index = users.findIndex((user)=> user.id == currentTurn);
-    if(index === -1){
+function getNextTurn(
+    users: IUsers[],
+    currentTurn: string | number,
+    modifier: string
+) {
+    const index = users.findIndex((user) => user.id == currentTurn);
+    if (index === -1) {
         return -1;
     }
 
-    let nextTurnIndex = index + (modifier === "reverse"? -1 : 1);
-    if(nextTurnIndex < 0){
+    let nextTurnIndex = index + (modifier === 'reverse' ? -1 : 1);
+    if (nextTurnIndex < 0) {
         nextTurnIndex = users.length - 1;
-    }else if(nextTurnIndex >= users.length){
+    } else if (nextTurnIndex >= users.length) {
         nextTurnIndex = 0;
     }
 

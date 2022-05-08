@@ -51,7 +51,7 @@ socket.on("player-joined",(msg: any)=>{
 
 socket.on("draw-player-cards",(msg: any)=>{    
     msg.cards.forEach((card: any)=>{
-        cards.drawPlayerCard(card.ref, card.value);
+        cards.drawPlayerCard(card.ref, card.value, false);
     })
 })
 
@@ -65,11 +65,10 @@ socket.on("message",(msg: IMessage)=>{
 
 socket.on("turn-end",(msg:any)=>{
     gameState.currentTurn = msg.state.currentTurn;
-
     if(msg.userWhoPlayedCard == gameState.userId){
 
-    }else{
-        cards.discardOpponentCard(msg.state.lastCardPlayed, msg.state.lastCardPlayed);
+    }else{        
+        cards.discardOpponentCard(msg.state.lastCardId, msg.state.lastCardPlayed);
     }
     
     usersBox.setTurn(msg.state.uid);

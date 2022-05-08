@@ -91,7 +91,6 @@ io.on('connection', (socket) => {
     socket.on("lobby-joined", async (req)=>{
         const userId = (socket.request as any).session.userId
         const gameId = req.gameId;
-        
         const user = await GameUser.getGameUserByUidGid(userId, gameId);
         
         if(!user){
@@ -101,13 +100,16 @@ io.on('connection', (socket) => {
 
         socket.join(gameId);
         socket.join(getUserRoom(userId,gameId));
+        
         const gameMessages = await Message.getAllGameMessages(gameId);
         const gameUsers = await GameUser.getAllUsersInGame(gameId);
+        const oldestPlayer = await GameUser.getOldestPlayer(gameId);
 
         socket.emit("init-lobby",{
             messages: gameMessages,
             users: gameUsers,
-            playerId: userId
+            playerId: userId,
+            isOwner: oldestPlayer==userId
         });
 
         io.to(gameId).emit("player-joined-lobby", {

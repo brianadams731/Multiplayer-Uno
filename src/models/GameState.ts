@@ -17,12 +17,18 @@ class GameState {
     }
 
     public static async start(gid: id) {
+        const hasGameStarted = await this.gameHasStarted(gid);
+        if(hasGameStarted){
+            return;
+        }
+        
         const firstPlayer = await connection.one(`
             SELECT uid
             FROM "GameUser"
+            WHERE gid = $1
             ORDER BY time_joined
             LIMIT 1;
-        `);
+        `,[gid]);
 
         await connection.none(
             `
@@ -47,7 +53,7 @@ class GameState {
     public static async getGameState(gid: id) {
         const state = await connection.one(
             `
-            SELECT s.started, s.current_turn, s.modifier, u.username, u.uid, l.val, l.color
+            SELECT s.started, s.current_turn, s.modifier, u.username, u.uid, l.val, l.color, l.lid
             FROM "State" s
             LEFT JOIN "User" u
             ON s.current_turn = u.uid
@@ -66,6 +72,7 @@ class GameState {
         return {
             started: state.started,
             lastCardPlayed: cardPlayed,
+            lastCardId: state.lid,
             username: state.username,
             uid: state.uid,
             currentTurn: state.current_turn,
@@ -88,6 +95,23 @@ class GameState {
             modifier: state.modifier,
             currentTurn: state.current_turn,
         };
+    }
+
+    public static async getLastCardPlayed(gameId: id){
+        const state = await connection.oneOrNone(`
+            SELECT l.val, l.color, l.lid
+            FROM "State" s, "Lookup" l
+            WHERE s.last_card_played = l.lid and s.gid = $1;
+        `,[gameId]);
+
+        if(state){
+            return ({
+                color: state.color,
+                value: state.val,
+                ref: state.lid
+            })
+        }
+        return null;
     }
 
     public static async updateCurrentTurn(currentUser: id, gameId: id) {
@@ -120,6 +144,20 @@ class GameState {
         `,[gid]);
 
         return hasStarted.started;
+    }
+
+    public static async toggleReverse(gid: id){
+        const mod = await connection.oneOrNone(`
+            SELECT modifier
+            FROM "State"
+            WHERE gid = $1;
+        `,[gid])
+
+        if(!mod || mod.modifier === "reverse"){
+            await this.updateModifier(null, gid);
+        }else{
+            await this.updateModifier("reverse", gid);
+        }
     }
 }
 
