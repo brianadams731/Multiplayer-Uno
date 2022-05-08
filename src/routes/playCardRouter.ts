@@ -74,56 +74,6 @@ playCardRouter.post('/playCard', requireWithUserAsync, async (req, res) => {
             state: newGameState,
         });
     }
-
-    if(refCard.value == "skip"){    
-        
-        const gameTurnMod = await GameState.getCurrentTurnMod(gameId);
-        const nextUser = getNextTurn(gameUsers, gameTurnMod.currentTurn, gameTurnMod.modifier);
-        await GameState.updateCurrentTurn(nextUser, gameId);
-        const newGameState = await GameState.getGameState(gameId);
-
-        io.to(gameId).emit("turn-end",{
-            userWhoPlayedCard: nextUser,
-            state: newGameState
-        })
-
-    }else if(refCard.value == "drawtwo"){    
-
-        const gameTurnMod = await GameState.getCurrentTurnMod(gameId);
-        const nextUser = getNextTurn(gameUsers, gameTurnMod.currentTurn, gameTurnMod.modifier);
-        
-        const drawUser = gameUsers
-        GameCards.drawNCardsForPlayer(nextUser,gameId,2);
-
-        await GameState.updateCurrentTurn(nextUser, gameId);
-        const newGameState = await GameState.getGameState(gameId);
-
-
-
-        io.to(gameId).emit("turn-end",{
-            userWhoPlayedCard: nextUser,
-            state: newGameState
-        })
-
-    }else if(refCard.value == "drawfour"){    
-        
-        const gameTurnMod = await GameState.getCurrentTurnMod(gameId);
-        const nextUser = getNextTurn(gameUsers, gameTurnMod.currentTurn, gameTurnMod.modifier);
-        
-        const drawUser = gameUsers
-        GameCards.drawNCardsForPlayer(nextUser,gameId,4);
-        
-        await GameState.updateCurrentTurn(nextUser, gameId);
-        const newGameState = await GameState.getGameState(gameId);
-
-        io.to(gameId).emit("turn-end",{
-            userWhoPlayedCard: nextUser,
-            state: newGameState
-        })
-    }
-
-    
-    // console.log(countInUsersHand);
     //console.log(`USER ID: ${userId} | GAME ID: ${gameId} | REF: ${ref}`);
     //console.log(`Card in players hand: ${cardInUsersHand}`);
     //console.log(JSON.stringify(refCard, null, 2));
