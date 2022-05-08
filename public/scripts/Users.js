@@ -45,8 +45,6 @@ class Users {
         if (modIndex === -1) {
             alert("Error current user not found");
         }
-        console.log(modIndex);
-        console.log(this.users);
         this.users[modIndex].element.setAttribute("data-current", "true");
     }
 }

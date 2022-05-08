@@ -1,5 +1,6 @@
 import express from 'express';
 import { requireWithUserAsync } from '../middleware/requiresWithUserAsync';
+import { Game } from '../models/Game';
 import { GameCards } from '../models/GameCards';
 import { GameState } from '../models/GameState';
 import { GameUser } from '../models/GameUser';
@@ -62,7 +63,6 @@ playCardRouter.post('/playCard', requireWithUserAsync, async (req, res) => {
     }else if(currentCard.value === 'drawtwo'){
         await drawCards(Number(nextUser), gameId, 2);
     }
-    // END GAME MODS
     if(!currentCard.value.includes("wild")){
         await GameCards.playCard(userId, gameId, ref);
     }
@@ -71,21 +71,26 @@ playCardRouter.post('/playCard', requireWithUserAsync, async (req, res) => {
     const newGameState = await GameState.getGameState(gameId);
     const countInUsersHand = await GameCards.getUserCardCount(userId, gameId);
 
-    if (countInUsersHand === 0) {
+    if (countInUsersHand == 0) {
         // Win condition
-        io.to(gameId).emit('game-end', {
+        io.to(gameId).emit('end-of-game', {
             userWhoPlayedCard: userId,
             state: newGameState,
         });
+        
+        await Game.deleteGame(gameId);
+        io.in(gameId).socketsLeave(gameId);
+        gameUsers.forEach(user =>{
+            io.in(getUserRoom(user.id, gameId)).disconnectSockets();
+        })
+        
     } else {
         io.to(gameId).emit('turn-end', {
             userWhoPlayedCard: userId,
             state: newGameState,
         });
     }
-    //console.log(`USER ID: ${userId} | GAME ID: ${gameId} | REF: ${ref}`);
-    //console.log(`Card in players hand: ${cardInUsersHand}`);
-    //console.log(JSON.stringify(refCard, null, 2));
+
     return res.status(200).send();
 });
 
