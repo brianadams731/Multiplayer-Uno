@@ -26,7 +26,7 @@ drawCardRouter.post('/drawCard', requireWithUserAsync, async (req, res) => {
         cards: card,
     });
     io.to(gameId).except(getUserRoom(userId, gameId)).emit('draw-opponent-cards', {
-        cards: card,
+        cards: card.map(_=>"card")
     });
     // end draw logic
 

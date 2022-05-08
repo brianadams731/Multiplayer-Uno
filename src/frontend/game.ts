@@ -50,13 +50,19 @@ socket.on("player-joined",(msg: any)=>{
 })
 
 socket.on("draw-player-cards",(msg: any)=>{    
-    msg.cards.forEach((card: any)=>{
-        cards.drawPlayerCard(card.ref, card.value, false);
+    msg.cards.forEach((card: any, index: number)=>{
+        setTimeout(()=>{
+            cards.drawPlayerCard(card.ref, card.value, false);
+        }, index * 500)
     })
 })
 
-socket.on("draw-opponent-cards",(msg: any)=>{   
-    cards.drawOpponentCard();
+socket.on("draw-opponent-cards",(msg: any)=>{
+    msg.cards.forEach((item: string, index: number)=>{
+        setTimeout(()=>{
+            cards.drawOpponentCard();
+        }, index * 500)
+    })
 })
 
 socket.on("message",(msg: IMessage)=>{

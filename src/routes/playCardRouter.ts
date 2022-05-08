@@ -17,11 +17,7 @@ playCardRouter.post('/playCard', requireWithUserAsync, async (req, res) => {
     const gameId = req.body.gameId;
     const ref = req.body.cardRefId;
 
-    const cardInUsersHand = await GameCards.userHasCardInHand(
-        userId,
-        gameId,
-        ref
-    );
+    const cardInUsersHand = await GameCards.userHasCardInHand(userId, gameId, ref);
     const isUsersTurn = await GameState.isUsersTurn(userId, gameId);
 
     if (!cardInUsersHand || !isUsersTurn) {
@@ -32,36 +28,42 @@ playCardRouter.post('/playCard', requireWithUserAsync, async (req, res) => {
     const prevCard = await GameState.getLastCardPlayed(gameId);
 
     // This determines an illegal turn
-    if (
-        prevCard &&                                 // if this is not the first turn
+    if (prevCard &&                                 // if this is not the first turn
         currentCard.value !== "wildcard" &&         // and the current card is not a wild card
         prevCard.color !== currentCard.color &&     // and the color of the current and prev cards don't match
-        prevCard?.value !== currentCard.value       // and the values of the current and prev cards don't match
-    ) {                         
+        prevCard?.value !== currentCard.value) {    // and the values of the current and prev cards don't match                            
         return res.status(400).send();              // then the turn is illegal
     }
 
+    // GAME MODS
     if(currentCard.value === 'reverse'){
         await GameState.toggleReverse(gameId);
     }
 
-    const gameUsers = await GameUser.getAllUsersInGame(gameId);
-    const gameState = await GameState.getCurrentTurnMod(gameId);
+    let gameUsers = await GameUser.getAllUsersInGame(gameId);
+    let gameState = await GameState.getCurrentTurnMod(gameId);
+    let nextUser = getNextTurn(gameUsers,gameState.currentTurn,gameState.modifier);
+
+    if(currentCard.value === "wild"){
+
+    }else if(currentCard.value === "wilddrawfour"){
+        await drawCards(Number(nextUser), gameId, 4);
+    
+    }else if(currentCard.value === 'skip'){
+        nextUser = nextUser = getNextTurn(gameUsers, nextUser, gameState.modifier);
+    }else if(currentCard.value === 'drawtwo'){
+        await drawCards(Number(nextUser), gameId, 2);
+    }
+    // END GAME MODS
 
     await GameCards.playCard(userId, gameId, ref);
-
-    const nextUser = getNextTurn(
-        gameUsers,
-        gameState.currentTurn,
-        gameState.modifier
-    );
     await GameState.updateCurrentTurn(nextUser, gameId);
 
     const newGameState = await GameState.getGameState(gameId);
-
-    // Win condition
     const countInUsersHand = await GameCards.getUserCardCount(userId, gameId);
+
     if (countInUsersHand === 0) {
+        // Win condition
         io.to(gameId).emit('game-end', {
             userWhoPlayedCard: userId,
             state: newGameState,
@@ -153,4 +155,16 @@ function getNextTurn(
     return users[nextTurnIndex].id;
 }
 
+async function drawCards(uid: number, gid: number, cardCount: number){
+    const cards = await GameCards.drawNCardsForPlayer(uid, gid, cardCount);
+    io.to(getUserRoom(uid, gid)).emit('draw-player-cards', {
+        cards: cards,
+    });
+    io.to(`${gid}`).except(getUserRoom(uid, gid)).emit('draw-opponent-cards', {
+        cards: cards.map(_=>"card")
+    });
+}
+
 export { playCardRouter };
+
+
