@@ -3,6 +3,7 @@ import { requireWithUserAsync } from '../middleware/requiresWithUserAsync';
 import { Game } from '../models/Game';
 import { GameState } from '../models/GameState';
 import { GameUser } from '../models/GameUser';
+import { getUserRoom } from '../utils/getUserRoom';
 import { io } from '../utils/server';
 
 const gameLobbyRouter = express.Router();
@@ -36,8 +37,13 @@ gameLobbyRouter.get("/deleteLobby/:gameId", requireWithUserAsync, async(req, res
         return res.status(403).send();
     }
 
+    const allUsers = await GameUser.getAllUsersInGame(gameId);
     await Game.deleteGame(gameId);
+
     io.to(gameId).emit("lobby-deleted");
+    allUsers.forEach((user)=>{
+        io.in(getUserRoom(user.id, gameId)).disconnectSockets();
+    })
     
     return res.status(200).send();
 })
