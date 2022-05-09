@@ -24,10 +24,27 @@ class GameCards{
         })
     }
 
+    private static async refreshDeck(gid: number){
+        const allRefCards = await connection.any(`
+            SELECT lid
+            FROM "Lookup";
+        `)
+        // gid and item.lid are known values, interpolation is acceptable for this specific instance
+        await connection.tx(transaction =>{
+            const queries = allRefCards.map(item => transaction.none(`
+                INSERT INTO "Card"(gid, ref)
+                VALUES (${gid}, ${item.lid})
+                ON CONFLICT DO NOTHING;
+            `))
+            return transaction.batch(queries);
+        })        
+    }
+
     public static async drawCardForPlayer(pid:number, gid:number):Promise<Cards[]>{
-        const unplayedCards = await this.getUnplayedCards(gid);
+        let unplayedCards = await this.getUnplayedCards(gid);
         if(unplayedCards.length === 0){
-            return [];
+            await this.refreshDeck(gid);
+            unplayedCards = await this.getUnplayedCards(gid);
         }
 
         const cardIndex = this.getRandomArrayIndex(unplayedCards);

@@ -5,27 +5,24 @@ import { GameUser } from '../models/GameUser';
 
 const viewRoutes = express.Router();
 
-// old
-/*viewRoutes.get('/play', (req,res) =>{
-    return res.render('uno',{
-        layout: "game.handlebars"
-    })
-});*/
-
 viewRoutes.get('/play/:gameId', pageReqAuth, async (req,res) =>{
     if(!req.params.gameId || !req.userId){
         return res.redirect("/joinLobby");
     }
-    const gameHasStarted = await GameState.gameHasStarted(req.params.gameId);
-    const userAlreadyInGame = await GameUser.userAlreadyJoinedGame(req.params.gameId, req.userId);
-    
-    if(gameHasStarted && userAlreadyInGame){
-        return res.render('uno',{
-            layout: "game.handlebars"
-        })
-    }else if(!gameHasStarted && userAlreadyInGame){
-        return res.redirect(`/gameLobby/${req.params.gameId}`);
-    }else{
+    try{
+        const gameHasStarted = await GameState.gameHasStarted(req.params.gameId);
+        const userAlreadyInGame = await GameUser.userAlreadyJoinedGame(req.params.gameId, req.userId);
+        
+        if(gameHasStarted && userAlreadyInGame){
+            return res.render('uno',{
+                layout: "game.handlebars"
+            })
+        }else if(!gameHasStarted && userAlreadyInGame){
+            return res.redirect(`/gameLobby/${req.params.gameId}`);
+        }else{
+            return res.redirect(`/joinLobby`);
+        }
+    }catch(err){
         return res.redirect(`/joinLobby`);
     }
 });

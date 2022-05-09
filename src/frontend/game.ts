@@ -18,11 +18,6 @@ if(!gameState.gameId){
     window.location.href="/login";
 }
 
-socket.on("failed-to-join",(msg:string)=>{
-    alert(msg);
-    window.location.href = "/login";
-})
-
 const cards = new GameCards(gameState);
 const messageBox = new Messages(gameState);
 const usersBox = new Users(gameState);
@@ -69,6 +64,9 @@ socket.on("message",(msg: IMessage)=>{
     messageBox.appendMessage(msg);
 })
 
+socket.on("end-of-game",(msg:any)=>{
+    alert(`${msg.state.username} Won`)
+})
 socket.on("turn-end",(msg:any)=>{
     gameState.currentTurn = msg.state.currentTurn;
     if(msg.userWhoPlayedCard == gameState.userId){
@@ -81,5 +79,8 @@ socket.on("turn-end",(msg:any)=>{
 })
 
 
-
+socket.on("failed-to-join",(msg:string)=>{
+    alert(msg);
+    window.location.href = "/login";
+})
 

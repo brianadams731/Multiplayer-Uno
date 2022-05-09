@@ -12,10 +12,6 @@ if (!gameState.gameId) {
     alert("ERROR: Invalid Id");
     window.location.href = "/login";
 }
-socket.on("failed-to-join", (msg) => {
-    alert(msg);
-    window.location.href = "/login";
-});
 const cards = new GameCards(gameState);
 const messageBox = new Messages(gameState);
 const usersBox = new Users(gameState);
@@ -52,6 +48,9 @@ socket.on("draw-opponent-cards", (msg) => {
 socket.on("message", (msg) => {
     messageBox.appendMessage(msg);
 });
+socket.on("end-of-game", (msg) => {
+    alert(`${msg.state.username} Won`);
+});
 socket.on("turn-end", (msg) => {
     gameState.currentTurn = msg.state.currentTurn;
     if (msg.userWhoPlayedCard == gameState.userId) {
@@ -60,5 +59,9 @@ socket.on("turn-end", (msg) => {
         cards.discardOpponentCard(msg.state.lastCardId, msg.state.lastCardPlayed);
     }
     usersBox.setTurn(msg.state.uid);
+});
+socket.on("failed-to-join", (msg) => {
+    alert(msg);
+    window.location.href = "/login";
 });
 //# sourceMappingURL=game.js.map
