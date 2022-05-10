@@ -24,8 +24,6 @@ class GameCards {
     private gameState: IGameState;
     private cards: ICards;
     private playersHand: string[];
-    private topOfDiscard: string;
-
     private wildColorToggle:HTMLDivElement|null;
 
     constructor(gameState: IGameState) {
@@ -135,11 +133,6 @@ class GameCards {
         });
     }
 
-    private shiftTopOfDiscardPile(cardId: string): void {
-        this.setCardState(this.topOfDiscard ? this.topOfDiscard : cardId, CardState.discardPile);
-        this.topOfDiscard = cardId;
-    }
-
     private setCardState(cardId: string, state: CardState): void {
         const card = this.getCard(cardId);
         card.setAttribute('data-card-state', state);
@@ -150,7 +143,7 @@ class GameCards {
     }
     private getCardMovingState(cardId: string) {
         const card = this.getCard(cardId);
-        return card.getAttribute('data-moving') === '1';
+        return card?.getAttribute('data-moving') === '1';
     }
 
     private getCardState(cardId: string): string | null {
@@ -231,14 +224,6 @@ class GameCards {
                 card.style.zIndex = "";
 
                 this.setCardMovingState(id, false);
-               
-                if(this.getCardState(id) === CardState.discardPile){
-                    this.forFistOfStateFound(CardState.topOfDiscardPile,(card)=>{
-                        card.remove();
-                    });
-                    this.shiftTopOfDiscardPile(id);
-                    this.setCardState(id, CardState.topOfDiscardPile);
-                }
             }
         });
     }
@@ -330,6 +315,27 @@ class GameCards {
         }
     }
 
+    private placeCardOnTopOfDiscard(card: HTMLElement){
+        const allCards = document.querySelectorAll(".card");
+        allCards.forEach(item=>{
+            const isMoving = item.getAttribute('data-moving-to-discard');
+            if(isMoving == '1'){
+                console.log("true");
+            }
+            const state = item.getAttribute('data-card-state');
+            const inDiscard = (state === CardState.discardPile ||  state === CardState.topOfDiscardPile);
+            if(isMoving == '1' || !inDiscard){
+                return;
+            }
+            const id = item.getAttribute('data-cardid');
+            item.remove();
+
+            if(id && this.cards[id]){
+                delete this.cards[id];
+            }
+        })
+    }
+
     public initDiscardPile(face: string){
         if(!face){
             return;
@@ -345,6 +351,16 @@ class GameCards {
     }
 
     public discardPlayerCard(id: string){
+        const card = this.getCard(id);
+        card.addEventListener('transitionstart',()=>{
+            card.setAttribute("data-moving-to-discard","1");
+        })
+        card.addEventListener('transitionend',(e)=>{
+            if(e.propertyName == 'left'){
+                this.placeCardOnTopOfDiscard(card);
+                card.setAttribute("data-moving-to-discard","0");
+            }
+        })
         this.moveCard(id, CardState.discardPile);
     }
 
@@ -367,7 +383,7 @@ class GameCards {
     public drawOpponentCard(){
         const card = this.makeCard("-1");
         card.setAttribute('data-card-state', CardState.drawCardPile);
-        card.addEventListener('transition-end', (e) => {
+        card.addEventListener('transitionend', () => {
             card.remove();
         });
         this.gameState.gameBoard.appendChild(card);
@@ -379,11 +395,23 @@ class GameCards {
     public discardOpponentCard(id: string, face: string){
         const card = this.makeCardWithFace(id, face);
         card.setAttribute('data-card-state', CardState.opponentHand);
+        
+        card.addEventListener('transitionstart',()=>{
+            card.setAttribute("data-moving-to-discard","1");
+        })
+
+        card.addEventListener('transitionend',(e)=>{
+            if(e.propertyName == 'left'){
+                this.placeCardOnTopOfDiscard(card);
+                card.setAttribute("data-moving-to-discard","0");
+            }
+        })
+
         this.cards[id] = card;
         this.gameState.gameBoard.appendChild(card);
         setTimeout(()=>{
             this.moveCard(id,CardState.discardPile);
-        }, 0);
+        }, 50);
     }
 
     public animateInitialHand(cards: ResCard[]):void{
@@ -391,14 +419,12 @@ class GameCards {
             setTimeout(()=>{
                 this.drawPlayerCard(card.ref, card.value);
             }, index * 1250);
-            console.log(card);
         })
     
         cards.forEach((card:any, index:number)=>{
             setTimeout(()=>{
                 this.drawOpponentCard();
             }, (index * 1250) + 625);
-            console.log(card);
         })
     }
 }

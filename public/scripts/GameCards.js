@@ -114,10 +114,6 @@ class GameCards {
             }
         });
     }
-    shiftTopOfDiscardPile(cardId) {
-        this.setCardState(this.topOfDiscard ? this.topOfDiscard : cardId, CardState.discardPile);
-        this.topOfDiscard = cardId;
-    }
     setCardState(cardId, state) {
         const card = this.getCard(cardId);
         card.setAttribute('data-card-state', state);
@@ -128,7 +124,7 @@ class GameCards {
     }
     getCardMovingState(cardId) {
         const card = this.getCard(cardId);
-        return card.getAttribute('data-moving') === '1';
+        return (card === null || card === void 0 ? void 0 : card.getAttribute('data-moving')) === '1';
     }
     getCardState(cardId) {
         return this.getCard(cardId).getAttribute('data-card-state');
@@ -195,13 +191,6 @@ class GameCards {
                 const card = this.getCard(id);
                 card.style.zIndex = "";
                 this.setCardMovingState(id, false);
-                if (this.getCardState(id) === CardState.discardPile) {
-                    this.forFistOfStateFound(CardState.topOfDiscardPile, (card) => {
-                        card.remove();
-                    });
-                    this.shiftTopOfDiscardPile(id);
-                    this.setCardState(id, CardState.topOfDiscardPile);
-                }
             }
         });
     }
@@ -283,6 +272,25 @@ class GameCards {
             }
         });
     }
+    placeCardOnTopOfDiscard(card) {
+        const allCards = document.querySelectorAll(".card");
+        allCards.forEach(item => {
+            const isMoving = item.getAttribute('data-moving-to-discard');
+            if (isMoving == '1') {
+                console.log("true");
+            }
+            const state = item.getAttribute('data-card-state');
+            const inDiscard = (state === CardState.discardPile || state === CardState.topOfDiscardPile);
+            if (isMoving == '1' || !inDiscard) {
+                return;
+            }
+            const id = item.getAttribute('data-cardid');
+            item.remove();
+            if (id && this.cards[id]) {
+                delete this.cards[id];
+            }
+        });
+    }
     initDiscardPile(face) {
         if (!face) {
             return;
@@ -297,6 +305,16 @@ class GameCards {
         }, 250);
     }
     discardPlayerCard(id) {
+        const card = this.getCard(id);
+        card.addEventListener('transitionstart', () => {
+            card.setAttribute("data-moving-to-discard", "1");
+        });
+        card.addEventListener('transitionend', (e) => {
+            if (e.propertyName == 'left') {
+                this.placeCardOnTopOfDiscard(card);
+                card.setAttribute("data-moving-to-discard", "0");
+            }
+        });
         this.moveCard(id, CardState.discardPile);
     }
     drawPlayerCard(id, face, timeout = true) {
@@ -316,7 +334,7 @@ class GameCards {
     drawOpponentCard() {
         const card = this.makeCard("-1");
         card.setAttribute('data-card-state', CardState.drawCardPile);
-        card.addEventListener('transition-end', (e) => {
+        card.addEventListener('transitionend', () => {
             card.remove();
         });
         this.gameState.gameBoard.appendChild(card);
@@ -327,24 +345,31 @@ class GameCards {
     discardOpponentCard(id, face) {
         const card = this.makeCardWithFace(id, face);
         card.setAttribute('data-card-state', CardState.opponentHand);
+        card.addEventListener('transitionstart', () => {
+            card.setAttribute("data-moving-to-discard", "1");
+        });
+        card.addEventListener('transitionend', (e) => {
+            if (e.propertyName == 'left') {
+                this.placeCardOnTopOfDiscard(card);
+                card.setAttribute("data-moving-to-discard", "0");
+            }
+        });
         this.cards[id] = card;
         this.gameState.gameBoard.appendChild(card);
         setTimeout(() => {
             this.moveCard(id, CardState.discardPile);
-        }, 0);
+        }, 50);
     }
     animateInitialHand(cards) {
         cards.forEach((card, index) => {
             setTimeout(() => {
                 this.drawPlayerCard(card.ref, card.value);
             }, index * 1250);
-            console.log(card);
         });
         cards.forEach((card, index) => {
             setTimeout(() => {
                 this.drawOpponentCard();
             }, (index * 1250) + 625);
-            console.log(card);
         });
     }
 }
