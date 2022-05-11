@@ -6,7 +6,7 @@
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --verbose",
     "dev": "cross-env NODE_ENV=development ts-node-dev ./src/app.ts",
-    "start:prod": "node ./out/app.js",
+    "start:prod": "pm2-runtime start ecosystem.config.js --env production",
     "postinstall": "tsc && tsc -p ./src/frontend/tsconfig.json && npx sequelize db:migrate",
     "buildNoEmit": "tsc --noEmit",
     "db:create:migration": "npx sequelize migration:generate --name",
@@ -51,6 +51,7 @@
     "express-session": "^1.17.2",
     "pg": "^8.7.3",
     "pg-promise": "^10.11.1",
+    "pm2": "^5.2.0",
     "sass": "^1.49.11",
     "sequelize": "^6.17.0",
     "sequelize-cli": "^6.4.1",
