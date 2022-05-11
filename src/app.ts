@@ -1,3 +1,4 @@
+require("express-async-errors");
 import dotenv from 'dotenv';
 if (process.env.NODE_ENV === 'development') {
     dotenv.config();
@@ -117,6 +118,11 @@ io.on('connection', (socket) => {
             id: userId
         })
     })
+});
+
+app.use((err:any, req:any, res:any, next:any) => {
+    console.log(err);
+    return res.status(500).send();
 });
 
 server.listen(process.env.PORT || '8080', () => {
