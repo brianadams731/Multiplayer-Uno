@@ -58,7 +58,7 @@ class Users {
         });
     }
 
-    public setTurn(uid: string | number):void {
+    public setTurn(uid: string | number, color?: string):void {
         let modIndex = -1;
         this.users.forEach((user, index) =>{
             if(user.id == uid){
@@ -72,6 +72,9 @@ class Users {
         }
                 
         this.users[modIndex].element.setAttribute("data-current","true");
+        if(color){
+            this.users[modIndex].element.setAttribute("data-current-color", color);
+        }
     }
 }
 
