@@ -73,8 +73,10 @@ playCardRouter.post('/playCard', requireWithUserAsync, async (req, res) => {
 
     if (countInUsersHand == 0) {
         // Win condition
+        const winner = await GameUser.getGameUserByUidGid(userId, gameId);
+
         io.to(gameId).emit('end-of-game', {
-            userWhoPlayedCard: userId,
+            winnerName: winner?.username,
             state: newGameState,
         });
         
