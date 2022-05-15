@@ -17,11 +17,18 @@ const messageBox = new Messages(gameState);
 const usersBox = new Users(gameState);
 socket.emit("game-load", { gameId: gameState.gameId });
 socket.on("init-game", (msg) => {
+    var _a, _b;
     gameState.userId = msg.playerId;
     gameState.currentTurn = msg.state.currentTurn;
     messageBox.appendManyMessages(msg.messages);
     usersBox.addUsers(msg.users);
-    usersBox.setTurn(msg.state.currentTurn);
+    if (msg.state.lastCardPlayed) {
+        const cardColor = (_b = (_a = msg === null || msg === void 0 ? void 0 : msg.state) === null || _a === void 0 ? void 0 : _a.lastCardPlayed) === null || _b === void 0 ? void 0 : _b.split("-")[0];
+        usersBox.setTurn(msg.state.currentTurn, cardColor);
+    }
+    else {
+        usersBox.setTurn(msg.state.currentTurn);
+    }
     cards.initDiscardPile(msg.state.lastCardPlayed);
     cards.animateInitialHand(msg.cards);
 });
@@ -52,13 +59,15 @@ socket.on("end-of-game", (msg) => {
     alert(`${msg.state.username} Won`);
 });
 socket.on("turn-end", (msg) => {
+    var _a, _b;
     gameState.currentTurn = msg.state.currentTurn;
     if (msg.userWhoPlayedCard == gameState.userId) {
     }
     else {
         cards.discardOpponentCard(msg.state.lastCardId, msg.state.lastCardPlayed);
     }
-    usersBox.setTurn(msg.state.uid);
+    const cardColor = (_b = (_a = msg === null || msg === void 0 ? void 0 : msg.state) === null || _a === void 0 ? void 0 : _a.lastCardPlayed) === null || _b === void 0 ? void 0 : _b.split("-")[0];
+    usersBox.setTurn(msg.state.uid, cardColor);
 });
 socket.on("failed-to-join", (msg) => {
     alert(msg);

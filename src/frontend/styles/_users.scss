@@ -32,6 +32,19 @@ $transition-time: .5s;
         transition: all $transition-time ease-in-out;
     }
 
+    [data-current-color="yellow"]::before{
+        background-color: var(--c-card-yellow);
+    }
+    [data-current-color="green"]::before{
+        background-color: var(--c-card-green);
+    }
+    [data-current-color="red"]::before{
+        background-color: var(--c-card-red);
+    }
+    [data-current-color="blue"]::before{
+        background-color: var(--c-card-blue);
+    }
+
     [data-current="false"]::before{
         transform: scaleX(0);
     }
@@ -42,4 +55,6 @@ $transition-time: .5s;
     [data-current="true"]{
         color: black;
     }
+
+
 }

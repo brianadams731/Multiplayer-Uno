@@ -34,7 +34,7 @@ class Users {
             this.addUser(user);
         });
     }
-    setTurn(uid) {
+    setTurn(uid, color) {
         let modIndex = -1;
         this.users.forEach((user, index) => {
             if (user.id == uid) {
@@ -46,6 +46,9 @@ class Users {
             alert("Error current user not found");
         }
         this.users[modIndex].element.setAttribute("data-current", "true");
+        if (color) {
+            this.users[modIndex].element.setAttribute("data-current-color", color);
+        }
     }
 }
 export { Users };

@@ -22,6 +22,10 @@
   --c-uno-blue: #006cb9;
   --c-uno-yellow: #f8da27;
   --c-uno-green: #00a539;
+  --c-card-red: #ff5555;
+  --c-card-yellow: #ffaa00;
+  --c-card-green: #55aa55;
+  --c-card-blue: #5555ff;
 }
 
 body {
@@ -436,6 +440,18 @@ ul {
   transform-origin: left;
   transition: all 0.5s ease-in-out;
 }
+.users-wrapper [data-current-color=yellow]::before {
+  background-color: var(--c-card-yellow);
+}
+.users-wrapper [data-current-color=green]::before {
+  background-color: var(--c-card-green);
+}
+.users-wrapper [data-current-color=red]::before {
+  background-color: var(--c-card-red);
+}
+.users-wrapper [data-current-color=blue]::before {
+  background-color: var(--c-card-blue);
+}
 .users-wrapper [data-current=false]::before {
   transform: scaleX(0);
 }
@@ -612,25 +628,25 @@ ul {
   cursor: pointer;
 }
 .wildColorToggleWrapper .wildColorToggle .yellow {
-  background-color: #ffaa00;
+  background-color: var(--c-card-yellow);
 }
 .wildColorToggleWrapper .wildColorToggle .yellow:hover {
   background-color: #fac459;
 }
 .wildColorToggleWrapper .wildColorToggle .red {
-  background-color: #ff5555;
+  background-color: var(--c-card-red);
 }
 .wildColorToggleWrapper .wildColorToggle .red:hover {
   background-color: #fd7f7f;
 }
 .wildColorToggleWrapper .wildColorToggle .green {
-  background-color: #55aa55;
+  background-color: var(--c-card-green);
 }
 .wildColorToggleWrapper .wildColorToggle .green:hover {
   background-color: #73a873;
 }
 .wildColorToggleWrapper .wildColorToggle .blue {
-  background-color: #5555ff;
+  background-color: var(--c-card-blue);
 }
 .wildColorToggleWrapper .wildColorToggle .blue:hover {
   background-color: #9090fc;

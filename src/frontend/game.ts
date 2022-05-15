@@ -31,7 +31,12 @@ socket.on("init-game",(msg:any)=>{
     messageBox.appendManyMessages(msg.messages);
 
     usersBox.addUsers(msg.users);
-    usersBox.setTurn(msg.state.currentTurn);
+    if(msg.state.lastCardPlayed){
+        const cardColor = msg?.state?.lastCardPlayed?.split("-")[0];
+        usersBox.setTurn(msg.state.currentTurn, cardColor);
+    }else{
+        usersBox.setTurn(msg.state.currentTurn);
+    }
 
     cards.initDiscardPile(msg.state.lastCardPlayed);
     cards.animateInitialHand(msg.cards);
@@ -74,8 +79,8 @@ socket.on("turn-end",(msg:any)=>{
     }else{        
         cards.discardOpponentCard(msg.state.lastCardId, msg.state.lastCardPlayed);
     }
-    
-    usersBox.setTurn(msg.state.uid);
+    const cardColor = msg?.state?.lastCardPlayed?.split("-")[0];
+    usersBox.setTurn(msg.state.uid, cardColor);
 })
 
 

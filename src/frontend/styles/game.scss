@@ -228,25 +228,25 @@ $animationDuration: 1s;
             cursor: pointer;
         }
         .yellow{
-            background-color: #ffaa00;
+            background-color: var(--c-card-yellow);
             &:hover{
                 background-color: #fac459;
             }
         }
         .red{
-            background-color: #ff5555;
+            background-color: var(--c-card-red);
             &:hover{
                 background-color: #fd7f7f;
             }
         }
         .green{
-            background-color: #55aa55;
+            background-color: var(--c-card-green);
             &:hover{
                 background-color: #73a873;
             }
         }
         .blue{
-            background-color: #5555ff;
+            background-color: var(--c-card-blue);
             &:hover{
                 background-color: #9090fc;
             }
