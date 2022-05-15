@@ -8,9 +8,9 @@
     <title>Uno</title>
 </head>
 
-<ul class="nav">
+<ul id="nav" class="nav">
     <li><a href="/" class="about">Home</a></li>
-    <li><a href="/login" class="log">Log In</a></li>
+    <li id="log"><a href="/login" class="log">Log In</a></li>
     <li><a href="/register" class="register">Register</a></li>
     <li><a href="/dashboard" class="dashboard">Play Now!</a></li>
 </ul>
@@ -28,12 +28,19 @@
     </div>
 
     <script>
-        /*const link = document.querySelector("#play");
-        link.addEventListener("click",(e)=>{
-            e.preventDefault();
-            localStorage.setItem("gameId","11");
-            window.location.href = "/play";
-        })*/
+        (async function(){
+            const res = await fetch("/api/loginTest");
+            if(res.ok){
+                const logout = document.createElement("a");
+                logout.classList.add("log");
+                logout.innerText = "Logout";
+                logout.href = "/api/logout";
+                console.log("here");
+                const log = document.querySelector("#log");
+                log.innerHTML = "";
+                log.appendChild(logout);
+            }
+        }());
     </script>
 </body>
 </html>
