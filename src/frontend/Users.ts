@@ -39,7 +39,6 @@ class Users {
     public addUser(user: IUser) {
         const userIndex = this.users.findIndex((item) => item.id == user.id);
         if (userIndex !== -1) {
-            console.log('User already exists');
             return;
         }
 

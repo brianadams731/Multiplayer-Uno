@@ -4,6 +4,7 @@ import { GameCards } from './GameCards.js';
 import { Users } from './Users.js';
 
 import { socket } from './socket.js';
+import { WinModal } from './WinModal.js';
 
 
 const gameState: IGameState = {
@@ -70,8 +71,9 @@ socket.on("message",(msg: IMessage)=>{
 })
 
 socket.on("end-of-game",(msg:any)=>{
-    alert(`${msg.state.username} Won`)
+    new WinModal(gameState, msg.state.username);
 })
+
 socket.on("turn-end",(msg:any)=>{
     gameState.currentTurn = msg.state.currentTurn;
     if(msg.userWhoPlayedCard == gameState.userId){

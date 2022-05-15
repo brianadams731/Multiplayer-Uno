@@ -2,6 +2,7 @@ import { Messages } from './Messages.js';
 import { GameCards } from './GameCards.js';
 import { Users } from './Users.js';
 import { socket } from './socket.js';
+import { WinModal } from './WinModal.js';
 const gameState = {
     userId: -1,
     currentTurn: -1,
@@ -56,7 +57,7 @@ socket.on("message", (msg) => {
     messageBox.appendMessage(msg);
 });
 socket.on("end-of-game", (msg) => {
-    alert(`${msg.state.username} Won`);
+    new WinModal(gameState, msg.state.username);
 });
 socket.on("turn-end", (msg) => {
     var _a, _b;

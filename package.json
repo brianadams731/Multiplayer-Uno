@@ -6,6 +6,7 @@
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --verbose",
     "dev": "cross-env NODE_ENV=development ts-node-dev ./src/app.ts",
+    "trace": "cross-env NODE_ENV=development node --trace-warnings ./out/app.js",
     "start:prod": "pm2-runtime start ecosystem.config.js --env production",
     "postinstall": "tsc && tsc -p ./src/frontend/tsconfig.json && npx sequelize db:migrate",
     "buildNoEmit": "tsc --noEmit",
