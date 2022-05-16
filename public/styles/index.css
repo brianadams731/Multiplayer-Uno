@@ -248,7 +248,8 @@ ul {
   box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
   margin: 20px;
   padding: 33px;
-  min-height: 75vh;
+  min-height: 125vh;
+  max-height: 125vh;
   min-width: 25vw;
   overflow-x: auto;
 }
