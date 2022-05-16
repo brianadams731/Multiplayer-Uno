@@ -25,7 +25,7 @@ class Messages {
     public constructor(gameState:IGameState) {
         this.gameState = gameState;
         [this.msgBox, this.form, this.msgInput, this.msgFeed] = this.createMessageBox();
-        this.outChannel = Channels.PUBLIC;
+        this.outChannel = Channels.GAME;
 
         this.addFormEvents();
         this.addInputEvents();

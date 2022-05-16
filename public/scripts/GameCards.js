@@ -276,9 +276,6 @@ class GameCards {
         const allCards = document.querySelectorAll(".card");
         allCards.forEach(item => {
             const isMoving = item.getAttribute('data-moving-to-discard');
-            if (isMoving == '1') {
-                console.log("true");
-            }
             const state = item.getAttribute('data-card-state');
             const inDiscard = (state === CardState.discardPile || state === CardState.topOfDiscardPile);
             if (isMoving == '1' || !inDiscard) {
