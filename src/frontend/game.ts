@@ -71,7 +71,7 @@ socket.on("message",(msg: IMessage)=>{
 })
 
 socket.on("end-of-game",(msg:any)=>{
-    new WinModal(gameState, msg.state.username);
+    new WinModal(gameState, msg.winnerName);
 })
 
 socket.on("turn-end",(msg:any)=>{
