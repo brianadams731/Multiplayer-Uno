@@ -109,7 +109,6 @@ ul {
   overflow-y: hidden;
   min-height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 
@@ -140,7 +139,6 @@ ul {
 
 .slides-item {
   align-items: center;
-  border-radius: 1rem;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -184,14 +182,23 @@ ul {
 
 .slide-1 {
   background-color: #A5AAAB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .slide-2 {
   background-color: #9c98ab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .slide-3 {
   background-color: #D2A295;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .carousel__skip-link {
