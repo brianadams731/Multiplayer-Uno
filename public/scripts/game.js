@@ -57,7 +57,7 @@ socket.on("message", (msg) => {
     messageBox.appendMessage(msg);
 });
 socket.on("end-of-game", (msg) => {
-    new WinModal(gameState, msg.state.username);
+    new WinModal(gameState, msg.winnerName);
 });
 socket.on("turn-end", (msg) => {
     var _a, _b;

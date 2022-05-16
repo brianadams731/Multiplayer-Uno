@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,35 +23,176 @@
         <div class="green-circle"></div>
 
         <section class="hero-box">
-            <img class="hero-logo" src="/public/assets/uno-logo.svg" alt="uno logo"/>
+            <img class="hero-logo" src="/public/assets/uno-logo.svg" alt="uno logo" />
             <a href="/dashboard" id="play">Play Now!</a>
         </section>
     </div>
 
-    <div class="landing-wrapper">
-        <div class="blue-circle offsettwo"></div>
-        <div class="green-circle offsettwo"></div>
-        <!--Content Here-->   
+    <div class="rules-wrapper">
+        <section class="carousel" aria-label="carousel" Tabindex="0">
+            <a class="carousel__skip-link" href="#skip-link">Skip the Carousel</a>
+            <div class="slides">
+                <div class="slides-item slide-1" id="slide-1" aria-label="slide 1 of 5" tabindex="0">
+                    <h1 class="game-rules-header">Start Playing Now!</h1>
+                    <p>To begin a game of UNO, first register your user by clicking the <b>Register</b> button in the
+                        navbar.<br>
+                        You will be automatically logged in upon successful registration and redirected to the user
+                        dashboard.<br>
+                        From here, you can either choose to create a game or join an existing game from a list of
+                        available game <br>
+                        lobbies. Some lobbies will require a password, so if you are looking to join one of these
+                        lobbies, be sure <br>
+                        to request the password from the game lobby creator!
+                    </p>
+                </div>
+                <div class="slides-item slide-2" id="slide-2" aria-label="slide 2 of 5" tabindex="0">
+                    <h1 class="game-rules-header">Game Rules</h1>
+                    <p>At the start of every game, all players will be dealt five cards face-down. The
+                        first player will be granted<br>the option of playing any card they wish! In case you wish to
+                        remind yourself on whose turn it is, the<br>list of players on the top left of the screen will
+                        have
+                        a single player name highlighted to show<br>whose turn it is currently! To play a valid card on
+                        your turn,
+                        you must ensure the card you wish to<br>play matches the current top card's color or value (ex.
+                        if
+                        the current
+                        top card is a red 2, then you will<br>be able to play any card that is red or a 2 of any color).
+                        UNO also has special cards with special<br>effects. Click the next page in the bottom button
+                        list
+                        to learn more about these special cards!
+                    </p>
+                </div>
+                <div class="slides-item slide-3" id="slide-3" aria-label="slide 3 of 5" tabindex="0">
+                    <h1 class="game-rules-header">Special Cards</h1>
+                    <p>When you are playing, you will notice there exists 5 different special cards outside of the
+                        generic
+                        0-9 numeric cards. Here's what they do:
+                    <ol>
+                        <li class="special-cards-rules"><b>Draw Two Cards:</b>
+                            If you play the draw two card, you will force the player whose turn
+                            it is next to draw two cards to their hand.
+                        </li>
+                        <li class="special-cards-rules"><b>Skip Cards:</b>
+                            If you play the skip card, the player whose turn it is next will have
+                            their turn skipped!
+                        </li>
+                        <li class="special-cards-rules"><b>Reverse Cards:</b>
+                            If you play the reverse card, the turn order will be reversed!
+                        </li>
+                        <li class="special-cards-rules"><b>Wild Cards:</b>
+                            If you play the wild card, you can choose which color you want to be
+                            played from the next turn onwards! The wild card is<br>unique in that you can play it
+                            disregarding the need to match the color or value of the card currently at the top of the
+                            discard pile!
+                        </li>
+                        <li class="special-cards-rules"><b>Wild Draw Four Cards:</b>
+                            If you play the wild draw four card, you can choose which color
+                            you want to be played<br>from the next turn onwards AND force the following player to draw
+                            four
+                            cards to their hand! The<br>wild draw four card is similar to the wild card in that you can
+                            play it disregarding the need to<br>match the color or value of the card currently at the
+                            top
+                            of the discard pile!
+                        </li>
+                    </ol>
+                    </p>
+                </div>
+            </div>
+            <div class="carousel__nav">
+                <a class="slider-nav" href="#slide-1" aria-label="Go to slide 1"></a>
+                <a class="slider-nav" href="#slide-2" aria-label="Go to slide 2"></a>
+                <a class="slider-nav" href="#slide-3" aria-label="Go to slide 3"></a>
+            </div>
+            <div class="carousel__skip-message" id="skip-link" tabindex="0"></div>
+        </section>
     </div>
 
-    <div class="landing-wrapper">
-        <!--Content Here-->      
-    </div>
+    <div class="about-wrapper">
+        <div class="about-section">
+            <h1>About Us</h1><br>
+            <p>We are Team Spaghetti Factory! This UNO game is a project we created in the Spring of 2022, and we have
+                been working on it ever since. Get to know our team members!</p>
+        </div>
+        <h2 class="team-header" style="text-align:center">Our Team</h2>
+        <div class="row">
+            <div class="column">
+                <div class="card">
+                    <img src="/public/assets/Nakulan.jfif" alt="Nakulan" style="width:100%">
+                    <div class="container">
+                        <h2>Nakulan Karthikeyan</h2>
+                        <p class="title">Frontend Lead</p><br>
+                        <p> Hey guys! My name is Nakulan and I am a Third-Year Computer Science student at San Francisco
+                            State University.
+                            I am passionate about application and web development, and I enjoy developing new products
+                            that cater to a
+                            wide range of consumer interests. I am interested in learning new technologies and being at
+                            the forefront of
+                            new breakthroughs in the field of Computer Science. In my free-time, I enjoy reading,
+                            playing
+                            badminton, working out, playing video games, and coding.
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-    <script>
-        (async function(){
-            const res = await fetch("/api/loginTest");
-            if(res.ok){
-                const logout = document.createElement("a");
-                logout.classList.add("log");
-                logout.innerText = "Logout";
-                logout.href = "/api/logout";
-                console.log("here");
-                const log = document.querySelector("#log");
-                log.innerHTML = "";
-                log.appendChild(logout);
-            }
-        }());
-    </script>
+            <div class="column">
+                <div class="card">
+                    <img src="/public/assets/brian" alt="Brian" style="width:100%">
+                    <div class="container">
+                        <h2>Brian Adams</h2>
+                        <p class="title">Team Lead/Backend Lead</p><br>
+                        <p>Hello, my name is Brian and I'm a senior at SFSU studying Computer Science. I'm interested in
+                            full stack development and plan on developing web apps when I graduate. I really enjoy
+                            working with web technologies because of the flexibility the platform offers, and the speed
+                            at which the industry evolves. My preferred stack is React/NextJS, TypeScript, Node,
+                            Express, and Postgres.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="card">
+                    <img src="/public/assets/thien.jpg" alt="Thien" style="width:100%">
+                    <div class="container">
+                        <h2>Thien Pham</h2>
+                        <p class="title">Full-Stack Developer</p><br>
+                        <p>My name is Thien. I am a Senior at SFSU. I am graduating after this semester and coding is my
+                            hobby. My favorite coding language is C++ because I feel like it is good for solving
+                            Leetcode question since it is faster to run.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="card">
+                    <img src="/public/assets/johnson.jpg" alt="Johnson" style="width:100%">
+                    <div class="container">
+                        <h2>Johnson Nguyen</h2>
+                        <p class="title">Backend Developer</p><br>
+                        <p>Hello! My name is Johnson and I'm a Senior at SFSU and a DevOps Engineer! I enjoy working
+                            with anything Cloud because I believe that the Cloud is the future, and the future is now.
+                            Multi-Cloud Strategies, Terraform, Monitoring, Coding, debugging etc etc is what I love. I
+                            also love food.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            (async function () {
+                const res = await fetch("/api/loginTest");
+                if (res.ok) {
+                    const logout = document.createElement("a");
+                    logout.classList.add("log");
+                    logout.innerText = "Logout";
+                    logout.href = "/api/logout";
+                    console.log("here");
+                    const log = document.querySelector("#log");
+                    log.innerHTML = "";
+                    log.appendChild(logout);
+                }
+            }());
+        </script>
 </body>
+
 </html>
