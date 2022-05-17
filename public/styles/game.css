@@ -401,6 +401,8 @@ ul {
   border: none;
   border-top: 1px solid rgba(243, 243, 243, 0.301);
   border-left: 1px solid rgba(243, 243, 243, 0.301);
+  color: white;
+  font-size: inherit;
 }
 
 [data-channel=public] {
@@ -475,7 +477,7 @@ ul {
 .board-wrapper {
   position: relative;
   overflow: hidden;
-  background-color: green;
+  background-color: #4c5259;
   height: 100vh;
   width: 100%;
   /*@extend %debugCenterLines;*/
