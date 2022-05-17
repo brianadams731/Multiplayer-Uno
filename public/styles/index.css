@@ -244,9 +244,8 @@ ul {
   justify-content: space-around;
   flex-wrap: wrap;
 }
+
 .column {
-  width: 33.3%;
-  max-width: 390px;
   margin: auto;
   margin-top: 0;
   margin-bottom: 16px;
@@ -264,7 +263,7 @@ ul {
   padding: 33px;
   min-height: 90vh;
   max-height: 125vh;
-  min-width: 25vw;
+  max-width: 390px;
   overflow-x: auto;
 }
 
