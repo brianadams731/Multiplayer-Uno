@@ -24,6 +24,15 @@ class WinModal {
         winner.innerText = `${userNameOfWinner} has Won!`;
         this.wrapper.appendChild(winner);
 
+        const navButton = document.createElement("button");
+        navButton.classList.add("arcade-btn");
+        navButton.classList.add("leavePage");
+        navButton.innerHTML = "Back To Dashboard";
+        navButton.addEventListener("click",()=>{
+            window.location.href = '/dashboard'
+        })
+        this.wrapper.appendChild(navButton);
+
         lib.onload = () => {
             const canvas = document.createElement('canvas');
             canvas.classList.add('confetti-canvas');

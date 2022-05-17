@@ -660,6 +660,8 @@ ul {
 .win-wrapper {
   position: absolute;
   display: flex;
+  flex-direction: column;
+  gap: 15px;
   justify-content: center;
   align-items: center;
   top: 0;
@@ -670,6 +672,7 @@ ul {
   height: 100%;
 }
 .win-wrapper h1 {
+  z-index: 99999;
   display: block;
 }
 
@@ -679,4 +682,8 @@ ul {
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+.leavePage {
+  z-index: 99999;
 }
