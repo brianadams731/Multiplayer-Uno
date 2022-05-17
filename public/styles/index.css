@@ -239,9 +239,16 @@ ul {
   box-sizing: inherit;
 }
 
+.row{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
 .column {
-  float: left;
   width: 33.3%;
+  max-width: 390px;
+  margin: auto;
+  margin-top: 0;
   margin-bottom: 16px;
   padding: 0 8px;
 }
@@ -255,7 +262,7 @@ ul {
   box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
   margin: 20px;
   padding: 33px;
-  min-height: 125vh;
+  min-height: 90vh;
   max-height: 125vh;
   min-width: 25vw;
   overflow-x: auto;
