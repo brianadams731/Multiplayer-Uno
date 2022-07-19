@@ -1,15 +1,15 @@
-# Term Project: Web Application
-Term Project for CSC667 Internet Application Design and Development Spring 2022 where we have successfully created a Web Application.
+# Team Project for CSC667 Web Application Development
+## What I did
+ - All of the backend code (routes, web socket, db queries, chat etc)
+ - All of the game logic
+ - All of the game rendering
+ - Auth
+ - Database Architecture
+ - Project scaffolding (configs, migrations, )
 
-## Members
-- Nakulan Karthikeyan, ID: 920198861
-- Johnson Nguyen, ID: 921066533
-- Thien Pham, ID: 921100229
-- Brian Adams, ID: 921039987
-
-
-# How To
-* project root is considered the directory where the projects package.json is located
+## What I did not do
+ - Landing page (HTML and CSS)
+ - Lobby page (HTML and CSS)
 
 ## Install dependencies
 1. Open project root in terminal
