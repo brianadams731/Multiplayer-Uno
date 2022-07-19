@@ -5,7 +5,7 @@
  - All of the game rendering
  - Auth
  - Database Architecture
- - Project scaffolding (configs, migrations, )
+ - Project scaffolding (configs, migrations, project layout)
 
 ## What I did not do
  - Landing page (HTML and CSS)
